@@ -13,6 +13,7 @@
   # Package stuff
 
   home.packages = with pkgs; [
+    kando
     yazi
     htop
     lazygit
@@ -38,8 +39,12 @@
       text = ''nix-shell -p "$1" --run "$*"'';
     })
     (pkgs.writeShellApplication {
+      name = "sync-config";
+      text = builtins.readFile ./sync-config.sh;
+    })
+    (pkgs.writeShellApplication {
       name = "upd";
-      text = "sudo nixos-rebuild switch";
+      text = "sync-config;sudo nixos-rebuild switch";
     })
   ];
 
@@ -66,6 +71,16 @@
           };
         }) configDirs
       );
+
+  home.activation.copyConfigMut = config.lib.dag.entryAfter [ "writeBoundary" ] ''
+    for dir in "${./configMut}"/*; do
+      [ -d "$dir" ] || continue
+      name="$(basename "$dir")"
+      mkdir -p "$HOME/.config/$name"
+      ${pkgs.rsync}/bin/rsync -a --delete "$dir/" "$HOME/.config/$name/"
+      chmod +rw -R "$HOME/.config/$name/"
+    done
+  '';
 
   home.activation.cloneNvim = config.lib.dag.entryAfter [ "checkLinkTargets" ] ''
     PATH=${pkgs.git}/bin:$PATH
