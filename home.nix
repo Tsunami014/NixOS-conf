@@ -3,6 +3,13 @@
   home.homeDirectory = "/home/grapefru14";
   home.stateVersion = "25.11";
 
+  home.pointerCursor = {
+    package = pkgs.bibata-cursors;
+    name = "Bibata-Modern-Ice";
+    size = 24;
+    gtk.enable = true;
+  };
+
   # Package stuff
 
   home.packages = with pkgs; [
@@ -33,10 +40,6 @@
     (pkgs.writeShellApplication {
       name = "upd";
       text = "sudo nixos-rebuild switch";
-    })
-    (pkgs.writeShellApplication {
-      name = "yconf";
-      text = "yazi /etc/nixos";
     })
   ];
 
