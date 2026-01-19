@@ -1,4 +1,4 @@
-{ config, pkgs, quickshell, qml-niri, ... }: {
+{ config, pkgs, inputs, ... }: {
   home.username = "grapefru14";
   home.homeDirectory = "/home/grapefru14";
   home.stateVersion = "25.11";
@@ -11,23 +11,25 @@
   };
 
   # Package stuff
+  imports = [
+    ./browser.nix
+  ];
 
   home.packages = with pkgs; [
     kando
     yazi
     htop
     lazygit
-    qml-niri.packages.${system}.quickshell
-    qml-niri.packages.${system}.default
+
+    # Quickshell
+    inputs.qml-niri.packages.${system}.quickshell
+    inputs.qml-niri.packages.${system}.default
 
     # For neovim
     tree-sitter
     unzip
     nodejs
     fd
-
-    # For bar
-    upower
 
     # Extra executable stuff
     (pkgs.writeShellApplication {

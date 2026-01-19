@@ -26,7 +26,7 @@ input {
     mouse {}
 
     // warp-mouse-to-focus  // Warp to the centre of newly focused windows
-    focus-follows-mouse  // Focus windows when moving the mouse over them
+    // focus-follows-mouse  // Focus windows when moving the mouse over them
 
     workspace-auto-back-and-forth
 }

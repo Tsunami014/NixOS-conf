@@ -15,9 +15,15 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.quickshell.follows = "quickshell";
     };
+
+    firefox-addons = {
+      url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    zen-browser.url = "github:0xc000022070/zen-browser-flake";
   };
 
-  outputs = { self, nixpkgs, home-manager, quickshell, qml-niri, ... }: {
+  outputs = { self, nixpkgs, home-manager, ... } @ inputs: {
     nixosConfigurations.grapey = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
@@ -27,9 +33,7 @@
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
           home-manager.backupFileExtension = "bak";
-          home-manager.extraSpecialArgs = {
-            inherit quickshell qml-niri;
-          };
+          home-manager.extraSpecialArgs = { inherit inputs; };
           home-manager.users.grapefru14 = import ./home.nix;
         }
       ];
