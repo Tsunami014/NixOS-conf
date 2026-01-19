@@ -42,6 +42,7 @@ layout {
     gaps 16 // Gap around windows (pixels)
 
     always-center-single-column
+    empty-workspace-above-first
     default-column-display "tabbed"
 
     preset-column-widths {
@@ -81,9 +82,9 @@ layout {
 
     shadow {
         on
-        softness 30  // Blur radius
+        softness 0  // Blur radius
         spread 5  // Expands the shadow
-        offset x=0 y=5  // Moves the shadow relative to the window
+        offset x=5 y=5  // Moves the shadow relative to the window
         color "#0007"
     }
 
@@ -97,6 +98,13 @@ layout {
         right -1
         top -1
         bottom -1
+    }
+}
+
+recent-windows {
+    debounce-ms 750 // Delay between selecting a window and having it in the 'recent windows' list
+    highlight {
+        corner-radius 25
     }
 }
 
