@@ -44,7 +44,7 @@
     })
     (pkgs.writeShellApplication {
       name = "upd";
-      text = "sync-config;sudo nixos-rebuild switch";
+      text = "sudo -v;sync-config;sudo nixos-rebuild switch";
     })
   ];
 
@@ -58,9 +58,11 @@
 
   xdg.configFile = let
       configDirs =
-        builtins.filter
-          (name: (builtins.readDir ./config)."${name}" == "directory")
-          (builtins.attrNames (builtins.readDir ./config));
+        if builtins.pathExists ./config then
+          builtins.filter
+            (name: (builtins.readDir ./config)."${name}" == "directory")
+            (builtins.attrNames (builtins.readDir ./config))
+        else [];
     in
       builtins.listToAttrs (
         map (name: {

@@ -32,4 +32,9 @@ for folder in "$MUT_DIR"/*; do
     sudo rsync -a --delete  "$src_path/" "$dest_path/"
 done
 
-echo "Done."
+echo "Updating git..."
+
+cd /etc/nixos
+git add .
+
+echo "Done!"
