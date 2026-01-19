@@ -68,28 +68,28 @@ binds {
     Mod+K     { focus-window-or-workspace-up; }
     Mod+L     { focus-column-right; }
 
-    Mod+Ctrl+Left  { move-column-left; }
-    Mod+Ctrl+Down  { move-window-down-or-to-workspace-down; }
-    Mod+Ctrl+Up    { move-window-up-or-to-workspace-up; }
-    Mod+Ctrl+Right { move-column-right; }
-    Mod+Ctrl+H     { move-column-left; }
-    Mod+Ctrl+J     { move-window-down-or-to-workspace-down; }
-    Mod+Ctrl+K     { move-window-up-or-to-workspace-up; }
-    Mod+Ctrl+L     { move-column-right; }
+    Mod+Shift+Left  { move-column-left; }
+    Mod+Shift+Down  { move-window-down-or-to-workspace-down; }
+    Mod+Shift+Up    { move-window-up-or-to-workspace-up; }
+    Mod+Shift+Right { move-column-right; }
+    Mod+Shift+H     { move-column-left; }
+    Mod+Shift+J     { move-window-down-or-to-workspace-down; }
+    Mod+Shift+K     { move-window-up-or-to-workspace-up; }
+    Mod+Shift+L     { move-column-right; }
 
     Mod+Home { focus-column-first; }
     Mod+End  { focus-column-last; }
-    Mod+Ctrl+Home { move-column-to-first; }
-    Mod+Ctrl+End  { move-column-to-last; }
+    Mod+Shift+Home { move-column-to-first; }
+    Mod+Shift+End  { move-column-to-last; }
 
-    Mod+Shift+Left  { focus-monitor-left; }
-    Mod+Shift+Down  { focus-monitor-down; }
-    Mod+Shift+Up    { focus-monitor-up; }
-    Mod+Shift+Right { focus-monitor-right; }
-    Mod+Shift+H     { focus-monitor-left; }
-    Mod+Shift+J     { focus-monitor-down; }
-    Mod+Shift+K     { focus-monitor-up; }
-    Mod+Shift+L     { focus-monitor-right; }
+    Mod+Ctrl+Left  { focus-monitor-left; }
+    Mod+Ctrl+Down  { focus-monitor-down; }
+    Mod+Ctrl+Up    { focus-monitor-up; }
+    Mod+Ctrl+Right { focus-monitor-right; }
+    Mod+Ctrl+H     { focus-monitor-left; }
+    Mod+Ctrl+J     { focus-monitor-down; }
+    Mod+Ctrl+K     { focus-monitor-up; }
+    Mod+Ctrl+L     { focus-monitor-right; }
 
     Mod+Shift+Ctrl+Left  { move-column-to-monitor-left; }
     Mod+Shift+Ctrl+Down  { move-column-to-monitor-down; }
@@ -110,51 +110,51 @@ binds {
     Mod+WheelScrollUp   cooldown-ms=150 { focus-workspace-up; }
     Mod+TouchpadScrollDown cooldown-ms=150 { focus-workspace-down; }
     Mod+TouchpadScrollUp   cooldown-ms=150 { focus-workspace-up; }
-    Mod+Ctrl+WheelScrollDown cooldown-ms=150 { move-column-to-workspace-down; }
-    Mod+Ctrl+WheelScrollUp   cooldown-ms=150 { move-column-to-workspace-up; }
-    Mod+Ctrl+TouchpadScrollDown cooldown-ms=150 { move-column-to-workspace-down; }
-    Mod+Ctrl+TouchpadScrollUp   cooldown-ms=150 { move-column-to-workspace-up; }
+    Mod+Shift+WheelScrollDown cooldown-ms=150 { move-column-to-workspace-down; }
+    Mod+Shift+WheelScrollUp   cooldown-ms=150 { move-column-to-workspace-up; }
+    Mod+Shift+TouchpadScrollDown cooldown-ms=150 { move-column-to-workspace-down; }
+    Mod+Shift+TouchpadScrollUp   cooldown-ms=150 { move-column-to-workspace-up; }
 
-    Mod+WheelScrollRight { focus-column-right; }
-    Mod+WheelScrollLeft  { focus-column-left; }
-    Mod+Shift+WheelScrollDown { focus-column-right; }
-    Mod+Shift+WheelScrollUp   { focus-column-left; }
-    Mod+TouchpadScrollRight { focus-column-right; }
-    Mod+TouchpadScrollLeft  { focus-column-left; }
-    Mod+Shift+TouchpadScrollDown { focus-column-right; }
-    Mod+Shift+TouchpadScrollUp   { focus-column-left; }
-    Mod+Ctrl+WheelScrollRight { move-column-right; }
-    Mod+Ctrl+WheelScrollLeft  { move-column-left; }
-    Mod+Ctrl+Shift+WheelScrollDown { move-column-right; }
-    Mod+Ctrl+Shift+WheelScrollUp   { move-column-left; }
-    Mod+Ctrl+TouchpadScrollRight { move-column-right; }
-    Mod+Ctrl+TouchpadScrollLeft  { move-column-left; }
-    Mod+Ctrl+Shift+TouchpadScrollDown { move-column-right; }
-    Mod+Ctrl+Shift+TouchpadScrollUp   { move-column-left; }
+    Mod+WheelScrollRight cooldown-ms=150 { focus-column-right; }
+    Mod+WheelScrollLeft  cooldown-ms=150 { focus-column-left; }
+    Mod+Ctrl+WheelScrollDown cooldown-ms=150 { focus-column-right; }
+    Mod+Ctrl+WheelScrollUp   cooldown-ms=150 { focus-column-left; }
+    Mod+TouchpadScrollRight cooldown-ms=150 { focus-column-right; }
+    Mod+TouchpadScrollLeft  cooldown-ms=150 { focus-column-left; }
+    Mod+Ctrl+TouchpadScrollDown cooldown-ms=150 { focus-column-right; }
+    Mod+Ctrl+TouchpadScrollUp   cooldown-ms=150 { focus-column-left; }
+    Mod+Shift+WheelScrollRight cooldown-ms=150 { move-column-right; }
+    Mod+Shift+WheelScrollLeft  cooldown-ms=150 { move-column-left; }
+    Mod+Shift+Ctrl+WheelScrollDown cooldown-ms=150 { move-column-right; }
+    Mod+Shift+Ctrl+WheelScrollUp   cooldown-ms=150 { move-column-left; }
+    Mod+Shift+TouchpadScrollRight cooldown-ms=150 { move-column-right; }
+    Mod+Shift+TouchpadScrollLeft  cooldown-ms=150 { move-column-left; }
+    Mod+Shift+Ctrl+TouchpadScrollDown cooldown-ms=150 { move-column-right; }
+    Mod+Shift+Ctrl+TouchpadScrollUp   cooldown-ms=150 { move-column-left; }
 
 
     // Workspace switching stuff
-    Mod+1 { focus-workspace 1; }
-    Mod+2 { focus-workspace 2; }
-    Mod+3 { focus-workspace 3; }
-    Mod+4 { focus-workspace 4; }
-    Mod+5 { focus-workspace 5; }
-    Mod+6 { focus-workspace 6; }
-    Mod+7 { focus-workspace 7; }
-    Mod+8 { focus-workspace 8; }
-    Mod+9 { focus-workspace 9; }
-    Mod+Ctrl+1 { move-column-to-workspace 1; }
-    Mod+Ctrl+2 { move-column-to-workspace 2; }
-    Mod+Ctrl+3 { move-column-to-workspace 3; }
-    Mod+Ctrl+4 { move-column-to-workspace 4; }
-    Mod+Ctrl+5 { move-column-to-workspace 5; }
-    Mod+Ctrl+6 { move-column-to-workspace 6; }
-    Mod+Ctrl+7 { move-column-to-workspace 7; }
-    Mod+Ctrl+8 { move-column-to-workspace 8; }
-    Mod+Ctrl+9 { move-column-to-workspace 9; }
+    Mod+1 repeat=false { focus-workspace 1; }
+    Mod+2 repeat=false { focus-workspace 2; }
+    Mod+3 repeat=false { focus-workspace 3; }
+    Mod+4 repeat=false { focus-workspace 4; }
+    Mod+5 repeat=false { focus-workspace 5; }
+    Mod+6 repeat=false { focus-workspace 6; }
+    Mod+7 repeat=false { focus-workspace 7; }
+    Mod+8 repeat=false { focus-workspace 8; }
+    Mod+9 repeat=false { focus-workspace 9; }
+    Mod+Shift+1 { move-column-to-workspace 1; }
+    Mod+Shift+2 { move-column-to-workspace 2; }
+    Mod+Shift+3 { move-column-to-workspace 3; }
+    Mod+Shift+4 { move-column-to-workspace 4; }
+    Mod+Shift+5 { move-column-to-workspace 5; }
+    Mod+Shift+6 { move-column-to-workspace 6; }
+    Mod+Shift+7 { move-column-to-workspace 7; }
+    Mod+Shift+8 { move-column-to-workspace 8; }
+    Mod+Shift+9 { move-column-to-workspace 9; }
 
     // Alternatively, there are commands to move just a single window:
-    // Mod+Ctrl+1 { move-window-to-workspace 1; }
+    // Mod+Shift+1 { move-window-to-workspace 1; }
 
-    Mod+Tab { focus-workspace-previous; }
+    // Mod+Tab { focus-workspace-previous; } // Messes with the other Mod+Tab
 }
