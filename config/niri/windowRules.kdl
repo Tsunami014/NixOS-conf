@@ -1,0 +1,12 @@
+// Add corner rounding to all windows and disable title bar & other stuff
+window-rule {
+    geometry-corner-radius 12
+    clip-to-geometry true
+}
+prefer-no-csd
+
+// Open the Firefox picture-in-picture player as floating by default.
+window-rule {
+    match app-id=r#"firefox$"# title="^Picture-in-Picture$"
+    open-floating true
+}

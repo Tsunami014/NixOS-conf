@@ -1,0 +1,2 @@
+spawn-at-startup "quickshell" "-c" "bar" "-n"
+

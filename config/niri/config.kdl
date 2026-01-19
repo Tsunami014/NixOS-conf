@@ -1,0 +1,103 @@
+// "/-" comments out the following node (no need for ending)
+// https://yalter.github.io/niri/Configuration:-Introduction
+
+screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
+
+include "windowRules.kdl"
+include "keys.kdl"
+include "startup.kdl"
+
+// Input device configuration.
+// https://yalter.github.io/niri/Configuration:-Input
+input {
+    keyboard {
+        numlock
+    }
+
+    touchpad {
+        tap  // Tap to click
+        // dwt  // Disable when typing
+        // dwtp  // Disable when trackpointing
+        natural-scroll  // Invert scroll direction
+        // accel-speed 0.2  // From -1 to 1, default 0
+        // disabled-on-external-mouse
+    }
+
+    mouse {}
+
+    // warp-mouse-to-focus  // Warp to the centre of newly focused windows
+    focus-follows-mouse  // Focus windows when moving the mouse over them
+
+    workspace-auto-back-and-forth
+}
+
+gestures {
+    hot-corners {
+        off
+    }
+}
+
+// https://yalter.github.io/niri/Configuration:-Layout
+layout {
+    gaps 16 // Gap around windows (pixels)
+
+    always-center-single-column
+    default-column-display "tabbed"
+
+    preset-column-widths {
+        proportion 0.33333
+        proportion 0.5
+        proportion 0.66667
+    }
+
+    preset-window-heights {
+        proportion 0.5
+        proportion 1.0
+    }
+
+    default-column-width { proportion 0.66667; }
+
+
+    focus-ring {
+        width 4
+
+        active-gradient from="#f7768e" to="#9ece6a" angle=45 relative-to="workspace-view" in="oklch longer hue"
+        inactive-gradient from="#cfc9c2" to="#9aa5ce" angle=-45 relative-to="workspace-view"
+    }
+
+    tab-indicator {
+        hide-when-single-tab
+        place-within-column
+
+        gaps-between-tabs 2
+        length total-proportion=0.7
+
+        active-color "#e0af68"
+        inactive-color "#cfc9c2"
+        urgent-color "#f7768e"
+    }
+
+    shadow {
+        on
+        softness 30  // Blur radius
+        spread 5  // Expands the shadow
+        offset x=0 y=5  // Moves the shadow relative to the window
+        color "#0007"
+    }
+
+    insert-hint {
+        color "#7aa2f780"
+    }
+
+    // Because the windows are sometimes 1 pixel in from the edge, annoyingly
+    struts {
+        left -1
+        right -1
+        top -1
+        bottom -1
+    }
+}
+
+hotkey-overlay {
+    skip-at-startup
+}
