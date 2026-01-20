@@ -63,6 +63,17 @@ if [[ -z $DISPLAY && $XDG_VTNR -eq 1 ]]; then
 fi'';
   };
 
+  programs.git = {
+    enable = true;
+    settings = {
+      user = {
+        name  = "Tsunami014";
+        email = "tsunami014@duck.com";
+      };
+      init.defaultBranch = "main";
+    };
+  };
+
   # Config stuff
 
   xdg.configFile = let
