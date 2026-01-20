@@ -21,9 +21,10 @@
     htop
     lazygit
 
-    # Quickshell
+    # Quickshell & quickshell projects
     inputs.qml-niri.packages.${system}.quickshell
     inputs.qml-niri.packages.${system}.default
+    acpi
 
     # For neovim
     tree-sitter
@@ -54,6 +55,12 @@
     enable = true;
     enableCompletion = true;
     # bashrcExtra = '' file contents ''
+    profileExtra = ''
+[[ -f ~/.bashrc ]] && . ~/.bashrc
+# Only exec Niri if no display is running and you're on TTY1
+if [[ -z $DISPLAY && $XDG_VTNR -eq 1 ]]; then
+    exec niri
+fi'';
   };
 
   # Config stuff
