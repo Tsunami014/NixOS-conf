@@ -8,10 +8,6 @@
     git
     wget
     alacritty
-    fuzzel
-    mako
-    swayidle
-    swaylock
   ];
 
   fonts.packages = with pkgs; [

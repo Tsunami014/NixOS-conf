@@ -20,6 +20,9 @@
     yazi
     htop
     lazygit
+    cliphist
+    wl-clipboard
+    fzf
 
     # Quickshell & quickshell projects
     inputs.qml-niri.packages.${system}.quickshell
@@ -50,6 +53,11 @@
       text = "sudo -v;sync-config;sudo nixos-rebuild switch";
     })
   ];
+
+  services.cliphist = {
+    enable = true;
+    systemdTargets = [ "config.wayland.systemd.target" ];
+  };
 
   programs.bash = {
     enable = true;

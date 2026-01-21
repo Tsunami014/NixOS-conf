@@ -7,6 +7,11 @@
       ./packages.nix
     ];
 
+  system.activationScripts.text = ''
+ln -sf ${pkgs.bash}/bin/bash /bin/bash
+ln -sf ${./navi.sh} /bin/navi
+'';
+
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
