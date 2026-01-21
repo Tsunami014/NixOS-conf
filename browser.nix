@@ -26,7 +26,9 @@
     settings = {
         "zen.workspaces.continue-where-left-off" = true;
         "zen.welcome-screen.seen" = true;
-        "zen.urlbar.behavior" = "float";
+        "zen.urlbar.behavior" = "floating-on-type";
+        "zen.view.experimental-no-window-controls" = true;
+        "zen.view.compact.enable-at-startup" = true;
         "browser.download.folderList" = 2;
         "browser.download.dir" = "/tmp";
         "browser.download.useDownloadDir" = true;
