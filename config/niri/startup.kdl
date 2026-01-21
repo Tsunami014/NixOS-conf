@@ -1,4 +1,3 @@
 spawn-at-startup "quickshell" "-c" "bar" "-n"
 spawn-at-startup "wl-paste" "--watch" "cliphist" "store"
-spawn-at-startup "kando"
 

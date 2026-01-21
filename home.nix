@@ -16,13 +16,14 @@
   ];
 
   home.packages = with pkgs; [
-    kando
     yazi
     htop
     lazygit
     cliphist
     wl-clipboard
     fzf
+
+    inputs.hexecute.packages.${system}.default
 
     # Quickshell & quickshell projects
     inputs.qml-niri.packages.${system}.quickshell
@@ -70,6 +71,21 @@ if [[ -z $DISPLAY && $XDG_VTNR -eq 1 ]]; then
     exec niri
 fi'';
   };
+
+  programs.git = {
+    enable = true;
+    settings = {
+      user = {
+        name  = "Tsunami014";
+        email = "tsunami014@duck.com";
+      };
+      init.defaultBranch = "main";
+    };
+  };
+  # So setting global git config sets onto this writable empty file, not the unwritable git config defined above
+  home.activation.makeGitConfig = config.lib.dag.entryAfter [ "writeBoundary" ] ''
+    touch "$HOME/.gitconfig"
+  '';
 
   # Config stuff
 
