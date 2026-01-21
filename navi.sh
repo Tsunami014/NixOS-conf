@@ -3,7 +3,7 @@
 HINTS=$(cat <<'EOF'
 Mount external drive
 ## Find drive (in /dev)
-lsblk -l
+lsblk
 ## Mount drive to any dir, e.g. /mnt
 #sudo mount /dev/sda1 /mnt
 

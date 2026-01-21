@@ -22,6 +22,7 @@
     cliphist
     wl-clipboard
     fzf
+    fuzzel
 
     inputs.hexecute.packages.${system}.default
 
@@ -52,6 +53,10 @@
     (pkgs.writeShellApplication {
       name = "upd";
       text = "sudo -v;sync-config;sudo nixos-rebuild switch";
+    })
+    (pkgs.writeShellApplication {
+      name = "upd-garbage";
+      text = "sudo nix-collect-garbage -d;upd";
     })
   ];
 
