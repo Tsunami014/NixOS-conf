@@ -63,17 +63,6 @@ if [[ -z $DISPLAY && $XDG_VTNR -eq 1 ]]; then
 fi'';
   };
 
-  programs.git = {
-    enable = true;
-    settings = {
-      user = {
-        name  = "Tsunami014";
-        email = "tsunami014@duck.com";
-      };
-      init.defaultBranch = "main";
-    };
-  };
-
   # Config stuff
 
   xdg.configFile = let
@@ -110,6 +99,7 @@ fi'';
       echo "Cloning Neovim config repo..."
       mkdir -p "$HOME/.config"
       git clone https://github.com/Tsunami014/nvimConfig "$HOME/.config/nvim"
+      echo '{"projects": ["/etc/nixos"]}' > "$HOME/.config/nvim/projects.json"
     else
       echo "Updating Neovim config..."
       git -C "$HOME/.config/nvim" pull

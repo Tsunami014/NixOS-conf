@@ -29,6 +29,8 @@
         "zen.urlbar.behavior" = "floating-on-type";
         "zen.view.experimental-no-window-controls" = true;
         "zen.view.compact.enable-at-startup" = true;
+        "layout.css.prefers-color-scheme.content-override" = 0;
+        "zen.view.window.scheme" = 0;
         "browser.download.folderList" = 2;
         "browser.download.dir" = "/tmp";
         "browser.download.useDownloadDir" = true;
