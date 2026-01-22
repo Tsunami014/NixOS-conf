@@ -18,11 +18,13 @@
   home.packages = with pkgs; [
     yazi
     htop
+    gh
     lazygit
     cliphist
     wl-clipboard
     fzf
     fuzzel
+    jq
 
     inputs.hexecute.packages.${system}.default
 
