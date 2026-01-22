@@ -1,10 +1,11 @@
 // run `niri msg action` to see avaliable commands
 environment {
     TermSpawn "alacritty -e"
+    EXECUTE "hexecute"
 }
 binds {
     // Apps / User stuff
-    Mod+MouseMiddle hotkey-overlay-title="Hexecute" { spawn "hexecute"; }
+    Mod+MouseMiddle hotkey-overlay-title="Hexecute" { spawn-sh "$EXECUTE"; }
     Mod+Return hotkey-overlay-title="Terminal" { spawn "alacritty"; }
     Mod+N hotkey-overlay-title="Neovim" { spawn-sh "$($TermSpawn nvim)"; }
     Mod+E hotkey-overlay-title="File browser" { spawn-sh "$($TermSpawn yazi)"; }

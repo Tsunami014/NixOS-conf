@@ -58,6 +58,14 @@
       name = "upd-garbage";
       text = "sudo nix-collect-garbage -d;upd";
     })
+    (pkgs.writeShellApplication {
+      name = "navi";
+      text = builtins.readFile ./navi.sh;
+    })
+    (pkgs.writeShellApplication {
+      name = "navihex";
+      text = builtins.readFile ./navihex.sh;
+    })
   ];
 
   services.cliphist = {
