@@ -16,13 +16,13 @@
   ];
 
   home.packages = with pkgs; [
+    alacritty
     yazi
     htop
     gh
     lazygit
     cliphist
     wl-clipboard
-    fzf
     fuzzel
     jq
 
@@ -32,6 +32,11 @@
     inputs.qml-niri.packages.${system}.quickshell
     inputs.qml-niri.packages.${system}.default
     acpi
+    #(pkgs.getFlake (pkgs.fetchFromGitHub {
+    #  owner = "Tsunami014"; repo = "hyprlock";
+    #  rev = "0b0448860a00aa02741733498e0c3ed9f1e187a2";
+    #  sha256 = "sha256-iFTkxfQJelJJIX2Yr5DlqbOYwgXj7dwyKMhBDJVaepY=";
+    #})).packages.${pkgs.system}.default
 
     # For neovim
     tree-sitter
@@ -60,10 +65,7 @@
       name = "upd-garbage";
       text = "sudo nix-collect-garbage -d;upd";
     })
-    (pkgs.writeShellApplication {
-      name = "navi";
-      text = builtins.readFile ./navi.sh;
-    })
+    # navi located in packages.nix
     (pkgs.writeShellApplication {
       name = "navihex";
       text = builtins.readFile ./navihex.sh;

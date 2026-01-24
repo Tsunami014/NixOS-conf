@@ -7,8 +7,13 @@
     gcc
     git
     wget
-    alacritty
+    fzf
   ];
+
+  system.activationScripts.text = ''
+ln -sf ${pkgs.bash}/bin/bash /bin/bash
+ln -sf ${./navi.sh} /bin/navi
+'';
 
   fonts.packages = with pkgs; [
     nerd-fonts.ubuntu
