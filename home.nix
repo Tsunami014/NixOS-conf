@@ -54,12 +54,16 @@
       text = builtins.readFile ./sync-config.sh;
     })
     (pkgs.writeShellApplication {
-      name = "upd";
+      name = "upd-sys";
       text = "sudo -v;sync-config;sudo nixos-rebuild switch";
     })
     (pkgs.writeShellApplication {
-      name = "upd-garbage";
-      text = "sudo nix-collect-garbage -d;upd";
+      name = "upd-usr";
+      text = "home-manager switch";
+    })
+    (pkgs.writeShellApplication {
+      name = "upd-sys-garbage";
+      text = "sudo nix-collect-garbage -d;upd-sys";
     })
     # navi located in packages.nix
     (pkgs.writeShellApplication {
