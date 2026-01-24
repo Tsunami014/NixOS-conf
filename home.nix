@@ -32,11 +32,7 @@
     inputs.qml-niri.packages.${system}.quickshell
     inputs.qml-niri.packages.${system}.default
     acpi
-    #(pkgs.getFlake (pkgs.fetchFromGitHub {
-    #  owner = "Tsunami014"; repo = "hyprlock";
-    #  rev = "0b0448860a00aa02741733498e0c3ed9f1e187a2";
-    #  sha256 = "sha256-iFTkxfQJelJJIX2Yr5DlqbOYwgXj7dwyKMhBDJVaepY=";
-    #})).packages.${pkgs.system}.default
+    inputs.hyprlock.packages.${system}.default
 
     # For neovim
     tree-sitter

@@ -22,6 +22,10 @@
     };
     zen-browser.url = "github:0xc000022070/zen-browser-flake";
     hexecute.url = "github:ThatOtherAndrew/Hexecute";
+    hyprlock = {
+      url = "github:Tsunami014/hyprlock";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, nixpkgs, home-manager, ... } @ inputs: {
