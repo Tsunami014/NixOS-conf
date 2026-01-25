@@ -7,6 +7,11 @@
       ./packages.nix
     ];
 
+  # Add /bin to the path
+  environment.sessionVariables = {
+    PATH = [ "/bin" ];
+  };
+
   hardware.graphics.enable = true;
 
   # Load user paths
