@@ -1,0 +1,19 @@
+[[mgr.append_keymap]]
+on  = [ "`", "g" ]
+run = "shell --block -- lazygit"
+desc = "Launch lazygit"
+
+[[mgr.append_keymap]]
+on  = [ "`", "n" ]
+run = "shell --block -- nvim ."
+desc = "Launch neovim here"
+
+[[mgr.append_keymap]]
+on  = [ "g", "s", "s" ]
+run = "cd /etc/nixos"
+desc = "Go /etc/nixos"
+
+[[mgr.append_keymap]]
+on  = [ "g", "s", "u" ]
+run = "cd /etc/nixos/users/$USER"
+desc = "Go /etc/nixos/users/$USER"
