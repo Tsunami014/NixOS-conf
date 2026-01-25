@@ -1,9 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-sudo -v
-
-./sync-config.sh
+./sync.sh
 
 REG_DIR="./config"
 MUT_DIR="./configMut"
@@ -28,3 +26,4 @@ for item in "$@"; do
 done
 git add .
 echo "Done!"
+upd-user

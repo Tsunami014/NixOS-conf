@@ -20,7 +20,7 @@ for folder in "$MUT_DIR"/*; do
     dest_path="$MUT_DIR/$name"
 
     if [ ! -d "$src_path" ]; then
-        printf "Skipping $name — no matching directory in ~/.config"
+        echo "Skipping $name — no matching directory in ~/.config"
         continue
     fi
 
