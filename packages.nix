@@ -37,9 +37,10 @@ home-manager switch
     (pkgs.writeShellApplication {
       name = "upd-system-garbage";
       text = ''
+sudo -v
 printf "\e[1;93m%s\e[0m\n" "Collecting garbage..."
 sudo nix-collect-garbage -d
-upd-sys
+upd-system
 '';
     })
   ];
