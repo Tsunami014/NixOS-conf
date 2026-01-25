@@ -5,6 +5,7 @@
   environment.systemPackages = with pkgs; [
     home-manager
     xwayland-satellite
+    swayidle
     gcc
     git
     wget
@@ -31,11 +32,15 @@ if [ -f "$syncf" ]; then
   "$syncf"
 fi
 home-manager switch
-      '';
+'';
     })
     (pkgs.writeShellApplication {
       name = "upd-system-garbage";
-      text = "sudo nix-collect-garbage -d;upd-sys";
+      text = ''
+printf "\e[1;93m%s\e[0m\n" "Collecting garbage..."
+sudo nix-collect-garbage -d
+upd-sys
+'';
     })
   ];
 

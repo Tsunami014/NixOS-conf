@@ -84,9 +84,7 @@ fi'';
   xdg.configFile = let
       configDirs =
         if builtins.pathExists ./config then
-          builtins.filter
-            (name: (builtins.readDir ./config)."${name}" == "directory")
-            (builtins.attrNames (builtins.readDir ./config))
+          builtins.attrNames (builtins.readDir ./config)
         else [];
     in
       builtins.listToAttrs (
