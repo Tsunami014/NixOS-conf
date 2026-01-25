@@ -3,6 +3,7 @@ set -euo pipefail
 
 sudo -v
 mainFold="/etc/nixos"
+cd "$mainFold"
 
 fprint() {
     if [ $# -gt 1 ]; then
@@ -21,7 +22,7 @@ for folder in users/*; do
         sudo -u "$name" sh ./sync.sh
         cd "$mainFold"
     else
-        fprint "No update script found for $name" "94"
+        fprint "No sync script found for $name" "94"
     fi
 done
 
