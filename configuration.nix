@@ -7,7 +7,24 @@
       ./packages.nix
     ];
 
-  hardware.opengl.enable = true;
+  hardware.graphics.enable = true;
+
+  # Load user paths
+  systemd.tmpfiles.rules =
+    builtins.concatMap
+      (name: [
+        "L /home/${name}/.config/home-manager - - - - /etc/nixos/users/${name}"
+        "d /home/${name}/.local/state/nix/profiles/home-manager 0755 ${name} users -"
+        "L /etc/profiles/per-user/${name} - - - - /home/${name}/.local/state/nix/profiles/profile"
+      ]) (builtins.attrNames (builtins.readDir ./users));
+
+  # Define user accounts. Don't forget to set a password with ‘passwd’.
+  users.users.grapefru14 = {
+    isNormalUser = true;
+    description = "Grapefru14";
+    extraGroups = [ "networkmanager" "wheel" ];
+    packages = with pkgs; [];
+  };
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -51,14 +68,6 @@ efi /EFI/ubuntu/grubx64.efi
   services.xserver.xkb = {
     layout = "au";
     variant = "";
-  };
-
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.grapefru14 = {
-    isNormalUser = true;
-    description = "Grapefru14";
-    extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [];
   };
 
   # Misc stuff

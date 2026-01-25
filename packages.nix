@@ -3,11 +3,40 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    home-manager
     xwayland-satellite
     gcc
     git
     wget
     fzf
+
+    (pkgs.writeShellApplication {
+      name = "+";
+      text = ''nix-shell -p "$@"'';
+    })
+    (pkgs.writeShellApplication {
+      name = "=";
+      text = ''nix-shell -p "$1" --run "$*"'';
+    })
+    (pkgs.writeShellApplication {
+      name = "upd-system";
+      text = builtins.readFile ./upd-all.sh;
+    })
+    (pkgs.writeShellApplication {
+      name = "upd-user";
+      text = ''
+syncf=$HOME/.config/home-manager/sync.sh
+if [ -f "$syncf" ]; then
+  cd "$(dirname "$syncf")"
+  "$syncf"
+fi
+home-manager switch
+      '';
+    })
+    (pkgs.writeShellApplication {
+      name = "upd-system-garbage";
+      text = "sudo nix-collect-garbage -d;upd-sys";
+    })
   ];
 
   system.activationScripts.text = ''

@@ -42,31 +42,6 @@
 
     # Extra executable stuff
     (pkgs.writeShellApplication {
-      name = "+";
-      text = ''nix-shell -p "$@"'';
-    })
-    (pkgs.writeShellApplication {
-      name = "=";
-      text = ''nix-shell -p "$1" --run "$*"'';
-    })
-    (pkgs.writeShellApplication {
-      name = "sync-config";
-      text = builtins.readFile ./sync-config.sh;
-    })
-    (pkgs.writeShellApplication {
-      name = "upd-sys";
-      text = "sudo -v;sync-config;sudo nixos-rebuild switch";
-    })
-    (pkgs.writeShellApplication {
-      name = "upd-usr";
-      text = "home-manager switch";
-    })
-    (pkgs.writeShellApplication {
-      name = "upd-sys-garbage";
-      text = "sudo nix-collect-garbage -d;upd-sys";
-    })
-    # navi located in packages.nix
-    (pkgs.writeShellApplication {
       name = "navihex";
       text = builtins.readFile ./navihex.sh;
     })

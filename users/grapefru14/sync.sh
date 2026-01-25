@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+sudo -v
 echo "Syncing mutable config..."
 
-MUT_DIR="/etc/nixos/configMut"
+MUT_DIR="$(pwd)/configMut"
 SRC_DIR="$HOME/.config"
 
 # Ensure the target directory exists
@@ -20,7 +21,7 @@ for folder in "$MUT_DIR"/*; do
     dest_path="$MUT_DIR/$name"
 
     if [ ! -d "$src_path" ]; then
-        echo "Skipping $name — no matching directory in ~/.config"
+        printf "Skipping $name — no matching directory in ~/.config"
         continue
     fi
 
@@ -31,10 +32,3 @@ for folder in "$MUT_DIR"/*; do
     sudo mkdir -p "$dest_path"
     sudo rsync -a --delete  "$src_path/" "$dest_path/"
 done
-
-echo "Updating git..."
-
-cd /etc/nixos
-git add .
-
-echo "Done!"
