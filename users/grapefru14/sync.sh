@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-sudo -v
 echo "Syncing mutable config..."
 
 MUT_DIR="$(pwd)/configMut"
@@ -27,8 +26,8 @@ for folder in "$MUT_DIR"/*; do
 
     echo "Replacing $dest_path with $src_path"
 
-    sudo rm -rf "$dest_path"
+    rm -rf "$dest_path"
 
-    sudo mkdir -p "$dest_path"
-    sudo rsync -a --delete  "$src_path/" "$dest_path/"
+    mkdir -p "$dest_path"
+    rsync -a --delete  "$src_path/" "$dest_path/"
 done

@@ -26,11 +26,16 @@
     (pkgs.writeShellApplication {
       name = "upd-user";
       text = ''
+fprint() { printf "\e[1;93m%s\e[0m\n" "$1"; }
+fprint "Syncing..."
 syncf=$HOME/.config/home-manager/sync.sh
 if [ -f "$syncf" ]; then
   cd "$(dirname "$syncf")"
   "$syncf"
 fi
+fprint "Updating git..."
+git add .
+fprint "Running rebuild..."
 home-manager switch
 '';
     })

@@ -61,8 +61,6 @@
 # Only exec Niri if no display is running and you're on TTY1
 if [[ -z $DISPLAY && $XDG_VTNR -eq 1 ]]; then
     exec niri
-    # Show the lock screen first
-    exec hyprlock
 fi'';
   };
 
@@ -82,6 +80,11 @@ fi'';
   '';
 
   # Config stuff
+
+  home.file.".local/share/fonts" = {
+    source = ./fonts;
+    recursive = true;
+  };
 
   xdg.configFile = let
       configDirs =

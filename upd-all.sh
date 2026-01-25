@@ -18,7 +18,7 @@ for folder in users/*; do
     if [ -d "$folder" ]; then
         fprint "Updating $name..." "94"
         cd "$folder"
-        sh ./sync.sh
+        sudo -u "$name" sh ./sync.sh
         cd "$mainFold"
     else
         fprint "No update script found for $name" "94"
