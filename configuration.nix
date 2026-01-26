@@ -36,6 +36,15 @@
     serviceConfig.ExecStart = ["" "@${pkgs.util-linux}/sbin/agetty agetty --login-program ${config.services.getty.loginProgram} --autologin grapefru14 --noclear --keep-baud %I 115200,38400,9600 $TERM"];
   };
 
+  # Enable printing
+  services.printing.enable = true;
+  services.avahi = { # Printer discovery
+    enable = true;
+    nssmdns4 = true;
+    openFirewall = true;
+  };
+  services.printing.drivers = [ pkgs.canon-cups-ufr2 ];
+
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;

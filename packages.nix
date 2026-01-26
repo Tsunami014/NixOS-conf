@@ -11,6 +11,13 @@
     wget
     fzf
 
+    # Printer stuff
+    (pkgs.writeShellApplication {
+      name = "printer-settings";
+      text = "zen --private-window http://localhost:631";
+    })
+
+    # Various custom commands
     (pkgs.writeShellApplication {
       name = "+";
       text = ''nix-shell -p "$@"'';
@@ -19,25 +26,22 @@
       name = "=";
       text = ''nix-shell -p "$1" --run "$*"'';
     })
-    (pkgs.writeShellApplication {
-      name = "upd-system";
-      text = builtins.readFile ./upd-all.sh;
-    })
+
     (pkgs.writeShellApplication {
       name = "upd-user";
+      text = builtins.readFile ./upd-user.sh;
+    })
+    (pkgs.writeShellApplication {
+      name = "upd-user-garbage";
       text = ''
-fprint() { printf "\e[1;93m%s\e[0m\n" "$1"; }
-fprint "Syncing..."
-syncf=$HOME/.config/home-manager/sync.sh
-if [ -f "$syncf" ]; then
-  cd "$(dirname "$syncf")"
-  "$syncf"
-fi
-fprint "Updating git..."
-git add .
-fprint "Running rebuild..."
-home-manager switch
+printf "\e[1;93m%s\e[0m\n" "Collecting garbage..."
+nix-collect-garbage -d
+upd-user
 '';
+    })
+    (pkgs.writeShellApplication {
+      name = "upd-system";
+      text = builtins.readFile ./upd-system.sh;
     })
     (pkgs.writeShellApplication {
       name = "upd-system-garbage";
@@ -46,6 +50,19 @@ sudo -v
 printf "\e[1;93m%s\e[0m\n" "Collecting garbage..."
 sudo nix-collect-garbage -d
 upd-system
+'';
+    })
+    (pkgs.writeShellApplication {
+      name = "upd-all";
+      text = builtins.readFile ./upd-all.sh;
+    })
+    (pkgs.writeShellApplication {
+      name = "upd-all-garbage";
+      text = ''
+sudo -v
+printf "\e[1;93m%s\e[0m\n" "Collecting garbage..."
+sudo nix-collect-garbage -d
+upd-all
 '';
     })
   ];

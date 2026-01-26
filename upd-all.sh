@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
-
 sudo -v
+
 mainFold="/etc/nixos"
 cd "$mainFold"
 
@@ -26,17 +26,14 @@ for folder in users/*; do
     fi
 done
 
-fprint "Updating git..."
-git add .
+upd-system
 
-fprint "Running rebuild..."
-sudo nixos-rebuild switch
-
-fprint "Updating all..."
+fprint "\nUpdating all users..."
 for folder in users/*; do
     name="$(basename "$folder")"
-    fprint "Updating home manager for $name..." "94"
+    fprint "Running user rebuild for $name..." "94"
     sudo -u "$name" home-manager switch
 done
 
-printf "\e[1;92mDone!\e[0m"
+fprint "Updated users!" "92"
+fprint "Finished updating system and users!" "95"
