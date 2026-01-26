@@ -45,6 +45,11 @@
       name = "navihex";
       text = builtins.readFile ./navihex.sh;
     })
+    swww
+    (pkgs.writeShellApplication {
+      name = "wallppr";
+      text = builtins.readFile ./wallppr.sh;
+    })
   ];
 
   services.cliphist = {
@@ -80,6 +85,11 @@ fi'';
   '';
 
   # Config stuff
+
+  home.file."Pictures/backgrounds" = {
+    source = ./backgrounds;
+    recursive = true;
+  };
 
   home.file.".local/share/fonts" = {
     source = ./fonts;
