@@ -2,6 +2,9 @@
 set -euo pipefail
 sudo -v
 
+mainFold="/etc/nixos"
+cd "$mainFold"
+
 fprint() {
     printf "\e[1;93m%s\e[0m\n" "$1";
 }

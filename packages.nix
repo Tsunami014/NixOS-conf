@@ -28,16 +28,16 @@
     })
 
     (pkgs.writeShellApplication {
+      name = "upd-garbage";
+      text = builtins.readFile ./upd-garbage.sh;
+    })
+    (pkgs.writeShellApplication {
       name = "upd-user";
       text = builtins.readFile ./upd-user.sh;
     })
     (pkgs.writeShellApplication {
       name = "upd-user-garbage";
-      text = ''
-printf "\e[1;93m%s\e[0m\n" "Collecting garbage..."
-nix-collect-garbage -d
-upd-user
-'';
+      text = "upd-garbage;upd-user";
     })
     (pkgs.writeShellApplication {
       name = "upd-system";
@@ -45,12 +45,7 @@ upd-user
     })
     (pkgs.writeShellApplication {
       name = "upd-system-garbage";
-      text = ''
-sudo -v
-printf "\e[1;93m%s\e[0m\n" "Collecting garbage..."
-sudo nix-collect-garbage -d
-upd-system
-'';
+      text = "sudo upd-garbage;upd-system";
     })
     (pkgs.writeShellApplication {
       name = "upd-all";
@@ -58,12 +53,7 @@ upd-system
     })
     (pkgs.writeShellApplication {
       name = "upd-all-garbage";
-      text = ''
-sudo -v
-printf "\e[1;93m%s\e[0m\n" "Collecting garbage..."
-sudo nix-collect-garbage -d
-upd-all
-'';
+      text = "sudo upd-garbage;upd-all";
     })
   ];
 

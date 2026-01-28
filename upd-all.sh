@@ -28,7 +28,8 @@ done
 
 upd-system
 
-fprint "\nUpdating all users..."
+echo
+fprint "Updating all users..."
 for folder in users/*; do
     name="$(basename "$folder")"
     fprint "Running user rebuild for $name..." "94"
