@@ -108,48 +108,22 @@ fi'';
     recursive = true;
   };
 
-  xdg.configFile = let
-      configDirs =
-        if builtins.pathExists ./config then
-          builtins.attrNames (builtins.readDir ./config)
-        else [];
-    in
-      builtins.listToAttrs (
-        map (name: {
-          name = name;
-          value = {
-            source = ./config/${name};
-            recursive = true;
-          };
-        }) configDirs
-      );
-
   home.activation.makeFolders = config.lib.dag.entryAfter [ "writeBoundary" ]
     ''cd "$HOME"; mkdir -p Downloads Documents Pictures Videos'';
 
-  home.activation.copyConfigMut = config.lib.dag.entryAfter [ "writeBoundary" ] ''
-    for dir in "${./configMut}"/*; do
-      [ -d "$dir" ] || continue
-      name="$(basename "$dir")"
-      mkdir -p "$HOME/.config/$name"
-      ${pkgs.rsync}/bin/rsync -a --delete "$dir/" "$HOME/.config/$name/"
-      chmod +rw -R "$HOME/.config/$name/"
-    done
-  '';
-
-  home.activation.cloneNvim = config.lib.dag.entryAfter [ "checkLinkTargets" ] ''
+  home.activation.cloneNvim = config.lib.dag.entryAfter [ "writeBoundary" ] ''
     PATH=${pkgs.git}/bin:$PATH
     if [ ! -d "$HOME/.config/nvim" ]; then
       echo "Cloning Neovim config repo..."
       mkdir -p "$HOME/.config"
       git clone https://github.com/Tsunami014/nvimConfig "$HOME/.config/nvim"
-      echo '{"projects": ["/etc/nixos"]}' > "$HOME/.config/nvim/projects.json"
+      echo '{"projects": ["/etc/nixos/users/grapefru14"]}' > "$HOME/.config/nvim/projects.json"
     else
       echo "Updating Neovim config..."
       git -C "$HOME/.config/nvim" pull
     fi
   '';
-  home.activation.cloneBar = config.lib.dag.entryAfter [ "checkLinkTargets" ] ''
+  home.activation.cloneBar = config.lib.dag.entryAfter [ "writeBoundary" ] ''
     PATH=${pkgs.git}/bin:$PATH
     if [ ! -d "$HOME/.config/quickshell/bar" ]; then
       echo "Cloning Bar config repo..."
@@ -159,5 +133,58 @@ fi'';
       echo "Updating Bar config..."
       git -C "$HOME/.config/quickshell/bar" pull
     fi
+  '';
+
+
+  # Link the config to the correct places
+  home.activation.makeLinks = config.lib.dag.entryAfter [ "writeBoundary" ] ''
+  if ! [ -d "$HOME" ]; then
+    echo "Home directory does not exist!"
+  fi
+  mainFold="/etc/nixos/users/$USER/config"
+  chmod +rw -R "$mainFold"
+  dots="$HOME/.dots"
+  mkdir -p "$dots" "$HOME/.config" "$HOME/.local/share"
+  while IFS= read -r line; do
+    # Skip empty lines
+    [ -z "$line" ] && continue
+    read -r mutable prefix name <<< "$line"
+
+    src="$mainFold/$name"
+    if [ ! -d "$src" ]; then
+      mkdir "$src"
+    fi
+    if [ "$mutable" = "perm" ]; then
+      orig="${./config}/$name"
+      prt="Permanent "
+    elif [ "$mutable" = "mut" ]; then
+      orig="$src"
+      prt="Mutable "
+    else
+      echo "Skipping unknown mutability for '$line': $mutable"
+      continue
+    fi
+
+    prt+="$name "
+
+    if [ "$prefix" = "conf" ]; then
+      link="$HOME/.config"
+      prt+="in ~/.config"
+    elif [ "$prefix" = "shr" ]; then
+      link="$HOME/.local/share"
+      prt+="in ~/.local/share"
+    else
+      echo "Skipping unknown prefix for '$line': $prefix"
+      continue
+    fi
+
+    printf "%s\e[1m%s\e[0m%s\n" "Linking config for " "$prt" "..."
+    if [ -d "$link/$name" ] && [ ! -L "$link/$name" ]; then
+      echo "Using existing config..."
+      ${pkgs.rsync}/bin/rsync -a --delete "$link/" "$mainFold/$name/"
+    fi
+    rm -rf "$link/$name"
+    ln -sfT "$orig" "$link/$name"
+  done < "${./config/list.txt}"
   '';
 }

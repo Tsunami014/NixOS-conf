@@ -1,0 +1,11 @@
+perm conf !sysfiles
+perm conf nixpkgs
+perm conf niri
+perm conf hypr
+perm conf yazi
+perm conf alacritty
+mut conf hexecute
+mut conf aseprite
+mut conf LDtk
+mut conf PureRef
+mut shr GodSVG

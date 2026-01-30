@@ -1,0 +1,9 @@
+LDtk/*
+!LDtk/settings
+!LDtk/Preferences
+
+PureRef/*
+!PureRef/PureRef.ini
+
+aseprite/*.log
+aseprite/sessions

@@ -1,5 +1,5 @@
 spawn-at-startup "systemctl" "--user" "import-environment" "WAYLAND_DISPLAY" "XDG_RUNTIME_DIR"
-spawn-at-startup "~/.config/wallppr-daemon.sh"
+spawn-at-startup "~/.config/!sysfiles/wallppr-daemon.sh"
 spawn-at-startup "hyprlock"
 spawn-at-startup "quickshell" "-c" "bar" "-n"
 spawn-at-startup "wl-paste" "--watch" "cliphist" "store"
@@ -7,4 +7,4 @@ spawn-at-startup "wl-paste" "--watch" "cliphist" "store"
 spawn-at-startup "kdeconnect-indicator"
 spawn-at-startup "blueman-applet"
 
-spawn-at-startup "~/.config/idle.sh"
+spawn-at-startup "~/.config/!sysfiles/idle.sh"

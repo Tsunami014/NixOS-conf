@@ -16,15 +16,6 @@
 
   hardware.graphics.enable = true;
 
-  # Load user paths
-  systemd.tmpfiles.rules =
-    builtins.concatMap
-      (name: [
-        "L /home/${name}/.config/home-manager - - - - /etc/nixos/users/${name}"
-        "d /home/${name}/.local/state/nix/profiles/home-manager 0755 ${name} users -"
-        "L /etc/profiles/per-user/${name} - - - - /home/${name}/.local/state/nix/profiles/profile"
-      ]) (builtins.attrNames (builtins.readDir ./users));
-
   # Define user accounts. Don't forget to set a password with ‘passwd’.
   users.users.grapefru14 = {
     isNormalUser = true;
@@ -33,9 +24,9 @@
     packages = with pkgs; [];
   };
   # Auto login for tty1
-  systemd.services."getty@tty1" = {
-    overrideStrategy = "asDropin";
-    serviceConfig.ExecStart = ["" "@${pkgs.util-linux}/sbin/agetty agetty --login-program ${config.services.getty.loginProgram} --autologin grapefru14 --noclear --keep-baud %I 115200,38400,9600 $TERM"];
+  services.getty = {
+    autologinOnce = true;
+    autologinUser = "grapefru14";
   };
 
   # Bluetooth

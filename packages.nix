@@ -28,6 +28,16 @@
     })
 
     (pkgs.writeShellApplication {
+      name = "navi";
+      text = builtins.readFile ./navi.sh;
+    })
+    (pkgs.writeShellApplication {
+      name = "suyaz";
+      text = ''sudo yazi "$@"'';
+    })
+
+    # The upd scripts
+    (pkgs.writeShellApplication {
       name = "upd-garbage";
       text = builtins.readFile ./upd-garbage.sh;
     })
@@ -57,9 +67,9 @@
     })
   ];
 
+  # Extra scripts that need to go in /bin
   system.activationScripts.text = ''
 ln -sf ${pkgs.bash}/bin/bash /bin/bash
-ln -sf ${./navi.sh} /bin/navi
 '';
 
   fonts.packages = with pkgs; [

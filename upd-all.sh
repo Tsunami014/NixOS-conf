@@ -2,8 +2,8 @@
 set -euo pipefail
 sudo -v
 
+oldFold=$(pwd)
 mainFold="/etc/nixos"
-cd "$mainFold"
 
 fprint() {
     if [ $# -gt 1 ]; then
@@ -14,26 +14,26 @@ fprint() {
 }
 
 fprint "Syncing all..."
-for folder in users/*; do
-    name="$(basename "$folder")"
-    if [ -d "$folder" ]; then
-        fprint "Updating $name..." "94"
+for folder in "$mainFold"/users/*; do
+    name=$(basename "$folder")
+    if [ -d "$folder/sync.sh" ]; then
+        fprint "Syncing $name..." "94"
         cd "$folder"
-        sudo -u "$name" sh ./sync.sh
-        cd "$mainFold"
+        sudo -u "$name" sh ./sync.sh || fprint "Sync script failed!" "94"
     else
-        fprint "No sync script found for $name" "94"
+        fprint "No sync script for $name" "94"
     fi
 done
+cd "$oldFold"
 
 upd-system
 
 echo
 fprint "Updating all users..."
-for folder in users/*; do
-    name="$(basename "$folder")"
-    fprint "Running user rebuild for $name..." "94"
-    sudo -u "$name" home-manager switch
+for folder in "$mainFold"/users/*; do
+    name=$(basename "$folder")
+    fprint "Updating $name..." "94"
+    sudo -iu "$name" upd-user --from-all
 done
 
 fprint "Updated users!" "92"
