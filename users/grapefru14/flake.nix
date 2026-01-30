@@ -36,7 +36,6 @@
   in {
     homeConfigurations.grapefru14 = home-manager.lib.homeManagerConfiguration {
       inherit pkgs;
-
       extraSpecialArgs = { inherit inputs; };
 
       modules = [

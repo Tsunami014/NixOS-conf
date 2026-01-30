@@ -30,9 +30,10 @@
     jq
 
     inputs.hexecute.packages.${system}.default
-    # Stuff for launching with hexecute
+    # Various apps
     pavucontrol
     gnome-calculator
+    (pkgs.callPackage ./extraPkgs/godsvg.nix {})
 
     # Quickshell & quickshell projects
     inputs.qml-niri.packages.${system}.quickshell
@@ -69,7 +70,9 @@
   programs.bash = {
     enable = true;
     enableCompletion = true;
-    # bashrcExtra = '' file contents ''
+    bashrcExtra = ''
+alias downloads="mkdir /tmp/Download 2>/dev/null;cd /tmp/Download"
+'';
     profileExtra = ''
 [[ -f ~/.bashrc ]] && . ~/.bashrc
 # Only exec Niri if no display is running and you're on TTY1
@@ -120,6 +123,9 @@ fi'';
           };
         }) configDirs
       );
+
+  home.activation.makeFolders = config.lib.dag.entryAfter [ "writeBoundary" ]
+    ''cd "$HOME"; mkdir -p Downloads Documents Pictures Videos'';
 
   home.activation.copyConfigMut = config.lib.dag.entryAfter [ "writeBoundary" ] ''
     for dir in "${./configMut}"/*; do

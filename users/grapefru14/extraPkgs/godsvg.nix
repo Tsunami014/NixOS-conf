@@ -1,6 +1,22 @@
-{ stdenv, pkgs, lib, fetchurl, autoPatchelfHook, unzip }:
+{ stdenv, pkgs, lib, fetchurl, unzip, autoPatchelfHook }:
 
-stdenv.mkDerivation rec {
+let
+  libs = with pkgs; [
+    wayland
+    libxkbcommon
+
+    mesa
+    libGL
+    vulkan-loader
+    libdrm
+
+    xorg.libX11
+    xorg.libXcursor
+    xorg.libXrandr
+    xorg.libXi
+    xorg.libXext
+  ];
+in stdenv.mkDerivation rec {
   pname = "godsvg";
   version = "v1.0-alpha13";
 
@@ -9,41 +25,18 @@ stdenv.mkDerivation rec {
     sha256 = "sha256-fgzuirSIKF9h7wEj0TLypXdf+pr50VkyqGR0BXyvM+s=";
   };
 
-  nativeBuildInputs = [ autoPatchelfHook unzip ];
-  buildInputs = with pkgs; [
-    xorg.libX11
-    xorg.libX11.dev
-    xorg.libxcb
-    
-    libGLU
-    libX11
-    libXcursor
-    libXext
-    libXfixes
-    libXi
-    libXinerama
-    libXrandr
-    libXrender
-    libglvnd
-    libpulseaudio
-
-    wayland
-    libxkbcommon
-
-    mesa
+  nativeBuildInputs = [
+    unzip
+    pkgs.makeWrapper
+    autoPatchelfHook
   ];
 
-  unpackPhase = ''
-    mkdir -p $TMPDIR/src
-    unzip -q $src -d $TMPDIR/src
-  '';
-
+  unpackPhase = "unzip -q $src -d .";
   installPhase = ''
-    runHook preInstall
     mkdir -p $out/bin
-    cp "$TMPDIR/src/GodSVG.x86_64" $out/bin/godsvg
-    chmod +x $out/bin/godsvg
-    runHook postInstall
+    install -m755 GodSVG.x86_64 $out/bin/godsvg
+    wrapProgram $out/bin/godsvg \
+      --prefix LD_LIBRARY_PATH : ${pkgs.lib.makeLibraryPath libs}
   '';
 
   meta = {
@@ -52,9 +45,7 @@ stdenv.mkDerivation rec {
     changelog = "https://github.com/MewPurPur/GodSVG/releases";
     license = lib.licenses.mit;
     sourceProvenance = with lib.sourceTypes; [ binaryNativeCode ];
-    maintainers = with lib.maintainers; [
-      Tsunami014
-    ];
+    maintainers = with lib.maintainers; [ Tsunami014 ];
     platforms = lib.platforms.linux;
     mainProgram = "godsvg";
   };

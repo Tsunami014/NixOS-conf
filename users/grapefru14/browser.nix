@@ -32,7 +32,7 @@
         "layout.css.prefers-color-scheme.content-override" = 0;
         "zen.view.window.scheme" = 0;
         "browser.download.folderList" = 2;
-        "browser.download.dir" = "/tmp";
+        "browser.download.dir" = "/tmp/Download";
         "browser.download.useDownloadDir" = true;
     };
   };

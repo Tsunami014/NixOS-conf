@@ -7,6 +7,8 @@
       ./packages.nix
     ];
 
+  # programs.nix-ld.enable = true; # If some apps are being annoying
+
   # Add /bin to the path
   environment.sessionVariables = {
     PATH = [ "/bin" ];
