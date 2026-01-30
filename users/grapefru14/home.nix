@@ -10,6 +10,9 @@
     gtk.enable = true;
   };
 
+  # Allow bluetooth headphones buttons to control media
+  services.mpris-proxy.enable = true;
+
   # Package stuff
   imports = [
     ./browser.nix
@@ -27,11 +30,15 @@
     jq
 
     inputs.hexecute.packages.${system}.default
+    # Stuff for launching with hexecute
+    pavucontrol
+    gnome-calculator
 
     # Quickshell & quickshell projects
     inputs.qml-niri.packages.${system}.quickshell
     inputs.qml-niri.packages.${system}.default
     acpi
+    brightnessctl
     inputs.hyprlock.packages.${system}.default
 
     # For neovim
@@ -51,6 +58,8 @@
       text = builtins.readFile ./wallppr.sh;
     })
   ];
+
+  services.kdeconnect.enable = true;
 
   services.cliphist = {
     enable = true;

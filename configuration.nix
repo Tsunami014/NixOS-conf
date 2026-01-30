@@ -36,6 +36,22 @@
     serviceConfig.ExecStart = ["" "@${pkgs.util-linux}/sbin/agetty agetty --login-program ${config.services.getty.loginProgram} --autologin grapefru14 --noclear --keep-baud %I 115200,38400,9600 $TERM"];
   };
 
+  # Bluetooth
+  hardware.bluetooth.enable = true;
+  services.blueman.enable = true; # bluetooth gui
+
+  # Sound settings
+  security.rtkit.enable = true; # Enable RealtimeKit for audio purposes
+
+  services.pulseaudio.enable = false;
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+    wireplumber.enable = true;
+  };
+
   # Enable printing
   services.printing.enable = true;
   services.avahi = { # Printer discovery
@@ -58,6 +74,16 @@ efi /EFI/ubuntu/grubx64.efi
   # Enable networking
   networking.networkmanager.enable = true;
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+
+  networking.firewall = { 
+    enable = true;
+    allowedTCPPortRanges = [ 
+      { from = 1714; to = 1764; } # KDE Connect
+    ];  
+    allowedUDPPortRanges = [ 
+      { from = 1714; to = 1764; } # KDE Connect
+    ];  
+  };  
 
   networking.hostName = "grapey"; # Define your hostname.
 
@@ -96,8 +122,10 @@ efi /EFI/ubuntu/grubx64.efi
   # The desktop environment stuff
   programs.niri.enable = true;
   security.polkit.enable = true;
-  #security.gnome.gnome-keyring.enable = true;
-  xdg.portal.enable = true;
+  xdg.portal = {
+    enable = true;
+    extraPortals = [ pkgs.xdg-desktop-portal-wlr ];
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -107,23 +135,11 @@ efi /EFI/ubuntu/grubx64.efi
   #   enableSSHSupport = true;
   # };
 
-  # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
-
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
-
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "25.11"; # Did you read the comment?
-
+  system.stateVersion = "25.11";
 }

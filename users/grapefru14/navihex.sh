@@ -3,7 +3,7 @@
 GESTURE_FILE="$HOME/.config/hexecute/gestures.json"
 
 list_commands() {
-    hexecute --list 2>/dev/stdout | tail -n +2 | sed 's/^[[:space:]]*//'
+    hexecute --list 2>/dev/stdout | tail -n +2 | sed 's/^[[:space:]]*//' | sort
 }
 
 select_command() {
@@ -60,7 +60,8 @@ demo() {
     done <<< "$points"
 
     # Output SVG
-    cat > /tmp/out.svg <<EOF
+    cat > /tmp/out.html <<EOF
+<h1 style="font-family: sans;">$cmd</h1>
 <svg xmlns="http://www.w3.org/2000/svg"
      viewBox="$minx $miny $width $height"
      width="400" height="400">
@@ -85,7 +86,7 @@ demo() {
 </svg>
 EOF
 
-    zen --private-window /tmp/out.svg
+    zen --private-window /tmp/out.html
 }
 
 
@@ -120,6 +121,7 @@ main() {
             case "$action" in
                 Demonstrate)
                     demo "$cmd" || true
+                    break
                     ;;
                 Edit)
                     echo "Recreating $cmd"
