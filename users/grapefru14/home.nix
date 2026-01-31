@@ -58,6 +58,10 @@
       name = "wallppr";
       text = builtins.readFile ./wallppr.sh;
     })
+    (pkgs.writeShellApplication {
+      name = "tmpplace";
+      text = "yazi $(mktemp -d)";
+    })
   ];
 
   services.kdeconnect.enable = true;

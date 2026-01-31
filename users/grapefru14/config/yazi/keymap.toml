@@ -1,4 +1,9 @@
 [[mgr.append_keymap]]
+on  = [ "`", "s" ]
+run = "shell --block -- bash"
+desc = "Launch bash"
+
+[[mgr.append_keymap]]
 on  = [ "`", "g" ]
 run = "shell --block -- lazygit"
 desc = "Launch lazygit"
