@@ -36,6 +36,17 @@
       name = "suyaz";
       text = ''sudo yazi "$@"'';
     })
+    (pkgs.writeShellApplication {
+      name = "mnt";
+      text = ''
+mountpoint /mnt -q && sudo umount -R /mnt
+sudo mount "/dev/$1" /mnt -o uid="$(id -u)",gid="$(id -g)"
+'';
+    })
+    (pkgs.writeShellApplication {
+      name = "umnt";
+      text = "sudo umount -R /mnt";
+    })
 
     # The upd scripts
     (pkgs.writeShellApplication {

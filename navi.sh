@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 
 HINTS=$(cat <<'EOF'
-Mount external drive
-## Find drive (in /dev)
+Mount external drive at /mnt
+## Find drive
 lsblk
-## Mount drive to any dir, e.g. /mnt
-#sudo mount /dev/sda1 /mnt
+## Mount drive to /mnt (e.g. sda1)
+#mnt sda1
 
-Unmount external drive
-#sudo umount -r /mnt
+Unmount external drive at /mnt
+#umnt
 EOF
 )
 
