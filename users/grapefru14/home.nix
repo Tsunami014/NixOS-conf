@@ -28,6 +28,8 @@
     fuzzel
     jq
 
+    sioyek
+
     inputs.hexecute.packages.${system}.default
     # Various apps
     pavucontrol
@@ -64,6 +66,17 @@
       text = ''yazi "$(mktemp -d)"'';
     })
   ];
+
+  # To find mime type of file: `= file --mime-type -b <filename>`
+  # To list global package desktop files: `ls /run/current-system/sw/share/applications`
+  # To list local package desktop files: `ls /etc/profiles/per-user/$(id -n -u)/share/applications`
+  # To list home manager desktop files: `ls ~/.nix-profile/share/applications`
+  xdg.mimeApps = {
+    enable = true;
+    defaultApplications = {
+      "application/pdf" = "sioyek.desktop";
+    };
+  };
 
   services.kdeconnect.enable = true;
 
