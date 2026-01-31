@@ -34,6 +34,7 @@ for folder in "$mainFold"/users/*; do
     name=$(basename "$folder")
     fprint "Updating $name..." "94"
     sudo -iu "$name" upd-user --from-all
+    echo
 done
 
 fprint "Updated users!" "92"

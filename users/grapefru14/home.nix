@@ -1,4 +1,4 @@
-{ config, pkgs, inputs, ... }: {
+{ config, pkgs, master-pkgs, lib, inputs, ... }: {
   home.username = "grapefru14";
   home.homeDirectory = "/home/grapefru14";
   home.stateVersion = "25.11";
@@ -35,11 +35,14 @@
     # Various apps
     pavucontrol
     gnome-calculator
-    (pkgs.callPackage ./extraPkgs/godsvg.nix {})
-    ldtk
     krita
     pureref
-    (pkgs.callPackage ./extraPkgs/logic2.nix {})
+    # Apps I needed to make myself for one reason or another
+    (pkgs.callPackage ./extraPkgs/godsvg.nix {})
+    # Apps I'm version-conscious for
+    ldtk
+    master-pkgs.aseprite
+    master-pkgs.saleae-logic-2
 
     # Quickshell & quickshell projects
     inputs.qml-niri.packages.${system}.quickshell
@@ -119,20 +122,24 @@ fi'';
 
   # Config stuff
 
-  home.file."Pictures/backgrounds" = {
-    source = ./backgrounds;
-    recursive = true;
-  };
+  home.file = {
+    "Pictures/backgrounds" = {
+      source = ./backgrounds;
+      recursive = true;
+    };
 
-  home.file.".local/share/fonts" = {
-    source = ./fonts;
-    recursive = true;
-  };
+    ".local/share/fonts" = {
+      source = ./fonts;
+      recursive = true;
+    };
+  }
+    // lib.optionalAttrs (lib.pathExists ./apps) {
+      "AppIms" = {
+        source = ./apps;
+        recursive = true;
+      };
+    };
 
-  home.file."AppIms" = {
-    source = ./apps;
-    recursive = true;
-  };
 
   home.activation.makeFolders = config.lib.dag.entryAfter [ "writeBoundary" ]
     ''cd "$HOME"; mkdir -p Downloads Documents Pictures Videos'';

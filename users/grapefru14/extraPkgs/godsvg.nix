@@ -1,6 +1,9 @@
 { stdenv, pkgs, lib, fetchurl, unzip, autoPatchelfHook }:
 
 let
+  pname = "godsvg";
+  version = "v1.0-alpha13";
+
   libs = with pkgs; [
     wayland
     libxkbcommon
@@ -8,8 +11,7 @@ let
     libGL
   ];
 in stdenv.mkDerivation rec {
-  pname = "godsvg";
-  version = "v1.0-alpha13";
+  inherit pname version;
 
   src = fetchurl {
     url = "https://github.com/MewPurPur/GodSVG/releases/download/${version}/GodSVG.Linux.zip";
