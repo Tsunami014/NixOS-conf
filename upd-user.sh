@@ -24,8 +24,8 @@ if [ "${1:-}" != "--from-all" ]; then
 fi
 
 fprint "Checking git..."
-if ! git -C /etc/nixos rev-parse --git-dir >/dev/null; then
-  if grep -q "dubious ownership" err; then
+if ! git -C /etc/nixos rev-parse --git-dir >/dev/null 2>/tmp/err; then
+  if grep -q "dubious ownership" /tmp/err; then
     fprint "Setting /etc/nixos as safe..."
     git config --global --add safe.directory /etc/nixos
   else

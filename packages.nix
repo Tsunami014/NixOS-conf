@@ -10,6 +10,7 @@
     git
     wget
     fzf
+    yazi
 
     # Printer stuff
     (pkgs.writeShellApplication {

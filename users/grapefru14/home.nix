@@ -20,7 +20,6 @@
 
   home.packages = with pkgs; [
     alacritty
-    yazi
     htop
     gh
     lazygit
@@ -62,7 +61,7 @@
     })
     (pkgs.writeShellApplication {
       name = "tmpplace";
-      text = "yazi $(mktemp -d)";
+      text = ''yazi "$(mktemp -d)"'';
     })
   ];
 
@@ -126,7 +125,7 @@ fi'';
       echo '{"projects": ["/etc/nixos/users/grapefru14", "/etc/nixos"]}' > "$HOME/.config/nvim/projects.json"
     else
       echo "Updating Neovim config..."
-      git -C "$HOME/.config/nvim" pull
+      git -C "$HOME/.config/nvim" pull || true
     fi
   '';
   home.activation.cloneBar = config.lib.dag.entryAfter [ "writeBoundary" ] ''
@@ -137,7 +136,7 @@ fi'';
       git clone https://github.com/Tsunami014/bar "$HOME/.config/quickshell/bar/"
     else
       echo "Updating Bar config..."
-      git -C "$HOME/.config/quickshell/bar" pull
+      git -C "$HOME/.config/quickshell/bar" pull || true
     fi
   '';
 

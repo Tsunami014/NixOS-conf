@@ -10,7 +10,7 @@ fprint() {
 
 fprint "Updating git..."
 cd "$mainFold"
-sh ./perms.sh
+sudo sh ./perms.sh
 sudo git add .
 cd - >/dev/null
 

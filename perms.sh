@@ -5,5 +5,5 @@ sudo chown root:config -R /etc/nixos/.git
 sudo chmod 771 -R /etc/nixos/.git
 for folder in /etc/nixos/users/*; do
   name=$(basename "$folder")
-  sudo chown -R "$name" "$folder"
+  sudo chown -R "$name:users" "$folder"
 done
