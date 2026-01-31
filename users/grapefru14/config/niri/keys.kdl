@@ -7,9 +7,10 @@ binds {
     // Apps / User stuff
     Mod+MouseMiddle hotkey-overlay-title="Hexecute" { spawn-sh "$EXECUTE"; }
     Mod+Return hotkey-overlay-title="Terminal" { spawn "alacritty"; }
-    Mod+N hotkey-overlay-title="Neovim" { spawn-sh "$($TermSpawn nvim)"; }
-    Mod+Y hotkey-overlay-title="File browser" { spawn-sh "$($TermSpawn yazi)"; }
+    Mod+N hotkey-overlay-title="Neovim" { spawn-sh "$TermSpawn nvim"; }
+    Mod+Y hotkey-overlay-title="File browser" { spawn-sh "$TermSpawn yazi"; }
     Mod+B hotkey-overlay-title="Web browser" { spawn "zen"; }
+    Mod+D hotkey-overlay-title="Downloads" { spawn-sh "mkdir -p /tmp/Download;$TermSpawn yazi /tmp/Download"; }
 
     Mod+V hotkey-overlay-title="Clipboard history" { spawn "cliphist-fuzzel-img"; }
 
