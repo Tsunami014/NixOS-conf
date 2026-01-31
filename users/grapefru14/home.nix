@@ -34,6 +34,8 @@
     pavucontrol
     gnome-calculator
     (pkgs.callPackage ./extraPkgs/godsvg.nix {})
+    ldtk
+    krita
 
     # Quickshell & quickshell projects
     inputs.qml-niri.packages.${system}.quickshell

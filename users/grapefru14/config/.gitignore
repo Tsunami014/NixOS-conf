@@ -7,3 +7,6 @@ PureRef/*
 
 aseprite/*.log
 aseprite/sessions
+
+GodSVG/*
+!GodSVG/savedata.tres
