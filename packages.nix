@@ -79,6 +79,8 @@ sudo mount "/dev/$1" /mnt -o uid="$(id -u)",gid="$(id -g)"
     })
   ];
 
+  programs.direnv.enable = true;
+
   # Extra scripts that need to go in /bin
   system.activationScripts.text = ''
 ln -sf ${pkgs.bash}/bin/bash /bin/bash

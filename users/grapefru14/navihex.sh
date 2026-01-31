@@ -163,7 +163,7 @@ main() {
             continue
         fi
         if [[ "$cmd" == " Demonstrate all" ]]; then
-            demoAll
+            demoAll ""
             exit 0
         fi
         if [[ "$cmd" == " Redemonstrate all" ]]; then
