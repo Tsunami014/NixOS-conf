@@ -117,7 +117,7 @@ fi'';
       echo "Cloning Neovim config repo..."
       mkdir -p "$HOME/.config"
       git clone https://github.com/Tsunami014/nvimConfig "$HOME/.config/nvim"
-      echo '{"projects": ["/etc/nixos/users/grapefru14"]}' > "$HOME/.config/nvim/projects.json"
+      echo '{"projects": ["/etc/nixos/users/grapefru14", "/etc/nixos"]}' > "$HOME/.config/nvim/projects.json"
     else
       echo "Updating Neovim config..."
       git -C "$HOME/.config/nvim" pull

@@ -16,12 +16,16 @@
 
   hardware.graphics.enable = true;
 
+  users.groups.config = {};
   # Define user accounts. Don't forget to set a password with ‘passwd’.
   users.users.grapefru14 = {
     isNormalUser = true;
     description = "Grapefru14";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "config" ];
     packages = with pkgs; [];
+  };
+  users.users.root = {
+    extraGroups = [ "gitaccess" ];
   };
   # Auto login for tty1
   services.getty = {
