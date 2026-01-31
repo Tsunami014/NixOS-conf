@@ -5,8 +5,13 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./packages.nix
+      ./userConfig.nix
     ];
 
+  programs.appimage = { # Execute appimages normally
+    enable = true;
+    binfmt = true;
+  };
   # programs.nix-ld.enable = true; # If some apps are being annoying
 
   # Add /bin to the path

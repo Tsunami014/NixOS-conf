@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-mainFold="/etc/nixos"
+mainFold=/etc/nixos
 userFold="$mainFold/users/$USER"
 
 fprint() {
@@ -13,7 +13,8 @@ if [ ! -d "$HOME" ]; then
   exit 1
 fi
 
-if [ "${1:-}" != "--from-all" ]; then
+extended() { [ "${1:-}" != "--from-all" ]; }
+if extended; then
   syncf="$userFold/sync.sh"
   if [ -f "$syncf" ]; then
     fprint "Syncing..."
@@ -23,20 +24,23 @@ if [ "${1:-}" != "--from-all" ]; then
   fi
 fi
 
-fprint "Checking git..."
-if ! git -C /etc/nixos rev-parse --git-dir >/dev/null 2>/tmp/err; then
+fprint "Updating git..."
+if ! git -C "$mainFold" rev-parse --git-dir >/dev/null 2>/tmp/err; then
   if grep -q "dubious ownership" /tmp/err; then
-    fprint "Setting /etc/nixos as safe..."
-    git config --global --add safe.directory /etc/nixos
+    fprint "Setting $mainFold as safe..."
+    git config --global --add safe.directory "$mainFold"
   else
-    fprint "Detected git problems in /etc/nixos!"
+    fprint "Detected git problems in $mainFold!"
     exit 1
   fi
+fi
+if extended; then
+  git -C "$mainFold" add .
 fi
 
 fprint "Running user rebuild..."
 home-manager switch --flake "$userFold"
 
-if [ "${1:-}" != "--from-all" ]; then
+if extended; then
   printf "\e[1;92mUpdated user!\e[0m"
 fi

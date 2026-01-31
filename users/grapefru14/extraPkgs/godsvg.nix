@@ -4,17 +4,8 @@ let
   libs = with pkgs; [
     wayland
     libxkbcommon
-
     mesa
     libGL
-    vulkan-loader
-    libdrm
-
-    xorg.libX11
-    xorg.libXcursor
-    xorg.libXrandr
-    xorg.libXi
-    xorg.libXext
   ];
 in stdenv.mkDerivation rec {
   pname = "godsvg";

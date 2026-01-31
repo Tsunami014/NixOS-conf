@@ -176,7 +176,7 @@ main() {
             case "$action" in
                 Demonstrate)
                     demo "$cmd" || true
-                    exit 0
+                    break
                     ;;
                 Edit)
                     echo "Recreating $cmd"

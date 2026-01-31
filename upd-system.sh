@@ -8,11 +8,11 @@ fprint() {
     printf "\e[1;93m%s\e[0m\n" "$1";
 }
 
+fprint "Updating permissions..."
+sudo sh "$mainFold/perms.sh"
+
 fprint "Updating git..."
-cd "$mainFold"
-sudo sh ./perms.sh
-sudo git add .
-cd - >/dev/null
+sudo git -C "$mainFold" add .
 
 fprint "Running system rebuild..."
 sudo nixos-rebuild switch

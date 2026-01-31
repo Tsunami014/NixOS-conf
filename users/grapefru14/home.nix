@@ -14,8 +14,9 @@
   services.mpris-proxy.enable = true;
 
   # Package stuff
+  nixpkgs.config.allowUnfree = true;
   imports = [
-    ./browser.nix
+    ./specialPkgs/browser.nix
   ];
 
   home.packages = with pkgs; [
@@ -37,6 +38,8 @@
     (pkgs.callPackage ./extraPkgs/godsvg.nix {})
     ldtk
     krita
+    pureref
+    (pkgs.callPackage ./extraPkgs/logic2.nix {})
 
     # Quickshell & quickshell projects
     inputs.qml-niri.packages.${system}.quickshell
@@ -123,6 +126,11 @@ fi'';
 
   home.file.".local/share/fonts" = {
     source = ./fonts;
+    recursive = true;
+  };
+
+  home.file."AppIms" = {
+    source = ./apps;
     recursive = true;
   };
 

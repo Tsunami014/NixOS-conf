@@ -11,6 +11,7 @@ binds {
     Mod+Y hotkey-overlay-title="File browser" { spawn-sh "$TermSpawn yazi"; }
     Mod+B hotkey-overlay-title="Web browser" { spawn "zen"; }
     Mod+D hotkey-overlay-title="Downloads" { spawn-sh "mkdir -p /tmp/Download;$TermSpawn yazi /tmp/Download"; }
+    Mod+H hotkey-overlay-title="Htop" { spawn-sh "$TermSpawn htop" }
 
     Mod+V hotkey-overlay-title="Clipboard history" { spawn "cliphist-fuzzel-img"; }
 
@@ -37,6 +38,8 @@ binds {
     Mod+Comma  { consume-or-expel-window-left; }
     Mod+Period { consume-or-expel-window-right; }
     Mod+Slash { toggle-column-tabbed-display; }
+    Mod+Shift+Comma  { consume-or-expel-window-left; }
+    Mod+Shift+Period { consume-or-expel-window-right; }
 
     Mod+R { switch-preset-column-width; }
     Mod+Shift+R { switch-preset-window-height; }

@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{ pkgs, ... }: {
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
@@ -39,13 +38,26 @@
     (pkgs.writeShellApplication {
       name = "mnt";
       text = ''
+if [[ $PWD == /mnt* ]]; then
+  cd ~
+fi
 mountpoint /mnt -q && sudo umount -R /mnt
 sudo mount "/dev/$1" /mnt -o uid="$(id -u)",gid="$(id -g)"
+cd /mnt
 '';
     })
     (pkgs.writeShellApplication {
       name = "umnt";
-      text = "sudo umount -R /mnt";
+      text = ''
+if ! mountpoint /mnt -q; then
+  echo "No mount in /mnt!"
+  exit 0
+fi
+if [[ $PWD == /mnt* ]]; then
+  cd ~
+fi
+sudo umount -R /mnt
+'';
     })
 
     # The upd scripts
