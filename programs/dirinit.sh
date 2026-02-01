@@ -3,10 +3,12 @@
 if [ "${1-}" == "--help" ]; then
     echo "dirinit [template] [--force]
 Will make a .envrc file with a template (if not provided will be blank)
+A .envrc file is a bash file sourced when inside this directory.
+
 Template options:
 - blank (default) - blank
-- tut - a tutorial on how a .envrc file works
-- py - setup python
+- nix - a tutorial on how to use nix
+- py - setup python (with nix)
 - pyvenv - setup python using a virtual environment
 "
 fi
@@ -19,8 +21,8 @@ else
             tmplNam="python"
             tmpl=$(cat <<'EOF'
 use nix \
-  -p python313 \
-  -p python313Packages.packageName
+  -p python313# \
+#  -p python313Packages.numpy # Example
 EOF
 );;
         pyvenv)
@@ -41,17 +43,17 @@ echo "Loading python config..."
 source "$venvFold/bin/activate"
 EOF
 );;
-        tut)
-            tmplNam="tutorial"
-            tmpl="# A bash file sourced when inside this directory
-
+        nix)
+            tmplNam="nix tutorial"
+            tmpl=$(cat <<'EOF'
 # For nix packages:
 # use nix -p packagename -p anotherPackage.Name
 # use nix -p athird.package
-" ;;
+EOF
+);;
         *) tmplNam="blank"; tmpl="" ;;
     esac
-    echo "Generating new .envrc file with template $tmplNam..."
+    echo "Generating new .envrc file with template '$tmplNam'.."
     rm -f .envrc
     echo "$tmpl" > .envrc
 fi
