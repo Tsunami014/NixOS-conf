@@ -29,10 +29,10 @@
 
     (pkgs.writeShellApplication {
       name = "navi";
-      text = builtins.readFile ./navi.sh;
+      text = builtins.readFile ./programs/navi.sh;
     })
     (pkgs.writeShellApplication {
-      name = "suyaz";
+      name = "suyazi";
       text = ''sudo yazi "$@"'';
     })
     (pkgs.writeShellApplication {
@@ -63,11 +63,11 @@ sudo umount -R /mnt
     # The upd scripts
     (pkgs.writeShellApplication {
       name = "upd-garbage";
-      text = builtins.readFile ./upd-garbage.sh;
+      text = builtins.readFile ./programs/upd-garbage.sh;
     })
     (pkgs.writeShellApplication {
       name = "upd-user";
-      text = builtins.readFile ./upd-user.sh;
+      text = builtins.readFile ./programs/upd-user.sh;
     })
     (pkgs.writeShellApplication {
       name = "upd-user-garbage";
@@ -75,7 +75,7 @@ sudo umount -R /mnt
     })
     (pkgs.writeShellApplication {
       name = "upd-system";
-      text = builtins.readFile ./upd-system.sh;
+      text = builtins.readFile ./programs/upd-system.sh;
     })
     (pkgs.writeShellApplication {
       name = "upd-system-garbage";
@@ -83,11 +83,16 @@ sudo umount -R /mnt
     })
     (pkgs.writeShellApplication {
       name = "upd-all";
-      text = builtins.readFile ./upd-all.sh;
+      text = builtins.readFile ./programs/upd-all.sh;
     })
     (pkgs.writeShellApplication {
       name = "upd-all-garbage";
       text = "sudo upd-garbage;upd-all";
+    })
+
+    (pkgs.writeShellApplication {
+      name = "dirtools";
+      text = builtins.readFile ./programs/dirtools.sh;
     })
   ];
 

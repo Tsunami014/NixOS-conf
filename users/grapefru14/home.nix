@@ -31,6 +31,10 @@
 
     sioyek
 
+    (pkgs.python313.withPackages (ps: with ps; [
+      pip setuptools wheel
+    ]))
+
     inputs.hexecute.packages.${system}.default
     # Various apps
     pavucontrol
@@ -56,6 +60,7 @@
     unzip
     nodejs
     fd
+    ripgrep
 
     # Extra executable stuff
     (pkgs.writeShellApplication {
@@ -66,10 +71,6 @@
     (pkgs.writeShellApplication {
       name = "wallppr";
       text = builtins.readFile ./wallppr.sh;
-    })
-    (pkgs.writeShellApplication {
-      name = "tmpplace";
-      text = ''yazi "$(mktemp -d)"'';
     })
   ];
 
@@ -96,6 +97,7 @@
     enableCompletion = true;
     bashrcExtra = ''
 alias downloads="mkdir /tmp/Download 2>/dev/null;cd /tmp/Download"
+alias mktmpplace='cd "$(mktemp -d)";yazi'
 '';
     profileExtra = ''
 [[ -f ~/.bashrc ]] && . ~/.bashrc
