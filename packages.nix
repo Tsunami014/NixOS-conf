@@ -91,8 +91,8 @@ sudo umount -R /mnt
     })
 
     (pkgs.writeShellApplication {
-      name = "dirtools";
-      text = builtins.readFile ./programs/dirtools.sh;
+      name = "dirinit";
+      text = builtins.readFile ./programs/dirinit.sh;
     })
   ];
 

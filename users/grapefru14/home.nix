@@ -31,10 +31,6 @@
 
     sioyek
 
-    (pkgs.python313.withPackages (ps: with ps; [
-      pip setuptools wheel
-    ]))
-
     inputs.hexecute.packages.${system}.default
     # Various apps
     pavucontrol
@@ -61,6 +57,10 @@
     nodejs
     fd
     ripgrep
+    # Nvim language servers and stuff
+    clang-tools
+    pyright
+    ruff
 
     # Extra executable stuff
     (pkgs.writeShellApplication {
