@@ -1,22 +1,59 @@
 #!/usr/bin/env bash
 
-if [ -f .envrc ]; then
+if [ "${1-}" == "--help" ]; then
+    echo "dirinit [template] [--force]
+Will make a .envrc file with a template (if not provided will be blank)
+Template options:
+- blank (default) - blank
+- tut - a tutorial on how a .envrc file works
+- py - setup python
+- pyvenv - setup python using a virtual environment
+"
+fi
+
+if [ ! "${2-}" == "--force" ] && [ -f .envrc ]; then
     echo ".envrc file already exists!"
 else
-    echo ".envrc file does not exist, creating..."
-    echo "# A bash file sourced when inside this directory
+    case "${1-}" in
+        py)
+            tmplNam="python"
+            tmpl=$(cat <<'EOF'
+use nix \
+  -p python313 \
+  -p python313Packages.packageName
+EOF
+);;
+        pyvenv)
+            tmplNam="python with virtual environment"
+            tmpl=$(cat <<'EOF'
+use nix \
+  -p python313 \
+  -p python313Packages.pip \
+  -p python313Packages.setuptools \
+  -p python313Packages.wheel
+
+export venvFold=".venv"
+if [[ ! -d "$venvFold" ]]; then
+  echo "Venv does not exist, creating..."
+  python3 -m venv "$venvFold"
+fi
+echo "Loading python config..."
+source "$venvFold/bin/activate"
+EOF
+);;
+        tut)
+            tmplNam="tutorial"
+            tmpl="# A bash file sourced when inside this directory
 
 # For nix packages:
 # use nix -p packagename -p anotherPackage.Name
 # use nix -p athird.package
-
-# Python starter:
-# use nix \
-#     -p python313 \
-#     -p python313Packages.pip \
-#     -p python313Packages.setuptools \
-#     -p python313Packages.wheel \
-" > .envrc
+" ;;
+        *) tmplNam="blank"; tmpl="" ;;
+    esac
+    echo "Generating new .envrc file with template $tmplNam..."
+    rm -f .envrc
+    echo "$tmpl" > .envrc
 fi
 
 if [ -d .git ]; then
@@ -31,4 +68,6 @@ if [ -d .git ]; then
 else
     echo "Cannot add to git excludes, .git folder does not exist!"
 fi
+echo "Allowing config..."
 direnv allow .
+echo "Done!"
