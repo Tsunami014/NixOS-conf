@@ -31,6 +31,8 @@
 
     sioyek
 
+    wakatime-cli
+
     inputs.hexecute.packages.${system}.default
     # Various apps
     pavucontrol
