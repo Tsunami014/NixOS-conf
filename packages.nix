@@ -71,7 +71,7 @@ sudo umount -R /mnt
     })
     (pkgs.writeShellApplication {
       name = "upd-user-garbage";
-      text = "upd-garbage;upd-user";
+      text = ''upd-garbage;upd-user "$@"'';
     })
     (pkgs.writeShellApplication {
       name = "upd-system";
@@ -79,7 +79,7 @@ sudo umount -R /mnt
     })
     (pkgs.writeShellApplication {
       name = "upd-system-garbage";
-      text = "sudo upd-garbage;upd-system";
+      text = ''sudo upd-garbage;upd-system "$@"'';
     })
     (pkgs.writeShellApplication {
       name = "upd-all";
@@ -87,7 +87,7 @@ sudo umount -R /mnt
     })
     (pkgs.writeShellApplication {
       name = "upd-all-garbage";
-      text = "sudo upd-garbage;upd-all";
+      text = ''sudo upd-garbage;upd-all "$@"'';
     })
 
     (pkgs.writeShellApplication {

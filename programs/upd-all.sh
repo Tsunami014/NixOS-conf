@@ -1,5 +1,15 @@
 #!/usr/bin/env bash
 set -euo pipefail
+HELP="Update scripts
+
+Optional flags:
+-ol - run the operation completely offline (even if have wifi, don't use it)
+"
+case "${1-}" in
+    --help | -help | -h) echo "$HELP"; exit 0 ;;
+    -ol | "") ;;
+    *) echo "Unknown option '$1'!"; echo "$HELP"; exit 1 ;;
+esac
 sudo -v
 
 oldFold=$(pwd)
@@ -19,21 +29,21 @@ for folder in "$mainFold"/users/*; do
     if [ -d "$folder/sync.sh" ]; then
         fprint "Syncing $name..." "94"
         cd "$folder"
-        sudo -u "$name" sh ./sync.sh || fprint "Sync script failed!" "94"
+        sudo -u "$name" sh ./sync.sh "$@" || fprint "Sync script failed!" "94"
     else
         fprint "No sync script for $name" "94"
     fi
 done
 cd "$oldFold"
 
-upd-system
+upd-system "$@"
 
 echo
 fprint "Updating all users..."
 for folder in "$mainFold"/users/*; do
     name=$(basename "$folder")
     fprint "Updating $name..." "94"
-    sudo -iu "$name" upd-user --from-all
+    sudo -iu "$name" upd-user --from-all "$@"
     echo
 done
 
