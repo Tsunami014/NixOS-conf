@@ -10,6 +10,7 @@ binds {
     Mod+N hotkey-overlay-title="Neovim" { spawn-sh "$TermSpawn nvim"; }
     Mod+Y hotkey-overlay-title="File browser" { spawn-sh "$TermSpawn yazi"; }
     Mod+B hotkey-overlay-title="Web browser" { spawn "zen"; }
+    Mod+Shift+B hotkey-overlay-title="Private web browser" { spawn-sh "zen --private-window"; }
     Mod+D hotkey-overlay-title="Downloads" { spawn-sh "mkdir -p /tmp/Download;$TermSpawn yazi /tmp/Download"; }
     Mod+T hotkey-overlay-title="Htop" { spawn-sh "$TermSpawn htop"; }
 
@@ -143,8 +144,12 @@ binds {
 
 
     // Workspace switching stuff
+    Mod+1 repeat=false { focus-workspace 1; }
+    Mod+0 repeat=false { focus-workspace 255; }
     Mod+Page_Up   repeat=false { focus-workspace 1; }
     Mod+Page_Down repeat=false { focus-workspace 255; }
+    Mod+Shift+1 repeat=false { move-column-to-workspace 1; }
+    Mod+Shift+0 repeat=false { move-column-to-workspace 255; }
     Mod+Shift+Page_Up   repeat=false { move-column-to-workspace 1; }
     Mod+Shift+Page_Down repeat=false { move-column-to-workspace 255; }
 
