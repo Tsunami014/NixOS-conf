@@ -5,23 +5,26 @@ environment {
 }
 binds {
     // Apps / User stuff
-    Mod+MouseMiddle hotkey-overlay-title="Hexecute" { spawn-sh "$EXECUTE"; }
-    Mod+Return hotkey-overlay-title="Terminal" { spawn "alacritty"; }
-    Mod+N hotkey-overlay-title="Neovim" { spawn-sh "$TermSpawn nvim"; }
-    Mod+Y hotkey-overlay-title="File browser" { spawn-sh "$TermSpawn yazi"; }
-    Mod+B hotkey-overlay-title="Web browser" { spawn "zen"; }
-    Mod+Shift+B hotkey-overlay-title="Private web browser" { spawn-sh "zen --private-window"; }
-    Mod+D hotkey-overlay-title="Downloads" { spawn-sh "mkdir -p /tmp/Download;$TermSpawn yazi /tmp/Download"; }
-    Mod+T hotkey-overlay-title="Htop" { spawn-sh "$TermSpawn htop"; }
+    Mod+MouseMiddle repeat=false hotkey-overlay-title="Hexecute" { spawn-sh "$EXECUTE"; }
 
-    Mod+V hotkey-overlay-title="Clipboard history" { spawn "cliphist-fuzzel-img"; }
+    Mod+Return repeat=false hotkey-overlay-title="Terminal" { spawn "alacritty"; }
+    Mod+D repeat=false hotkey-overlay-title="Downloads" { spawn-sh "mkdir -p /tmp/Download;$TermSpawn yazi /tmp/Download"; }
+    Mod+N repeat=false hotkey-overlay-title="Neovim" { spawn-sh "$TermSpawn nvim"; }
+    Mod+Y repeat=false hotkey-overlay-title="File browser" { spawn-sh "$TermSpawn yazi"; }
+    //Mod+O repeat=false hotkey-overlay-title="Ollama" { spawn-sh "$TermSpawn ollama"; }
+    Mod+T repeat=false hotkey-overlay-title="Htop" { spawn-sh "$TermSpawn htop"; }
+
+    Mod+B repeat=false hotkey-overlay-title="Web browser" { spawn "zen"; }
+    Mod+Shift+B repeat=false hotkey-overlay-title="Private web browser" { spawn-sh "zen --private-window"; }
+
+    Mod+V repeat=false hotkey-overlay-title="Clipboard history" { spawn "cliphist-fuzzel-img"; }
 
 
     // Misc stuff
     Mod+Escape allow-inhibiting=false { toggle-keyboard-shortcuts-inhibit; }
         // In case something needs to use keybinds taken by niri
 
-    Mod+Shift+Slash { show-hotkey-overlay; }
+    Mod+F1 { show-hotkey-overlay; }
 
     Print { screenshot; }
     Ctrl+Print { screenshot-screen; }

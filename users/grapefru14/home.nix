@@ -31,6 +31,7 @@
 
     sioyek
 
+    # Background apps
     wakatime-cli
 
     inputs.hexecute.packages.${system}.default
@@ -39,6 +40,7 @@
     gnome-calculator
     krita
     pureref
+    ollama
     # Apps I needed to make myself for one reason or another
     (pkgs.callPackage ./extraPkgs/godsvg.nix {})
     # Apps I'm version-conscious for
@@ -75,6 +77,7 @@
       text = builtins.readFile ./wallppr.sh;
     })
   ];
+
 
   # To find mime type of file: `= file --mime-type -b <filename>`
   # To list global package desktop files: `ls /run/current-system/sw/share/applications`
