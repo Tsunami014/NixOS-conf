@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 
-if [ "${1-}" == "--help" ]; then
-    echo "dirinit [template] [--force]
+case "${1-}" in
+    --help | -h | help)
+        echo "dirinit [template] [--force]
 Will make a .envrc file with a template (if not provided will be blank)
+Even if already exists, this tool can help by adding git ignores and stuff
 A .envrc file is a bash file sourced when inside this directory.
 
 Template options:
@@ -10,8 +12,8 @@ Template options:
 - nix - a tutorial on how to use nix
 - py - setup python (with nix)
 - pyvenv - setup python using a virtual environment
-"
-fi
+" ;;
+esac
 
 if [ ! "${2-}" == "--force" ] && [ -f .envrc ]; then
     echo ".envrc file already exists!"
@@ -22,7 +24,7 @@ else
             tmpl=$(cat <<'EOF'
 use nix \
   -p python313# \
-#  -p python313Packages.numpy # Example
+#  -p python313Packages.numpy
 EOF
 );;
         pyvenv)
@@ -38,7 +40,9 @@ export venvFold=".venv"
 if [[ ! -d "$venvFold" ]]; then
   echo "Venv does not exist, creating..."
   python3 -m venv "$venvFold"
+  echo "*" > "$venvFold/.gitignore"
 fi
+# pip install something
 echo "Loading python config..."
 source "$venvFold/bin/activate"
 EOF
@@ -46,9 +50,9 @@ EOF
         nix)
             tmplNam="nix tutorial"
             tmpl=$(cat <<'EOF'
-# For nix packages:
 # use nix -p packagename -p anotherPackage.Name
-# use nix -p athird.package
+# use nix -p athird.package \
+#     -p fourthPkg
 EOF
 );;
         *) tmplNam="blank"; tmpl="" ;;
@@ -69,6 +73,10 @@ if [ -d .git ]; then
     fi
 else
     echo "Cannot add to git excludes, .git folder does not exist!"
+fi
+if [ -d .direnv ] && [ ! -f .direnv/.gitignore ]; then
+    echo "Adding a .gitignore for .direnv folder..."
+    echo "*" > .direnv/.gitignore
 fi
 echo "Allowing config..."
 direnv allow .
