@@ -14,7 +14,8 @@ Options:
 Template options:
 - blank (default) - blank
 - nix - a tutorial on how to use nix
-- py - setup python (with nix)
+- py - setup python with nix
+- pyadv - setup python advanced with nix (for packages that aren't avaliable on nix)
 - pyvenv - setup python using a virtual environment
 " ;;
 esac
@@ -29,6 +30,26 @@ else
 use nix \
   -p python313# \
 #  -p python313Packages.numpy
+EOF
+);;
+        pyadv)
+            tmplNam="python advanced"
+            tmpl=$(cat <<'EOF'
+use nix \
+  -p python313 \
+  -p python313Packages.pip \
+  -p python313Packages.setuptools \
+  -p python313Packages.wheel
+
+export _LOCAL_PY_PKGS="${PWD}/.pypkgs"
+export PYTHONPATH="${_LOCAL_PY_PKGS}:${PYTHONPATH}"
+
+mkdir -p "${_LOCAL_PY_PKGS}"
+if [ ! -f "${_LOCAL_PY_PKGS}/.gitignore" ]; then
+  echo "*" > "${_LOCAL_PY_PKGS}/.gitignore"
+fi
+
+python -m pip install --target "${_LOCAL_PY_PKGS}" stubgen-pyx
 EOF
 );;
         pyvenv)
