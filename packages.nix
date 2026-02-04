@@ -35,30 +35,6 @@
       name = "suyazi";
       text = ''sudo yazi "$@"'';
     })
-    (pkgs.writeShellApplication {
-      name = "mnt";
-      text = ''
-if [[ $PWD == /mnt* ]]; then
-  cd ~
-fi
-mountpoint /mnt -q && sudo umount -R /mnt
-sudo mount "/dev/$1" /mnt -o uid="$(id -u)",gid="$(id -g)"
-cd /mnt
-'';
-    })
-    (pkgs.writeShellApplication {
-      name = "umnt";
-      text = ''
-if ! mountpoint /mnt -q; then
-  echo "No mount in /mnt!"
-  exit 0
-fi
-if [[ $PWD == /mnt* ]]; then
-  cd ~
-fi
-sudo umount -R /mnt
-'';
-    })
 
     # The upd scripts
     (pkgs.writeShellApplication {
@@ -95,6 +71,50 @@ sudo umount -R /mnt
       text = builtins.readFile ./programs/dirinit.sh;
     })
   ];
+
+  programs.bash = {
+    enable = true;
+
+    interactiveShellInit = ''
+      mnt() {
+        [[ $PWD == /mnt* ]] && cd ~
+
+        mountpoint /mnt -q && sudo umount -R /mnt
+
+        if [[ -z "$1" ]]; then
+          echo "usage: mnt <device>"
+          return 1
+        fi
+
+        sudo mount "/dev/$1" /mnt \
+          -o uid="$(id -u)",gid="$(id -g)"
+
+        cd /mnt
+      }
+      umnt() {
+        if ! mountpoint /mnt -q; then
+          echo "No mount in /mnt!"
+          exit 0
+        fi
+        if [[ $PWD == /mnt* ]]; then
+          cd ~
+        fi
+        sudo umount -R /mnt
+      }
+      _mnt_complete() {
+        local cur
+        cur="''${COMP_WORDS[COMP_CWORD]}"
+        disks=$(
+          lsblk -ln -o NAME,TYPE |
+          awk '$2 == "part" || $2 == "disk" { print $1 }'
+        )
+
+        COMPREPLY=( $(compgen -W "$disks" -- "$cur") )
+      }
+
+      complete -F _mnt_complete mnt
+  '';
+  };
 
   programs.direnv.enable = true;
 

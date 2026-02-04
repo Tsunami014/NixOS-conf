@@ -14,6 +14,7 @@ binds {
     Mod+O repeat=false hotkey-overlay-title="Ollama" { spawn-sh "$TermSpawn oterm"; }
     Mod+H repeat=false hotkey-overlay-title="Htop" { spawn-sh "$TermSpawn htop"; }
     Mod+J repeat=false hotkey-overlay-title="Japanese" { spawn-sh "$TermSpawn jap"; }
+    Mod+T repeat=false hotkey-overlay-title="Temp place" { spawn-sh "$TermSpawn bash -ic mktmpplace"; }
 
     Mod+B repeat=false hotkey-overlay-title="Web browser" { spawn "zen"; }
     Mod+Shift+B repeat=false hotkey-overlay-title="Private web browser" { spawn-sh "zen --private-window"; }
