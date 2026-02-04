@@ -41,6 +41,7 @@
     krita
     pureref
     ollama
+    oterm
     # Apps I needed to make myself for one reason or another
     (pkgs.callPackage ./extraPkgs/godsvg.nix {})
     # Apps I'm version-conscious for
@@ -77,6 +78,31 @@
       text = builtins.readFile ./wallppr.sh;
     })
   ];
+
+
+  # Keyboard settings
+  i18n.inputMethod = {
+    enable = true;
+    type = "fcitx5";
+    fcitx5 = {
+      settings = {
+        inputMethod = {
+          GroupOrder."0" = "Default";
+          "Groups/0" = {
+            Name = "Default";
+            "Default Layout" = "au";
+            DefaultIM = "mozc";
+          };
+          "Groups/0/Items/0".Name = "keyboard-au";
+          "Groups/0/Items/1".Name = "mozc";
+        };
+        globalOptions = {
+          "Hotkey/TriggerKeys"."0" = "Control+space";
+        };
+      };
+      addons = [ pkgs.fcitx5-mozc ];
+    };
+  };
 
 
   # To find mime type of file: `= file --mime-type -b <filename>`

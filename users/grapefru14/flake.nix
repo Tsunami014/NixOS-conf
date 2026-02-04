@@ -39,6 +39,9 @@
       config.allowUnfree = true;
     };
   in {
+    home-manager.useGlobalPkgs = true;
+    home-manager.useUserPackages = true;
+    home-manager.backupFileExtension = "bak";
     homeConfigurations.grapefru14 = home-manager.lib.homeManagerConfiguration {
       inherit pkgs;
       extraSpecialArgs = { inherit inputs master-pkgs; };
