@@ -44,6 +44,7 @@
     oterm
     # Apps I needed to make myself for one reason or another
     (pkgs.callPackage ./extraPkgs/godsvg.nix {})
+    (pkgs.callPackage ./extraPkgs/wlanthy.nix {})
     # Apps I'm version-conscious for
     ldtk
     master-pkgs.aseprite
@@ -77,32 +78,17 @@
       name = "wallppr";
       text = builtins.readFile ./wallppr.sh;
     })
+    # A wrapper for wlanthy (above) with instructions
+    (pkgs.writeShellApplication {
+      name = "jap";
+      text = ''
+echo "F5 for hiragana, F6 for katakana
+Space or up/down to choose, enter to commit, backspace to undo
+F12 to toggle on/off, though not recommended for long"
+wlanthy
+'';
+    })
   ];
-
-
-  # Keyboard settings
-  i18n.inputMethod = {
-    enable = true;
-    type = "fcitx5";
-    fcitx5 = {
-      settings = {
-        inputMethod = {
-          GroupOrder."0" = "Default";
-          "Groups/0" = {
-            Name = "Default";
-            "Default Layout" = "au";
-            DefaultIM = "mozc";
-          };
-          "Groups/0/Items/0".Name = "keyboard-au";
-          "Groups/0/Items/1".Name = "mozc";
-        };
-        globalOptions = {
-          "Hotkey/TriggerKeys"."0" = "Control+space";
-        };
-      };
-      addons = [ pkgs.fcitx5-mozc ];
-    };
-  };
 
 
   # To find mime type of file: `= file --mime-type -b <filename>`
