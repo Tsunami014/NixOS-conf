@@ -2,10 +2,14 @@
 
 case "${1-}" in
     --help | -h | help)
-        echo "dirinit [template] [--force]
+        echo "dirinit [template] [--force] [--show]
 Will make a .envrc file with a template (if not provided will be blank)
 Even if already exists, this tool can help by adding git ignores and stuff
 A .envrc file is a bash file sourced when inside this directory.
+
+Options:
+--force - recreate the .envrc even if it already exists
+--show - print the template that would have been used and exit
 
 Template options:
 - blank (default) - blank
@@ -15,7 +19,7 @@ Template options:
 " ;;
 esac
 
-if [ ! "${2-}" == "--force" ] && [ -f .envrc ]; then
+if [ ! "${2-}" == "--force" ] && [ ! "${2-}" == "--show" ] && [ -f .envrc ]; then
     echo ".envrc file already exists!"
 else
     case "${1-}" in
@@ -57,6 +61,11 @@ EOF
 );;
         *) tmplNam="blank"; tmpl="" ;;
     esac
+    if [ "${2-}" == "--show" ]; then
+        echo "$tmplNam"
+        echo "$tmpl"
+        exit 0
+    fi
     echo "Generating new .envrc file with template '$tmplNam'.."
     rm -f .envrc
     echo "$tmpl" > .envrc
