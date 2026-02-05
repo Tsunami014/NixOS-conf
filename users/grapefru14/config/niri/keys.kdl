@@ -105,27 +105,15 @@ binds {
     Mod+Shift+Ctrl+Up    { move-column-to-monitor-up; }
     Mod+Shift+Ctrl+Right { move-column-to-monitor-right; }
 
-    Mod+WheelScrollDown cooldown-ms=150 { focus-workspace-down; }
-    Mod+WheelScrollUp   cooldown-ms=150 { focus-workspace-up; }
     Mod+TouchpadScrollDown cooldown-ms=150 { focus-workspace-down; }
     Mod+TouchpadScrollUp   cooldown-ms=150 { focus-workspace-up; }
-    Mod+Shift+WheelScrollDown cooldown-ms=150 { move-column-to-workspace-down; }
-    Mod+Shift+WheelScrollUp   cooldown-ms=150 { move-column-to-workspace-up; }
     Mod+Shift+TouchpadScrollDown cooldown-ms=150 { move-column-to-workspace-down; }
     Mod+Shift+TouchpadScrollUp   cooldown-ms=150 { move-column-to-workspace-up; }
 
-    Mod+WheelScrollRight cooldown-ms=150 { focus-column-right; }
-    Mod+WheelScrollLeft  cooldown-ms=150 { focus-column-left; }
-    Mod+Ctrl+WheelScrollDown cooldown-ms=150 { focus-column-right; }
-    Mod+Ctrl+WheelScrollUp   cooldown-ms=150 { focus-column-left; }
     Mod+TouchpadScrollRight cooldown-ms=150 { focus-column-right; }
     Mod+TouchpadScrollLeft  cooldown-ms=150 { focus-column-left; }
     Mod+Ctrl+TouchpadScrollDown cooldown-ms=150 { focus-column-right; }
     Mod+Ctrl+TouchpadScrollUp   cooldown-ms=150 { focus-column-left; }
-    Mod+Shift+WheelScrollRight cooldown-ms=150 { move-column-right; }
-    Mod+Shift+WheelScrollLeft  cooldown-ms=150 { move-column-left; }
-    Mod+Shift+Ctrl+WheelScrollDown cooldown-ms=150 { move-column-right; }
-    Mod+Shift+Ctrl+WheelScrollUp   cooldown-ms=150 { move-column-left; }
     Mod+Shift+TouchpadScrollRight cooldown-ms=150 { move-column-right; }
     Mod+Shift+TouchpadScrollLeft  cooldown-ms=150 { move-column-left; }
     Mod+Shift+Ctrl+TouchpadScrollDown cooldown-ms=150 { move-column-right; }

@@ -46,24 +46,16 @@
       text = builtins.readFile ./programs/upd-user.sh;
     })
     (pkgs.writeShellApplication {
-      name = "upd-user-garbage";
-      text = ''upd-garbage;upd-user "$@"'';
-    })
-    (pkgs.writeShellApplication {
       name = "upd-system";
       text = builtins.readFile ./programs/upd-system.sh;
-    })
-    (pkgs.writeShellApplication {
-      name = "upd-system-garbage";
-      text = ''sudo upd-garbage;upd-system "$@"'';
     })
     (pkgs.writeShellApplication {
       name = "upd-all";
       text = builtins.readFile ./programs/upd-all.sh;
     })
     (pkgs.writeShellApplication {
-      name = "upd-all-garbage";
-      text = ''sudo upd-garbage;upd-all "$@"'';
+      name = "upd-generations";
+      text = builtins.readFile ./programs/upd-generations.sh;
     })
 
     (pkgs.writeShellApplication {

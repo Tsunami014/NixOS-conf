@@ -1,5 +1,13 @@
 #!/usr/bin/env bash
 
+templOpts="Template options:
+- blank (default) - blank
+- nix - a tutorial on how to use nix
+- py - setup python with nix
+- pyadv - setup python advanced with nix (for packages that aren't avaliable on nix)
+- pyvenv - setup python using a virtual environment
+"
+
 case "${1-}" in
     --help | -h | help)
         echo "dirinit [template] [--force] [--show]
@@ -11,13 +19,7 @@ Options:
 --force - recreate the .envrc even if it already exists
 --show - print the template that would have been used and exit
 
-Template options:
-- blank (default) - blank
-- nix - a tutorial on how to use nix
-- py - setup python with nix
-- pyadv - setup python advanced with nix (for packages that aren't avaliable on nix)
-- pyvenv - setup python using a virtual environment
-" ;;
+$templOpts" ;;
 esac
 
 if [ ! "${2-}" == "--force" ] && [ ! "${2-}" == "--show" ] && [ -f .envrc ]; then
@@ -80,7 +82,12 @@ EOF
 #     -p fourthPkg
 EOF
 );;
-        *) tmplNam="blank"; tmpl="" ;;
+        blank | "") tmplNam="blank"; tmpl="" ;;
+        *)
+            echo "Unknown template '${1-}'!"
+            echo "$templOpts"
+            exit 1
+        ;;
     esac
     if [ "${2-}" == "--show" ]; then
         echo "$tmplNam"
@@ -104,10 +111,13 @@ if [ -d .git ]; then
 else
     echo "Cannot add to git excludes, .git folder does not exist!"
 fi
+mkdir -p .direnv
 if [ -d .direnv ] && [ ! -f .direnv/.gitignore ]; then
     echo "Adding a .gitignore for .direnv folder..."
     echo "*" > .direnv/.gitignore
 fi
+
+# Everything must be done before here, I think something something exits early
 echo "Allowing config..."
 direnv allow .
 echo "Done!"

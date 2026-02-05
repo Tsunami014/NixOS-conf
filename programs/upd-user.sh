@@ -50,7 +50,8 @@ fi
 
 fprint "Running user rebuild..."
 if [ "${1-}" == "-ol" ]; then
-    "$(nix path-info --offline "$userFold#homeConfigurations.$USER.activationPackage")"/activate
+    echo "Cannot build for user offline!"
+    exit 1
 else
     home-manager switch --flake "$userFold"
 fi

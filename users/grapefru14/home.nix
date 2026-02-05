@@ -42,6 +42,7 @@
     pureref
     ollama
     oterm
+    arduino-ide
     # Apps I needed to make myself for one reason or another
     (pkgs.callPackage ./extraPkgs/godsvg.nix {})
     (pkgs.callPackage ./extraPkgs/wlanthy.nix {})
@@ -64,7 +65,7 @@
     fd
     ripgrep
     # Nvim language servers and stuff
-    clang-tools
+    #clang-tools
     pyright
     ruff
 
