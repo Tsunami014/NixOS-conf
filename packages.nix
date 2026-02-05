@@ -38,10 +38,6 @@
 
     # The upd scripts
     (pkgs.writeShellApplication {
-      name = "upd-garbage";
-      text = builtins.readFile ./programs/upd-garbage.sh;
-    })
-    (pkgs.writeShellApplication {
       name = "upd-user";
       text = builtins.readFile ./programs/upd-user.sh;
     })
@@ -54,8 +50,12 @@
       text = builtins.readFile ./programs/upd-all.sh;
     })
     (pkgs.writeShellApplication {
-      name = "upd-generations";
-      text = builtins.readFile ./programs/upd-generations.sh;
+      name = "clean-generations";
+      text = builtins.readFile ./programs/clean-generations.sh;
+    })
+    (pkgs.writeShellApplication {
+      name = "clean-garbage";
+      text = builtins.readFile ./programs/clean-garbage.sh;
     })
 
     (pkgs.writeShellApplication {

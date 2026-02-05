@@ -65,7 +65,7 @@
     fd
     ripgrep
     # Nvim language servers and stuff
-    #clang-tools
+    clang-tools
     pyright
     ruff
 

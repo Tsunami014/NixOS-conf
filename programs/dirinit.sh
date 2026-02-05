@@ -6,6 +6,7 @@ templOpts="Template options:
 - py - setup python with nix
 - pyadv - setup python advanced with nix (for packages that aren't avaliable on nix)
 - pyvenv - setup python using a virtual environment
+- cmake - setup cmake
 "
 
 case "${1-}" in
@@ -72,6 +73,15 @@ fi
 # pip install something
 echo "Loading python config..."
 source "$venvFold/bin/activate"
+EOF
+);;
+        cmake)
+            tmplNam="cmake"
+            tmpl=$(cat <<'EOF'
+use nix -p cmake \
+    -p clang-tools# \
+    #-p qt6.qtbase -p qt6.qtbase.dev \
+    #-p qt6.qtwayland -p qt6.wrapQtAppsHook
 EOF
 );;
         nix)
