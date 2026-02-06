@@ -8,6 +8,10 @@
       ./userConfig.nix
     ];
 
+  # Ensure /tmp works normally
+  boot.tmp.cleanOnBoot = true;
+  boot.tmp.useTmpfs = true;
+
   programs.appimage = { # Execute appimages normally
     enable = true;
     binfmt = true;
