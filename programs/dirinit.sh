@@ -31,8 +31,8 @@ else
             tmplNam="python"
             tmpl=$(cat <<'EOF'
 use nix \
-  -p python313# \
-#  -p python313Packages.numpy
+  -p python313 \
+  -p python313Packages.debugpy
 EOF
 );;
         pyadv)
@@ -79,7 +79,7 @@ EOF
             tmplNam="cmake"
             tmpl=$(cat <<'EOF'
 use nix -p cmake \
-    -p clang-tools# \
+    -p clang-tools # \
     #-p qt6.qtbase -p qt6.qtbase.dev \
     #-p qt6.qtwayland -p qt6.wrapQtAppsHook
 EOF
