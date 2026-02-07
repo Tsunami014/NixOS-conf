@@ -6,7 +6,7 @@ Optional flags:
 -ol - run the operation completely offline (even if have wifi, don't use it)
 "
 fromAll=false
-if [[ "$1" == "--from-all" ]]; then
+if [[ "${1-}" == "--from-all" ]]; then
     fromAll=true
     shift
 fi

@@ -58,17 +58,6 @@
     brightnessctl
     inputs.hyprlock.packages.${system}.default
 
-    # For neovim
-    tree-sitter
-    unzip
-    nodejs
-    fd
-    ripgrep
-    # Nvim language servers and stuff
-    clang-tools
-    pyright
-    ruff
-
     # Extra executable stuff
     (pkgs.writeShellApplication {
       name = "navihex";
@@ -90,6 +79,23 @@ wlanthy
 '';
     })
   ];
+
+  programs.neovim = {
+    enable = true;
+    extraPackages = with pkgs; [
+      tree-sitter
+      unzip
+      nodejs
+      fd
+      ripgrep
+
+      # For lsps and stuff
+      python313
+      clang-tools
+      pyright
+      ruff
+    ];
+  };
 
 
   # To find mime type of file: `= file --mime-type -b <filename>`
