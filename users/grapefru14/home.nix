@@ -57,6 +57,7 @@
     acpi
     brightnessctl
     inputs.hyprlock.packages.${system}.default
+    wvkbd
 
     # Extra executable stuff
     (pkgs.writeShellApplication {
