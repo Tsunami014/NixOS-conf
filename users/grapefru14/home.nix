@@ -61,12 +61,12 @@
     # Extra executable stuff
     (pkgs.writeShellApplication {
       name = "navihex";
-      text = builtins.readFile ./navihex.sh;
+      text = builtins.readFile ./programs/navihex.sh;
     })
     swww
     (pkgs.writeShellApplication {
       name = "wallppr";
-      text = builtins.readFile ./wallppr.sh;
+      text = builtins.readFile ./programs/wallppr.sh;
     })
     # A wrapper for wlanthy (above) with instructions
     (pkgs.writeShellApplication {
