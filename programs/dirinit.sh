@@ -79,9 +79,12 @@ EOF
             tmplNam="cmake"
             tmpl=$(cat <<'EOF'
 use nix -p cmake \
-    -p clang-tools # \
+    -p clang-tools -p vscode-extensions.vadimcn.vscode-lldb # \
     #-p qt6.qtbase -p qt6.qtbase.dev \
     #-p qt6.qtwayland -p qt6.wrapQtAppsHook
+
+lldb_pth=$(nix eval --raw nixpkgs#vscode-extensions.vadimcn.vscode-lldb)/share/vscode/extensions/vadimcn.vscode-lldb/adapter
+export PATH="$lldb_pth:$PATH"
 EOF
 );;
         nix)
