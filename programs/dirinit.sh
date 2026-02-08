@@ -3,6 +3,7 @@
 templOpts="Template options:
 - blank (default) - blank
 - nix - a tutorial on how to use nix
+- rust - setup for using rust
 - py - setup python with nix
 - pyadv - setup python advanced with nix (for packages that aren't avaliable on nix)
 - pyvenv - setup python using a virtual environment
@@ -27,6 +28,12 @@ if [ ! "${2-}" == "--force" ] && [ ! "${2-}" == "--show" ] && [ -f .envrc ]; the
     echo ".envrc file already exists!"
 else
     case "${1-}" in
+        rust)
+            tmplNam="python"
+            tmpl=$(cat <<'EOF'
+use nix -p rustup
+EOF
+);;
         py)
             tmplNam="python"
             tmpl=$(cat <<'EOF'
