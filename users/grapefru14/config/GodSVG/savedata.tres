@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="SaveData" load_steps=11 format=3]
+[gd_resource type="Resource" script_class="SaveData" load_steps=12 format=3]
 
 [ext_resource type="Script" path="res://src/config_classes/Palette.gd" id="1"]
 [ext_resource type="Script" path="res://src/config_classes/TabData.gd" id="2"]
@@ -13,6 +13,11 @@ _colors = PackedStringArray("#fff", "#000", "#f00", "#0f0", "#00f", "#ff0", "#f0
 _color_names = PackedStringArray("White", "Black", "Red", "Green", "Blue", "Yellow", "Magenta", "Cyan")
 
 [sub_resource type="Resource" id="Resource_2us3f"]
+script = ExtResource("2")
+svg_file_path = "Documents/Sapla/assets/btn.svg"
+id = 2
+
+[sub_resource type="Resource" id="Resource_d1fc1"]
 script = ExtResource("2")
 svg_file_path = ""
 id = 1
@@ -115,11 +120,11 @@ max_fps = 0
 keep_screen_on = false
 use_native_file_dialog = true
 use_filename_for_window_title = true
-snap = -0.5
+snap = 0.5
 color_picker_slider_mode = 0
-path_command_relative = false
+path_command_relative = true
 file_dialog_show_hidden = false
-_recent_dirs = PackedStringArray()
+_recent_dirs = PackedStringArray("Documents/Sapla/assets", "")
 _shortcuts = Dictionary[String, Array]({})
 _palettes = Array[ExtResource("1")]([SubResource("Resource_cpxpk")])
 editor_formatter = SubResource("Resource_kliib")
@@ -130,8 +135,8 @@ _shortcut_panel_slots = Dictionary[int, String]({
 0: "ui_undo",
 1: "ui_redo"
 })
-_tabs = Array[ExtResource("2")]([SubResource("Resource_2us3f")])
-_active_tab_index = 0
+_tabs = Array[ExtResource("2")]([SubResource("Resource_2us3f"), SubResource("Resource_d1fc1")])
+_active_tab_index = 1
 _layout = Dictionary[int, Array]({
 1: [4],
 2: [2, 1]

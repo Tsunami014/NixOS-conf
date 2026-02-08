@@ -58,6 +58,10 @@
     wireplumber.enable = true;
   };
 
+  # Input remapping service
+  services.input-remapper.enable = true;
+  services.input-remapper.enableUdevRules = true;
+
   # Enable printing
   services.printing.enable = true;
   services.avahi = { # Printer discovery
