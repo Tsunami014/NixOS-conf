@@ -10,7 +10,7 @@ Optional flags:
 -ol - run the operation completely offline (even if have wifi, don't use it)
 "
 case "${1-}" in
-    --help | -help | -h) echo "$HELP"; exit 0 ;;
+    --help | -help | -h | "") echo "$HELP"; exit 0 ;;
     all) clean="old" ;;
     *)
         if [[ $1 =~ ^\+[0-9]+$ ]] || [[ $1 =~ ^[0-9]+d$ ]]; then
