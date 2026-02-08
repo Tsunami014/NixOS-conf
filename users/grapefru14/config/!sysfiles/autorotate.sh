@@ -1,19 +1,32 @@
 #!/usr/bin/env bash
+# exec >>"$HOME/.autorotate.log" 2>&1
 set -euo pipefail
-OUTPUT="${1:-$(niri msg outputs | grep -Po -m 1 '(?<=Output ")[^"]+')}"
-[ -n "$OUTPUT" ] || { echo "No output found; run this inside niri session."; exit 1; }
+get_outp() {
+  OUTPUT="${1:-$(niri msg outputs | grep -Po -m 1 '(?<=Output ")[^"]+')}"
+}
+get_outp
+if [ "$OUTPUT" == "" ]; then
+  echo "Waiting for output..."
+  while [ "$OUTPUT" == "" ]; do
+    get_outp
+  done
+fi
+echo "Using output '$OUTPUT'"
 
 rotate_output() {
   local orientation="$1"
   case "$orientation" in
-    *normal*)    niri msg output "$OUTPUT" transform normal ;;
-    *right-up*)  niri msg output "$OUTPUT" transform 270 ;;
-    *bottom-up*) niri msg output "$OUTPUT" transform 180 ;;
-    *left-up*)   niri msg output "$OUTPUT" transform 90 ;;
-    *) echo "Unknown orientation: $orientation" >&2 ;;
+    *normal*)    rot=normal ;;
+    *right-up*)  rot=270 ;;
+    *bottom-up*) rot=180 ;;
+    *left-up*)   rot=90 ;;
+    *) echo "Unknown orientation: $orientation" >&2; return ;;
   esac
+  echo "Rotating to $rot..."
+  niri msg output "$OUTPUT" transform "$rot"
 }
 
+echo "Monitoring..."
 monitor-sensor | while IFS= read -r line; do
   case "$line" in
     *"Accelerometer orientation changed:"*)
