@@ -62,6 +62,9 @@
   services.input-remapper.enable = true;
   services.input-remapper.enableUdevRules = true;
 
+  # Rotation sensor
+  hardware.sensor.iio.enable = true;
+
   # Enable printing
   services.printing.enable = true;
   services.avahi = { # Printer discovery

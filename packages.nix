@@ -10,6 +10,7 @@
     wget
     fzf
     yazi
+    iio-sensor-proxy
 
     # Printer stuff
     (pkgs.writeShellApplication {
