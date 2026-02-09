@@ -79,6 +79,10 @@ F12 to toggle on/off, though not recommended for long"
 wlanthy
 '';
     })
+    (pkgs.writeShellApplication {
+      name = "pointer";
+      text = ''HOME="/tmp" hexecute'';
+    })
   ];
 
   programs.neovim = {
