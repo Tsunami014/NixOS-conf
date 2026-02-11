@@ -28,7 +28,7 @@ if [ ! -d "$HOME" ]; then
     exit 1
 fi
 
-if $fromAll; then
+if ! $fromAll; then
     syncf="$userFold/sync.sh"
     if [ -f "$syncf" ]; then
         fprint "Syncing..."
@@ -48,7 +48,7 @@ if ! git -C "$mainFold" rev-parse --git-dir >/dev/null 2>/tmp/err; then
         exit 1
     fi
 fi
-if $fromAll; then
+if ! $fromAll; then
     git -C "$mainFold" add .
 fi
 
@@ -64,6 +64,6 @@ else
     home-manager switch --flake "$userFold"
 fi
 
-if $fromAll; then
+if ! $fromAll; then
    printf "\e[1;92mUpdated user!\e[0m"
 fi

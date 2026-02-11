@@ -60,10 +60,10 @@
     wvkbd
 
     # Extra executable stuff
-    (pkgs.writeShellApplication {
-      name = "navihex";
-      text = builtins.readFile ./programs/navihex.sh;
-    })
+    (pkgs.writeScriptBin "navihex" ''
+      #!${pkgs.python313.withPackages (ps: with ps; [ tkinter ])}/bin/python3
+      ${builtins.readFile ./programs/navihex.py}
+    '')
     swww
     (pkgs.writeShellApplication {
       name = "wallppr";
