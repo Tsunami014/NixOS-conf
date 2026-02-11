@@ -29,7 +29,9 @@
     fuzzel
     jq
 
+    # File viewers
     sioyek
+    swayimg
 
     # Background apps
     wakatime-cli
@@ -111,6 +113,13 @@ wlanthy
     enable = true;
     defaultApplications = {
       "application/pdf" = "sioyek.desktop";
+      "image/png"  = "swayimg.desktop";
+      "image/jpeg" = "swayimg.desktop";
+      "image/jpg"  = "swayimg.desktop";
+      "image/gif"  = "swayimg.desktop";
+      "image/webp" = "swayimg.desktop";
+      "image/bmp"  = "swayimg.desktop";
+      "image/tiff" = "swayimg.desktop";
     };
   };
 
