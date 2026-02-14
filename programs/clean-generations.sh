@@ -2,7 +2,7 @@
 set -euo pipefail
 HELP="Clean the generations
 Options for cleaning:
-  all - remove every other generation leaving 1
+  old - remove every other generation leaving 1
   +N - keep only the last N generations
   Nd - keep only the last N days of builds
 
@@ -11,7 +11,7 @@ Optional flags:
 "
 case "${1-}" in
     --help | -help | -h | "") echo "$HELP"; exit 0 ;;
-    all) clean="old" ;;
+    old) clean="$1" ;;
     *)
         if [[ $1 =~ ^\+[0-9]+$ ]] || [[ $1 =~ ^[0-9]+d$ ]]; then
             clean="$1"

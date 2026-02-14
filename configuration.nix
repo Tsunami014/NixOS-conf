@@ -16,7 +16,7 @@
     enable = true;
     binfmt = true;
   };
-  # programs.nix-ld.enable = true; # If some apps are being annoying
+  programs.nix-ld.enable = true; # Be able to execute programs normally
 
   # Add /bin to the path
   environment.sessionVariables = {
