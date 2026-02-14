@@ -19,7 +19,7 @@ id = 2
 
 [sub_resource type="Resource" id="Resource_d1fc1"]
 script = ExtResource("2")
-svg_file_path = "Documents/Sapla/assets/back.svg"
+svg_file_path = "Documents/Sapla/assets/forward.svg"
 id = 1
 
 [sub_resource type="Resource" id="Resource_w35eg"]

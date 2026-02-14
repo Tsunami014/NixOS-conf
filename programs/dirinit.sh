@@ -89,6 +89,8 @@ use nix -p cmake \
     -p clang-tools # \
     #-p qt6.qtbase -p qt6.qtbase.dev \
     #-p qt6.qtwayland -p qt6.wrapQtAppsHook
+
+cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON build
 EOF
 );;
         nix)

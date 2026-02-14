@@ -30,7 +30,7 @@
   users.users.grapefru14 = {
     isNormalUser = true;
     description = "Grapefru14";
-    extraGroups = [ "networkmanager" "wheel" "config" "dialout" ];
+    extraGroups = [ "networkmanager" "wheel" "config" "dialout" "input" ];
     packages = with pkgs; [];
   };
   users.users.root = {
