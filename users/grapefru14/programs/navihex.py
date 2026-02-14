@@ -16,6 +16,7 @@ CELL_PADDING = 20
 LABEL_OFFSET = 16
 LABEL_TOP_CLEARANCE = 28
 ROUND_RADIUS = 64
+SCROLL = 2
 
 PAGE_BG_COLOR = "#f5f5f5"
 PAGE_BORDER_COLOR = "#cfcfcf"
@@ -522,7 +523,6 @@ def main():
     def set_selected(name):
         selected_var.set(name)
         show_selected_section()
-        selected_entry.select_range(0, tk.END)
 
     def run_new_gesture():
         text = new_var.get().strip()
@@ -615,11 +615,11 @@ def main():
 
     def _on_mousewheel(event):
         if hasattr(event, "num"):
-            canvas.yview_scroll(-3 if event.num == 4 else 3, "units")
+            canvas.yview_scroll(-SCROLL if event.num == 4 else SCROLL, "units")
         else:
             delta = getattr(event, "delta", 0)
             move = int(-1 * (delta / 120)) or (-1 if delta > 0 else 1)
-            canvas.yview_scroll(move * 3, "units")
+            canvas.yview_scroll(move * SCROLL, "units")
 
     canvas.bind_all("<MouseWheel>", _on_mousewheel)
     canvas.bind_all("<Button-4>", _on_mousewheel)
