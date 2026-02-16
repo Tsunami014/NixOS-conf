@@ -95,6 +95,9 @@ wlanthy
       nodejs
       fd
       ripgrep
+      (texlive.combine {
+        inherit (texlive) scheme-full;
+      })
 
       # For lsps and stuff
       python313
