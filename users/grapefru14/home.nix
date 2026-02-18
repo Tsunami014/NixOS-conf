@@ -13,11 +13,14 @@
   # Allow bluetooth headphones buttons to control media
   services.mpris-proxy.enable = true;
 
+  imports = [
+    ./config.nix
+
+    ./pkgs/browser.nix
+  ];
+
   # Package stuff
   nixpkgs.config.allowUnfree = true;
-  imports = [
-    ./specialPkgs/browser.nix
-  ];
 
   home.packages = with pkgs; [
     alacritty
@@ -46,8 +49,8 @@
     oterm
     arduino-ide
     # Apps I needed to make myself for one reason or another
-    (pkgs.callPackage ./extraPkgs/godsvg.nix {})
-    (pkgs.callPackage ./extraPkgs/wlanthy.nix {})
+    (pkgs.callPackage ./pkgs/godsvg.nix {})
+    (pkgs.callPackage ./pkgs/wlanthy.nix {})
     # Apps I'm version-conscious for
     ldtk
     master-pkgs.aseprite
@@ -161,106 +164,5 @@ fi'';
   # So setting global git config sets onto this writable empty file, not the unwritable git config defined above
   home.activation.makeGitConfig = config.lib.dag.entryAfter [ "writeBoundary" ] ''
     touch "$HOME/.gitconfig"
-  '';
-
-  # Config stuff
-
-  home.file = {
-    "Pictures/backgrounds" = {
-      source = ./backgrounds;
-      recursive = true;
-    };
-
-    ".local/share/fonts" = {
-      source = ./fonts;
-      recursive = true;
-    };
-  }
-    // lib.optionalAttrs (lib.pathExists ./apps) {
-      "AppIms" = {
-        source = ./apps;
-        recursive = true;
-      };
-    };
-
-
-  home.activation.makeFolders = config.lib.dag.entryAfter [ "writeBoundary" ]
-    ''cd "$HOME"; mkdir -p Downloads Documents Pictures Videos'';
-
-  home.activation.cloneNvim = config.lib.dag.entryAfter [ "writeBoundary" ] ''
-    PATH=${pkgs.git}/bin:$PATH
-    if [ ! -d "$HOME/.config/nvim" ]; then
-      echo "Cloning Neovim config repo..."
-      mkdir -p "$HOME/.config"
-      git clone https://github.com/Tsunami014/nvimConfig "$HOME/.config/nvim"
-      echo '{"projects": ["/etc/nixos/users/grapefru14", "/etc/nixos"]}' > "$HOME/.config/nvim/projects.json"
-    else
-      echo "Updating Neovim config..."
-      git -C "$HOME/.config/nvim" pull || true
-    fi
-  '';
-  home.activation.cloneBar = config.lib.dag.entryAfter [ "writeBoundary" ] ''
-    PATH=${pkgs.git}/bin:$PATH
-    if [ ! -d "$HOME/.config/quickshell/bar" ]; then
-      echo "Cloning Bar config repo..."
-      mkdir -p "$HOME/.config/quickshell/bar"
-      git clone https://github.com/Tsunami014/bar "$HOME/.config/quickshell/bar/"
-    else
-      echo "Updating Bar config..."
-      git -C "$HOME/.config/quickshell/bar" pull || true
-    fi
-  '';
-
-
-  # Link the config to the correct places
-  home.activation.makeLinks = config.lib.dag.entryAfter [ "writeBoundary" ] ''
-  if ! [ -d "$HOME" ]; then
-    echo "Home directory does not exist!"
-  fi
-  mainFold="/etc/nixos/users/$USER/config"
-  chmod +rw -R "$mainFold"
-  dots="$HOME/.dots"
-  mkdir -p "$dots" "$HOME/.config" "$HOME/.local/share"
-  while IFS= read -r line; do
-    # Skip empty lines
-    [ -z "$line" ] && continue
-    read -r mutable prefix name <<< "$line"
-
-    src="$mainFold/$name"
-    if [ ! -d "$src" ]; then
-      mkdir "$src"
-    fi
-    if [ "$mutable" = "perm" ]; then
-      orig="${./config}/$name"
-      prt="Permanent "
-    elif [ "$mutable" = "mut" ]; then
-      orig="$src"
-      prt="Mutable "
-    else
-      echo "Skipping unknown mutability for '$line': $mutable"
-      continue
-    fi
-
-    prt+="$name "
-
-    if [ "$prefix" = "conf" ]; then
-      link="$HOME/.config"
-      prt+="in ~/.config"
-    elif [ "$prefix" = "shr" ]; then
-      link="$HOME/.local/share"
-      prt+="in ~/.local/share"
-    else
-      echo "Skipping unknown prefix for '$line': $prefix"
-      continue
-    fi
-
-    printf "%s\e[1m%s\e[0m%s\n" "Linking config for " "$prt" "..."
-    if [ -d "$link/$name" ] && [ ! -L "$link/$name" ]; then
-      echo "Using existing config..."
-      ${pkgs.rsync}/bin/rsync -a --delete "$link/" "$mainFold/$name/"
-    fi
-    rm -rf "$link/$name"
-    ln -sfT "$orig" "$link/$name"
-  done < "${./config/list.txt}"
   '';
 }
