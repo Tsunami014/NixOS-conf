@@ -36,7 +36,7 @@ binds {
     Mod+Grave { power-off-monitors; }  // To turn back on do anything
     Mod+Shift+Grave { quit; }
 
-    Mod+A repeat=false { toggle-overview; }
+    Mod+Space repeat=false { toggle-overview; }
 
     Mod+Q repeat=false { close-window; }
 
@@ -61,8 +61,8 @@ binds {
     Mod+Shift+Minus { set-window-height "-10%"; }
     Mod+Shift+Equal { set-window-height "+10%"; }
 
-    Mod+Space       { toggle-window-floating; }
-    Mod+Shift+Space { switch-focus-between-floating-and-tiling; }
+    Mod+X       { toggle-window-floating; }
+    Mod+Shift+X { switch-focus-between-floating-and-tiling; }
 
 
     // The do stuff buttons
