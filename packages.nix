@@ -58,6 +58,10 @@
       name = "clean-garbage";
       text = builtins.readFile ./programs/clean-garbage.sh;
     })
+    (pkgs.writeShellApplication {
+      name = "user-sync";
+      text = ''bash ${./users}/"$USER"/sync.sh'';
+    })
 
     (pkgs.writeShellApplication {
       name = "dirinit";

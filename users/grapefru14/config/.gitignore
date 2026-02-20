@@ -4,10 +4,3 @@ LDtk/*
 
 PureRef/*
 !PureRef/PureRef.ini
-
-aseprite/*.log
-aseprite/sessions
-aseprite/files/*
-
-GodSVG/*
-!GodSVG/savedata.tres

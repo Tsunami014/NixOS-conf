@@ -22,6 +22,8 @@ binds {
 
     Mod+V repeat=false hotkey-overlay-title="Clipboard history" { spawn "cliphist-fuzzel-img"; }
 
+    Mod+S repeat=false hotkey-overlay-title="Sapla" { spawn "~/Documents/Sapla/Sapla-x86_64.AppImage"; }
+
 
     // Misc stuff
     Mod+Escape allow-inhibiting=false { toggle-keyboard-shortcuts-inhibit; }
