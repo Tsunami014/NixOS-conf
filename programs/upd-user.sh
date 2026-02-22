@@ -1,23 +1,29 @@
 #!/usr/bin/env bash
 set -euo pipefail
-HELP="Update scripts
-
-Optional flags:
--ol - run the operation completely offline (even if have wifi, don't use it)
-"
-fromAll=false
-if [[ "${1-}" == "--from-all" ]]; then
-    fromAll=true
-    shift
-fi
-case "${1-}" in
-    --help | -help | -h) echo "$HELP"; ecit 0 ;;
-    -ol | "") ;;
-    *) echo "Unknown option '$1'!"; echo "$HELP"; exit 1 ;;
-esac
-
 mainFold=/etc/nixos
 userFold="$mainFold/users/$USER"
+
+FLAGS=$(cat << EOF
+  -ol - run the operation completely offline (even if have wifi, don't use it)
+EOF
+);if [ "${1-}" = "--flags" ]; then
+    echo "$FLAGS"; exit 0
+fi
+HELP="Update this user
+
+Optional flags:
+$FLAGS"
+
+fromAll=false
+offline=false
+for arg in "$@"; do
+  case "$arg" in
+    --help | -help | -h) echo "$HELP"; exit 0 ;;
+    --from-all) fromAll=true ;;
+    -ol) offline=true ;;
+    *) echo "Unknown option '$arg'!"; echo "$HELP"; exit 1 ;;
+  esac
+done
 
 fprint() {
     printf "\e[1;93m%s\e[0m\n" "$1";
@@ -28,14 +34,17 @@ if [ ! -d "$HOME" ]; then
     exit 1
 fi
 
-if ! $fromAll; then
+sync() {
     syncf="$userFold/sync.sh"
     if [ -f "$syncf" ]; then
-        fprint "Syncing..."
+        fprint "Syncing $1..."
         sh "$syncf" "$@" || fprint "Sync script failed!"
     else
-        fprint "No sync script"
+        fprint "No sync script for syncing $1"
     fi
+}
+if ! $fromAll; then
+    sync before "$@"
 fi
 
 fprint "Updating git..."
@@ -53,7 +62,7 @@ if ! $fromAll; then
 fi
 
 fprint "Running user rebuild..."
-if [ "${1-}" == "-ol" ]; then
+if $offline; then
     fprint "Using offline mode! The wifi will be temporarily disabled."
     wifi_on() { nmcli radio wifi on; }
     trap wifi_on ERR
@@ -62,6 +71,10 @@ if [ "${1-}" == "-ol" ]; then
     wifi_on
 else
     home-manager switch --flake "$userFold"
+fi
+
+if ! $fromAll; then
+    sync after "$@"
 fi
 
 if ! $fromAll; then

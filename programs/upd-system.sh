@@ -1,18 +1,27 @@
 #!/usr/bin/env bash
 set -euo pipefail
-HELP="Update scripts
+mainFold=/etc/nixos
+
+FLAGS=$(cat << EOF
+  -ol - run the operation completely offline (even if have wifi, don't use it)
+EOF
+);if [ "${1-}" = "--flags" ]; then
+    echo "$FLAGS"; exit 0
+fi
+HELP="Update system
 
 Optional flags:
--ol - run the operation completely offline (even if have wifi, don't use it)
-"
-case "${1-}" in
-    --help | -help | -h) echo "$HELP"; exit 0 ;;
-    -ol | "") ;;
-    *) echo "Unknown option '$1'!"; echo "$HELP"; exit 1 ;;
-esac
-sudo -v
+$FLAGS"
 
-mainFold="/etc/nixos"
+offline=false
+for arg in "$@"; do
+  case "$arg" in
+    --help | -help | -h) echo "$HELP"; exit 0 ;;
+    -ol) offline=true ;;
+    *) echo "Unknown option '$arg'!"; echo "$HELP"; exit 1 ;;
+  esac
+done
+sudo -v
 
 fprint() {
     printf "\e[1;93m%s\e[0m\n" "$1";
@@ -25,7 +34,7 @@ fprint "Updating git..."
 sudo git -C "$mainFold" add .
 
 fprint "Running system rebuild..."
-if [ "${1-}" == "-ol" ]; then
+if $offline; then
     fprint "Using offline mode!"
     sudo nixos-rebuild switch --offline
 else

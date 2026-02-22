@@ -1,3 +1,7 @@
+if [ "${1-}" = "before" ]; then
+  echo "Skipping before sync"
+  exit 0
+fi
 if ! [ -d $(dirname "$HOME") ]; then
   echo "Home directory does not exist!"
 fi

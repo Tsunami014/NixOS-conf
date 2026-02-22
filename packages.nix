@@ -51,12 +51,12 @@
       text = builtins.readFile ./programs/upd-all.sh;
     })
     (pkgs.writeShellApplication {
-      name = "clean-generations";
-      text = builtins.readFile ./programs/clean-generations.sh;
+      name = "upd-generations";
+      text = builtins.readFile ./programs/upd-generations.sh;
     })
     (pkgs.writeShellApplication {
-      name = "clean-garbage";
-      text = builtins.readFile ./programs/clean-garbage.sh;
+      name = "upd-garbage";
+      text = builtins.readFile ./programs/upd-garbage.sh;
     })
     (pkgs.writeShellApplication {
       name = "user-sync";
