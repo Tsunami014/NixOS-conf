@@ -2,7 +2,7 @@
 
 let
   pname = "godsvg";
-  version = "v1.0-alpha13";
+  version = "v1.0-alpha14";
 
   libs = with pkgs; [
     wayland
@@ -15,7 +15,7 @@ in stdenv.mkDerivation rec {
 
   src = fetchurl {
     url = "https://github.com/MewPurPur/GodSVG/releases/download/${version}/GodSVG.Linux.zip";
-    sha256 = "sha256-fgzuirSIKF9h7wEj0TLypXdf+pr50VkyqGR0BXyvM+s=";
+    sha256 = "sha256-G3nY8ufLTXwqPJXOCb0DypNwZHjQt18ZZNCuCBZhE6A=";
   };
 
   nativeBuildInputs = [
