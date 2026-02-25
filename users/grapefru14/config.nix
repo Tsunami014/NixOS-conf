@@ -18,8 +18,8 @@
     };
 
 
-#   home.activation.makeFolders = config.lib.dag.entryAfter [ "writeBoundary" ]
-#     ''cd "$HOME"; mkdir -p Downloads Documents Pictures Videos'';
+  home.activation.makeFolders = config.lib.dag.entryAfter [ "writeBoundary" ]
+    ''cd "$HOME"; mkdir -p Downloads Documents Pictures Videos'';
 
   home.activation.cloneConfigs = config.lib.dag.entryAfter [ "writeBoundary" ] ''
     PATH=${pkgs.git}/bin:$PATH

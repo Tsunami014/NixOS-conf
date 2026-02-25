@@ -2,7 +2,9 @@
 set -euo pipefail
 mainFold=/etc/nixos
 
-HELP="Clean the garbage! This means it will have to recache everything again.
+HELP="Clean the garbage!
+This means it will have to recache everything again, and will probably require wifi.
+This by default cleans all the garbage, but flags can make it clean only the root or user's garbage
 
 Optional flags for cleaning:
   -usr - only collect user garbage, not root or any other user (does not require sudo)

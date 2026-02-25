@@ -3,6 +3,7 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     home-manager
+    wine
     xwayland-satellite
     swayidle
     gcc

@@ -97,9 +97,9 @@ cleanUsr() {
     case "$type" in
         +)
             curId=$(home-manager generations | grep "(current)" | awk 'END {print $5}')
-            home-manager remove-generations $(
+            home-manager remove-generations "$(
                 home-manager generations | awk -v cutoff="$((curId - num))" '$5 < cutoff { print $5 }'
-            )
+            )"
         ;;
         d)
             home-manager expire-generations "-$num days"
@@ -115,8 +115,8 @@ if [ "$upd" != "root" ]; then
         for folder in "$mainFold"/users/*; do
             {
               declare -f cleanUsr
-              cleanUsr
-            } | sudo -iu "$(basename "$folder")" bash -s
+              echo cleanUsr
+            } | sudo -iu "$(basename "$folder")" bash
         done
     fi
 fi
