@@ -51,6 +51,7 @@
     # Apps I needed to make myself for one reason or another
     (pkgs.callPackage ./pkgs/godsvg.nix {})
     (pkgs.callPackage ./pkgs/wlanthy.nix {})
+    (pkgs.callPackage ./pkgs/roland.nix {})
     # Apps I'm version-conscious for
     ldtk
     master-pkgs.aseprite

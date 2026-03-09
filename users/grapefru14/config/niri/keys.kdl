@@ -22,12 +22,14 @@ binds {
 
     Mod+V repeat=false hotkey-overlay-title="Clipboard history" { spawn "cliphist-fuzzel-img"; }
 
-    Mod+S repeat=false hotkey-overlay-title="Sapla" { spawn "~/Documents/Sapla/Sapla-x86_64.AppImage"; }
+    Mod+S repeat=false hotkey-overlay-title="Sapla" { spawn "~/Documents/Sapla/out/Sapla-x86_64.AppImage"; }
 
 
     // Misc stuff
     Mod+Escape allow-inhibiting=false { toggle-keyboard-shortcuts-inhibit; }
         // In case something needs to use keybinds taken by niri
+
+    Mod+Control+Shift+Escape { quit; }
 
     Mod+F1 { show-hotkey-overlay; }
 
@@ -36,7 +38,6 @@ binds {
     Alt+Print { screenshot-window; }
 
     Mod+Grave { power-off-monitors; }  // To turn back on do anything
-    Mod+Shift+Grave { quit; }
 
     Mod+Space repeat=false { toggle-overview; }
 
