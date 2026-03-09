@@ -3,7 +3,7 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     home-manager
-    wine
+    wineWow64Packages.stable
     xwayland-satellite
     swayidle
     gcc
@@ -122,6 +122,9 @@ ln -sf ${pkgs.bash}/bin/bash /bin/bash
 '';
 
   fonts.packages = with pkgs; [
+    dejavu_fonts
+    ipafont
+    kochi-substitute
     nerd-fonts.ubuntu
   ];
 
