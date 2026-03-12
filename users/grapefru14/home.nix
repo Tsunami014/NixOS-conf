@@ -66,6 +66,7 @@
     wvkbd
 
     # Extra executable stuff
+    (import ./pkgs/profile.nix { inherit pkgs; })
     (pkgs.writeScriptBin "navihex" ''
       #!${pkgs.python313.withPackages (ps: with ps; [ tkinter ])}/bin/python3
       ${builtins.readFile ./programs/navihex.py}
@@ -102,6 +103,7 @@ wlanthy
       (texlive.combine {
         inherit (texlive) scheme-full;
       })
+      pandoc
 
       # For lsps and stuff
       python313
