@@ -6,7 +6,7 @@ environment {
 binds {
     // Apps / User stuff
     Mod+MouseMiddle repeat=false hotkey-overlay-title="Hexecute" { spawn-sh "$EXECUTE"; }
-    Mod+P repeat=false hotkey-overlay-title="Pointer" { spawn-sh "pointer"; }
+    Mod+Shift+P repeat=false hotkey-overlay-title="Pointer" { spawn-sh "HOME='/tmp';hexecute"; }
 
     Mod+Return repeat=false hotkey-overlay-title="Terminal" { spawn "alacritty"; }
     Mod+D repeat=false hotkey-overlay-title="Downloads" { spawn-sh "mkdir -p /tmp/Download;$TermSpawn yazi /tmp/Download"; }
@@ -16,6 +16,7 @@ binds {
     Mod+H repeat=false hotkey-overlay-title="Htop" { spawn-sh "$TermSpawn htop"; }
     Mod+J repeat=false hotkey-overlay-title="Japanese" { spawn-sh "$TermSpawn jap"; }
     Mod+T repeat=false hotkey-overlay-title="Temp place" { spawn-sh "$TermSpawn bash -ic mktmpplace"; }
+    Mod+P repeat=false hotkey-overlay-title="Temporary python" { spawn-sh "$TermSpawn bash -ic '= python3'"; }
 
     Mod+B repeat=false hotkey-overlay-title="Web browser" { spawn "zen"; }
     Mod+Shift+B repeat=false hotkey-overlay-title="Private web browser" { spawn-sh "zen --private-window"; }
