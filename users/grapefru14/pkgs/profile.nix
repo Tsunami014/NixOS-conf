@@ -14,12 +14,7 @@ pkgs.writeShellApplication {
         exit 1
     fi
 
-    python -m cProfile -o /tmp/temp.dat "$@" &
-    child_pid=$!
-
-    trap 'echo "Ctrl+C found! Killing child process..."; kill $child_pid' INT
-
-    wait $child_pid
+    python -m cProfile -o /tmp/temp.dat "$@"
     ret=$?
 
     trap - INT
