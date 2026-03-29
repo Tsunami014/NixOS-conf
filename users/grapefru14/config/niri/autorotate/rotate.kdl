@@ -1,0 +1,10 @@
+input {
+  touch {
+    map-to-output "BOE NV122WUM-N42 Unknown"
+    calibration-matrix 1.0 0.0 0.0 0.0 1.0 0.0
+  }
+  tablet {
+    map-to-output "BOE NV122WUM-N42 Unknown"
+    calibration-matrix 1.0 0.0 0.0 0.0 1.0 0.0
+  }
+}

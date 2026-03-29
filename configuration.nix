@@ -128,10 +128,6 @@ efi /EFI/ubuntu/grubx64.efi
     variant = "";
   };
 
-  # Misc stuff
-  nixpkgs.config.allowUnfree = true;
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-
   # The desktop environment stuff
   programs.niri.enable = true;
   security.polkit.enable = true;
@@ -139,6 +135,13 @@ efi /EFI/ubuntu/grubx64.efi
     enable = true;
     extraPortals = [ pkgs.xdg-desktop-portal-wlr ];
   };
+
+  # Misc nix stuff
+  nixpkgs.config.allowUnfree = true;
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+
+  # Misc other stuff
+  programs.fuse.userAllowOther = true;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

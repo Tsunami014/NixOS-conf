@@ -6,6 +6,7 @@ screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
 include "windowRules.kdl"
 include "keys.kdl"
 include "startup.kdl"
+include "autorotate/rotate.kdl"
 
 // Input device configuration.
 // https://yalter.github.io/niri/Configuration:-Input

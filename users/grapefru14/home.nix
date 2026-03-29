@@ -64,6 +64,7 @@
     brightnessctl
     inputs.hyprlock.packages.${system}.default
     wvkbd
+    wtype
 
     # Extra executable stuff
     (import ./pkgs/profile.nix { inherit pkgs; })

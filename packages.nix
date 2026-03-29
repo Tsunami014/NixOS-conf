@@ -3,6 +3,7 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     home-manager
+    bindfs
     wineWow64Packages.stable
     xwayland-satellite
     swayidle
