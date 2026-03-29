@@ -1,4 +1,4 @@
-perm conf !sysfiles
+perm conf _sysfiles
 perm conf nixpkgs
 perm conf niri
 perm conf hypr
