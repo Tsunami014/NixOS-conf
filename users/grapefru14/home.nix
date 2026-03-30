@@ -67,7 +67,8 @@
     wtype
 
     # Extra executable stuff
-    (import ./pkgs/profile.nix { inherit pkgs; })
+    (pkgs.callPackage ./pkgs/profile.nix {})
+    (pkgs.callPackage ./pkgs/Documents.nix {})
     (pkgs.writeScriptBin "navihex" ''
       #!${pkgs.python313.withPackages (ps: with ps; [ tkinter ])}/bin/python3
       ${builtins.readFile ./programs/navihex.py}
