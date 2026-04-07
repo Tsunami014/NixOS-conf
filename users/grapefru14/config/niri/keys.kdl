@@ -6,7 +6,7 @@ environment {
 binds {
     // Apps / User stuff
     Mod+MouseMiddle repeat=false hotkey-overlay-title="Hexecute" { spawn-sh "$EXECUTE"; }
-    Mod+Shift+P repeat=false hotkey-overlay-title="Pointer" { spawn-sh "HOME='/tmp';hexecute"; }
+    Mod+Ctrl+Shift+P repeat=false hotkey-overlay-title="Pointer" { spawn-sh "HOME='/tmp';hexecute"; }
 
     Mod+Return repeat=false hotkey-overlay-title="Terminal" { spawn "alacritty"; }
     Mod+D repeat=false hotkey-overlay-title="Downloads" { spawn-sh "mkdir -p /tmp/Download;$TermSpawn yazi /tmp/Download"; }
@@ -22,6 +22,7 @@ binds {
     Mod+Shift+B repeat=false hotkey-overlay-title="Private web browser" { spawn-sh "zen --private-window"; }
 
     Mod+V repeat=false hotkey-overlay-title="Clipboard history" { spawn "cliphist-fuzzel-img"; }
+    Mod+Shift+P repeat=false hotkey-overlay-title="Colour picker" { spawn "wl-color-picker"; }
 
     Mod+S repeat=false hotkey-overlay-title="Sapla" { spawn "~/Documents/Sapla/out/Sapla-x86_64.AppImage"; }
 

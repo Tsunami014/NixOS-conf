@@ -44,10 +44,10 @@
     pavucontrol
     gnome-calculator
     krita
-    pureref
     ollama
     oterm
     arduino-ide
+    wl-color-picker
     # Apps I needed to make myself for one reason or another
     (pkgs.callPackage ./pkgs/godsvg.nix {})
     (pkgs.callPackage ./pkgs/wlanthy.nix {})
@@ -56,6 +56,7 @@
     ldtk
     master-pkgs.aseprite
     master-pkgs.saleae-logic-2
+    master-pkgs.pureref
 
     # Quickshell & quickshell projects
     inputs.qml-niri.packages.${system}.quickshell
