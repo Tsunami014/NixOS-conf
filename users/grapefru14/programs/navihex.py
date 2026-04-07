@@ -432,7 +432,7 @@ def main():
         selected_var,
         ("Arial", SIDEBAR_TEXT_SIZE),
         SIDEBAR_TEXT_SIZE * 2,
-        readonly=True
+        readonly=False  # now editable for rename
     )
 
     delete_button = RoundedButton(
@@ -461,6 +461,21 @@ def main():
         text_color=BUTTON_TEXT_COLOR
     )
 
+    rename_button = RoundedButton(
+        selected_section,
+        text="Rename Gesture",
+        command=None,
+        font=("Arial", SIDEBAR_TEXT_SIZE),
+        height=BUTTON_HEIGHT,
+        radius=BUTTON_RADIUS,
+        bg_color=BUTTON_BG,
+        border_color=BUTTON_BORDER_COLOR,
+        border_width=BUTTON_BORDER_WIDTH,
+        text_color=BUTTON_TEXT_COLOR
+    )
+
+    selected_original_name = {"value": ""}
+
     def show_selected_section():
         if not selected_section.winfo_ismapped():
             selected_section.pack(padx=0, pady=(12, 0), fill="x")
@@ -472,6 +487,7 @@ def main():
     selected_separator.pack(fill="x", padx=10, pady=12)
     selected_label.pack(padx=10, pady=(0, 4), anchor="w")
     selected_container.pack(padx=10, fill="x")
+    rename_button.pack(padx=10, pady=(8, 0), fill="x")
     delete_button.pack(padx=10, pady=(8, 0), fill="x")
     edit_button.pack(padx=10, pady=(8, 0), fill="x")
 
@@ -521,6 +537,7 @@ def main():
             build_page(page, chunk, page_w, page_h, label_index, set_selected)
 
     def set_selected(name):
+        selected_original_name["value"] = name
         selected_var.set(name)
         show_selected_section()
 
@@ -533,18 +550,19 @@ def main():
         rebuild_pages()
 
     def run_delete_gesture():
-        text = selected_var.get().strip()
+        text = selected_original_name["value"].strip()
         if not text:
             return
         ok = messagebox.askyesno("Delete Gesture", f"Remove gesture '{text}'?")
         if ok:
             subprocess.run(["hexecute", "-remove", text], check=False)
             selected_var.set("")
+            selected_original_name["value"] = ""
             hide_selected_section()
             rebuild_pages()
 
     def run_edit_gesture():
-        text = selected_var.get().strip()
+        text = selected_original_name["value"].strip()
         if not text:
             return
         ok = messagebox.askyesno("Edit Gesture", f"Relearn gesture '{text}'?")
@@ -552,12 +570,64 @@ def main():
             subprocess.run(["hexecute", "-remove", text], check=False)
             subprocess.run(["hexecute", "-learn", text], check=False)
             rebuild_pages()
+            selected_original_name["value"] = text
             selected_var.set(text)
             show_selected_section()
+
+    def run_rename_gesture():
+        old_name = selected_original_name["value"].strip()
+        new_name = selected_var.get().strip()
+
+        if not old_name:
+            return
+        if not new_name:
+            messagebox.showerror("Rename Gesture", "New name cannot be empty.")
+            return
+        if new_name == old_name:
+            return
+
+        old_token = f'"command":"{old_name}"'
+        new_token = f'"command":"{new_name}"'
+
+        try:
+            with open(GESTURES_FPATH, "r", encoding="utf-8") as f:
+                content = f.read()
+        except OSError as e:
+            messagebox.showerror("Rename Gesture", f"Failed to read {GESTURES_FPATH}\n\n{e}")
+            return
+
+        occurrences = content.count(old_token)
+        if occurrences == 0:
+            messagebox.showerror(
+                "Rename Gesture",
+                f"Did not find {old_token} in:\n{GESTURES_FPATH}"
+            )
+            return
+
+        if occurrences > 1:
+            messagebox.showwarning(
+                "Rename Gesture",
+                f"Found {occurrences} instances of {old_token} in:\n{GESTURES_FPATH}\n\n"
+                f"Only the first instance will be replaced."
+            )
+
+        updated = content.replace(old_token, new_token, 1)
+
+        try:
+            with open(GESTURES_FPATH, "w", encoding="utf-8") as f:
+                f.write(updated)
+        except OSError as e:
+            messagebox.showerror("Rename Gesture", f"Failed to write {GESTURES_FPATH}\n\n{e}")
+            return
+
+        selected_original_name["value"] = new_name
+        selected_var.set(new_name)
+        rebuild_pages()
 
     new_button.command = run_new_gesture
     delete_button.command = run_delete_gesture
     edit_button.command = run_edit_gesture
+    rename_button.command = run_rename_gesture
 
     def clear_highlights():
         for _, c, label_id in label_index:
