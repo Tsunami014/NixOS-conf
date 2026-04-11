@@ -28,12 +28,8 @@ for fold in "$mainFold"/*/; do
     fi
     if [ "$mutable" = "perm" ]; then
       prt="Permanent "
-      willb="combined with existing config"
-      perm=true
     elif [ "$mutable" = "mut" ]; then
       prt="Mutable "
-      willb="deleted"
-      perm=false
     else
       echo "Skipping unknown mutability for '$line': $mutable"
       continue
@@ -57,20 +53,17 @@ for fold in "$mainFold"/*/; do
 
     printf "%s\e[1m%s\e[0m%s\n" "Linking config for " "$prt" "..."
     if [ -d "$link/$name" ] && [ ! -L "$link/$name" ]; then
-      echo "Config already exists, and will be $willb!"
+      echo "Config already exists!"
+      printf "Options:\tq: quit\n\tb: backup & combine, B: backup and delete old\n\tc: combine, C: delete old\n"
       while true; do
-        read -sn1 -p "What do you want to do? [b - backup, d - delete, q - quit] " OPT < /dev/tty
+        read -sn1 -p "What do you want to do? " OPT < /dev/tty
         printf "\n\e[K"
         case "$OPT" in
-          b)
-            echo "Backing up!"
+          b|B)
+            echo "Backing up existing config..."
             cp -r "$link/$name" "$link/$name.backup"
-            break
             ;;
-          d)
-            echo "Deleting!"
-            break
-            ;;
+          c|C);;
           q)
             echo "Quitting!"
             exit 1
@@ -79,11 +72,16 @@ for fold in "$mainFold"/*/; do
             printf "Unknown option '$OPT'!\e[999D\e[1A\e[K"
             ;;
         esac
+        case "$OPT" in
+          b|c)
+            echo "Syncing existing config..."
+            rsync -a --delete "$link/$name/" "$fold/$name/"
+            break
+          ;;
+          B|C) break ;;
+        esac
       done
-      if [ "$perm" = false ]; then
-        echo "Syncing existing config..."
-        rsync -a --delete "$link/$name/" "$fold/$name/"
-      fi
+      echo "Replacing config with new..."
     fi
     rm -rf "$link/$name"
     ln -sfT "$orig" "$link/$name"

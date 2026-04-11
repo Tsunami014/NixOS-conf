@@ -7,3 +7,4 @@ perm conf alacritty
 mut conf hexecute
 mut conf LDtk
 mut conf PureRef
+mut conf zed

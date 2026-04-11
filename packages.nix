@@ -61,7 +61,7 @@
       text = builtins.readFile ./programs/upd-garbage.sh;
     })
     (pkgs.writeShellApplication {
-      name = "user-sync";
+      name = "upd-sync";
       text = ''bash ${./users}/"$USER"/sync.sh'';
     })
 
