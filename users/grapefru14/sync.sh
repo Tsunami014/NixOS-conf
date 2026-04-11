@@ -8,7 +8,7 @@ fi
 mkdir -p "$HOME/.config" "$HOME/.local/share"
 mainFold="/etc/nixos/users/$USER"
 folders=("/config")
-for fold in "$mainFold"/*/; do
+for fold in "$mainFold"/*/ "$mainFold"/.*/; do
   if [ ! -f "$fold/list.txt" ]; then
     continue
   fi
@@ -54,7 +54,7 @@ for fold in "$mainFold"/*/; do
     printf "%s\e[1m%s\e[0m%s\n" "Linking config for " "$prt" "..."
     if [ -d "$link/$name" ] && [ ! -L "$link/$name" ]; then
       echo "Config already exists!"
-      printf "Options:\tq: quit\n\tb: backup & combine, B: backup and delete old\n\tc: combine, C: delete old\n"
+      printf "Opts: \tq: quit\n\tb: backup & combine \tB: backup and delete old\n\tc: combine \td: delete old\n"
       while true; do
         read -sn1 -p "What do you want to do? " OPT < /dev/tty
         printf "\n\e[K"
@@ -63,7 +63,7 @@ for fold in "$mainFold"/*/; do
             echo "Backing up existing config..."
             cp -r "$link/$name" "$link/$name.backup"
             ;;
-          c|C);;
+          c|d);;
           q)
             echo "Quitting!"
             exit 1
@@ -78,7 +78,7 @@ for fold in "$mainFold"/*/; do
             rsync -a --delete "$link/$name/" "$fold/$name/"
             break
           ;;
-          B|C) break ;;
+          B|d) break ;;
         esac
       done
       echo "Replacing config with new..."

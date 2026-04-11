@@ -143,6 +143,11 @@ efi /EFI/ubuntu/grubx64.efi
   # Misc other stuff
   programs.fuse.userAllowOther = true;
 
+  # Fix udev sometimes freaking out
+#   services.udev.extraRules = ''
+#     SUBSYSTEM=="power_supply", KERNEL=="BAT1", ACTION=="change", OPTIONS+="ignore_device"
+#   '';
+
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;

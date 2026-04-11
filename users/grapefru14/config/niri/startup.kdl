@@ -2,10 +2,10 @@ spawn-at-startup "systemctl" "--user" "import-environment" "WAYLAND_DISPLAY" "XD
 spawn-at-startup "hyprlock"
 spawn-at-startup "quickshell" "-c" "bar" "-n"
 
-spawn-at-startup "~/.config/_sysfiles/wallppr-daemon.sh"
-spawn-at-startup "~/.config/_sysfiles/idle.sh"
-spawn-at-startup "~/.config/_sysfiles/autorotate.sh"
-spawn-at-startup "~/.config/_sysfiles/gestures.sh"
+spawn-at-startup "~/,sysfiles/wallppr-daemon.sh"
+spawn-at-startup "~/,sysfiles/idle.sh"
+spawn-at-startup "~/,sysfiles/autorotate.sh"
+spawn-at-startup "~/,sysfiles/gestures.sh"
 
 spawn-at-startup "wl-paste" "--watch" "cliphist" "store"
 spawn-at-startup "ollama" "serve"

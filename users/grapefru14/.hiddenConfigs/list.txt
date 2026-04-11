@@ -1,4 +1,5 @@
-perm . !extras
+perm home !extras
 mut shr GodSVG
 mut shr zed
 mut conf aseprite
+mut home zen
