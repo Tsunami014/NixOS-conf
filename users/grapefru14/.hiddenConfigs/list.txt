@@ -1,0 +1,3 @@
+perm . !extras
+mut shr GodSVG
+mut conf aseprite
