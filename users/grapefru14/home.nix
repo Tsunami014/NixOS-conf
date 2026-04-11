@@ -89,6 +89,8 @@ F12 to toggle on/off, though not recommended for long"
 wlanthy
 '';
     })
+    # Lazily loaded programs
+    (pkgs.writeScriptBin "zed" "nix-shell -p zed-editor --run zeditor")
   ];
 
   programs.neovim = {
