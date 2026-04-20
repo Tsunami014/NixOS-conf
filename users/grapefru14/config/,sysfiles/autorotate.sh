@@ -1,20 +1,25 @@
-#!/usr/bin/env bash
-# exec >>"$HOME/.autorotate.log" 2>&1
-set -euo pipefail
+#!/bin/sh
+exec > /tmp/autorotate.log 2>&1
+set -x
 get_outp() {
-  OUTPUT="${1:-$(niri msg outputs | grep -Po -m 1 '(?<=Output ")[^"]+')}"
+  if [ "${1-}" ]; then
+    OUTPUT="$1"
+  else
+    OUTPUT="$(niri msg outputs | grep -Po -m 1 '(?<=Output ")[^"]+')"
+  fi
 }
 get_outp
-if [ "$OUTPUT" == "" ]; then
+if [ "$OUTPUT" = "" ]; then
   echo "Waiting for output..."
-  while [ "$OUTPUT" == "" ]; do
+  while [ "$OUTPUT" = "" ]; do
+    sleep 0.2
     get_outp
   done
 fi
 echo "Using output '$OUTPUT'"
 
 rotate_output() {
-  local orientation="$1"
+  orientation="$1"
   case "$orientation" in
     *normal*)
       rot=normal
@@ -46,6 +51,7 @@ input {
   }
 }
 EOF
+  umount ~/.config/niri/autorotate 2>/dev/null || true
   bindfs /tmp/autorotate ~/.config/niri/autorotate
 }
 
