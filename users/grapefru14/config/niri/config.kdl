@@ -5,8 +5,9 @@ screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
 
 include "windowRules.kdl"
 include "keys.kdl"
-include "startup.kdl"
 include "autorotate/rotate.kdl"
+
+spawn-at-startup "sh" "-c" "systemctl --user import-environment WAYLAND_DISPLAY XDG_RUNTIME_DIR && ~/,sysfiles/startup.sh"
 
 // Input device configuration.
 // https://yalter.github.io/niri/Configuration:-Input
