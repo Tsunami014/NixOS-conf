@@ -12,6 +12,7 @@
     wget
     fzf
     yazi
+    unzip
     iio-sensor-proxy
 
     # Printer stuff

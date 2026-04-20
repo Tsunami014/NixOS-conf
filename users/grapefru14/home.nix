@@ -90,6 +90,14 @@ wlanthy
 '';
     })
     # Lazily loaded programs
+    (pkgs.writeShellApplication {
+      name = "py";
+      text = ''
+nix-shell -p python313 \
+  python313Packages.pyperclip \
+  python313Packages.numpy \
+--run python3 '';
+    })
     (pkgs.writeScriptBin "zed" "nix-shell -p zed-editor --run zeditor")
   ];
 
