@@ -17,6 +17,7 @@
     ./config.nix
 
     ./pkgs/browser.nix
+    ./pkgs/wlogout.nix
   ];
 
   # Package stuff

@@ -4,6 +4,8 @@ environment {
     EXECUTE "hexecute"
 }
 binds {
+    XF86PowerOff { spawn "wlogout"; }
+
     // Apps / User stuff
     Mod+MouseMiddle repeat=false hotkey-overlay-title="Hexecute" { spawn-sh "$EXECUTE"; }
     Mod+Ctrl+P repeat=false hotkey-overlay-title="Pointer" { spawn-sh "HOME='/tmp';hexecute"; }

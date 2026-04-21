@@ -23,8 +23,10 @@
     PATH = [ "/bin" ];
   };
 
-  hardware.graphics.enable = true;
+  # Disable handling of the power button
+  services.logind.settings.Login.HandlePowerKey = "ignore";
 
+  # Add groups to user
   users.groups.config = {};
   # Define user accounts. Don't forget to set a password with ‘passwd’.
   users.users.grapefru14 = {
@@ -36,6 +38,7 @@
   users.users.root = {
     extraGroups = [ "gitaccess" ];
   };
+
   # Auto login for tty1
   services.getty = {
     autologinOnce = true;
@@ -142,6 +145,7 @@ efi /EFI/ubuntu/grubx64.efi
 
   # Misc other stuff
   programs.fuse.userAllowOther = true;
+  hardware.graphics.enable = true;
 
   # Fix udev sometimes freaking out
 #   services.udev.extraRules = ''

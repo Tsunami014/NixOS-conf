@@ -12,6 +12,8 @@ spawn-at-startup "sh" "-c" "systemctl --user import-environment WAYLAND_DISPLAY 
 // Input device configuration.
 // https://yalter.github.io/niri/Configuration:-Input
 input {
+    disable-power-key-handling
+
     keyboard {
         numlock
     }
