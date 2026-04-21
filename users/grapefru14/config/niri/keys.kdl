@@ -27,6 +27,7 @@ binds {
     Mod+Shift+P repeat=false hotkey-overlay-title="Colour picker" { spawn "wl-color-picker"; }
 
     Mod+S repeat=false hotkey-overlay-title="Sapla" { spawn "~/Documents/Sapla/out/Sapla-x86_64.AppImage"; }
+    Mod+Shift+S repeat=false hotkey-overlay-title="StudyRNG" { spawn-sh "$TermSpawn studyrng ~/"; }
 
 
     // Misc stuff
