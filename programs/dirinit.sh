@@ -49,6 +49,7 @@ use nix \
   -p python313 \
   -p python313Packages.pip \
   -p python313Packages.setuptools \
+  -p python313Packages.debugpy \
   -p python313Packages.wheel
 
 export _LOCAL_PY_PKGS="${PWD}/.pypkgs"
@@ -69,6 +70,7 @@ use nix \
   -p python313 \
   -p python313Packages.pip \
   -p python313Packages.setuptools \
+  -p python313Packages.debugpy \
   -p python313Packages.wheel
 
 export venvFold=".venv"
@@ -77,9 +79,9 @@ if [[ ! -d "$venvFold" ]]; then
   python3 -m venv "$venvFold"
   echo "*" > "$venvFold/.gitignore"
 fi
-# pip install something
 echo "Loading python config..."
 source "$venvFold/bin/activate"
+# pip install -r requirements.txt
 EOF
 );;
         cmake)
