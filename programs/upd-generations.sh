@@ -89,6 +89,9 @@ if [ "$upd" != "usr" ]; then
         +) cleansys="+$num" ;;
         d) cleansys="${num}d" ;;
     esac
+    if [ "$cleansys" == "0d" ]; then
+        cleansys="old"
+    fi
     sudo nix-env --profile /nix/var/nix/profiles/system --delete-generations "$cleansys"
 fi
 

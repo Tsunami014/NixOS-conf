@@ -8,6 +8,7 @@ templOpts="Template options:
 - pyadv - setup python advanced with nix (for packages that aren't avaliable on nix)
 - pyvenv - setup python using a virtual environment
 - cmake - setup cmake
+- cmakeQt - setup cmake with Qt
 "
 
 case "${1-}" in
@@ -21,7 +22,7 @@ Options:
 --force - recreate the .envrc even if it already exists
 --show - print the template that would have been used and exit
 
-$templOpts" ;;
+$templOpts"; exit 0 ;;
 esac
 
 if [ ! "${2-}" == "--force" ] && [ ! "${2-}" == "--show" ] && [ -f .envrc ]; then
@@ -29,7 +30,7 @@ if [ ! "${2-}" == "--force" ] && [ ! "${2-}" == "--show" ] && [ -f .envrc ]; the
 else
     case "${1-}" in
         rust)
-            tmplNam="python"
+            tmplNam="rust"
             tmpl=$(cat <<'EOF'
 use nix -p rustup
 EOF
@@ -42,15 +43,14 @@ use nix \
   -p python313Packages.debugpy
 EOF
 );;
-        pyadv)
+        pyadv|pyadvreq)
             tmplNam="python advanced"
             tmpl=$(cat <<'EOF'
 use nix \
   -p python313 \
   -p python313Packages.pip \
-  -p python313Packages.setuptools \
   -p python313Packages.debugpy \
-  -p python313Packages.wheel
+  -p python313Packages.uv
 
 export _LOCAL_PY_PKGS="${PWD}/.pypkgs"
 export PYTHONPATH="${_LOCAL_PY_PKGS}:${PYTHONPATH}"
@@ -60,18 +60,20 @@ if [ ! -f "${_LOCAL_PY_PKGS}/.gitignore" ]; then
   echo "*" > "${_LOCAL_PY_PKGS}/.gitignore"
 fi
 
-python -m pip install --target "${_LOCAL_PY_PKGS}" stubgen-pyx
+# uv pip install --target "${_LOCAL_PY_PKGS}" -r requirements.txt
 EOF
-);;
+)
+            if [[ "$1" == "pyadvreq" ]]; then
+                tmpl="$(printf "%s" "$tmpl" | sed '$s/^# //')"
+            fi;;
         pyvenv)
             tmplNam="python with virtual environment"
             tmpl=$(cat <<'EOF'
 use nix \
   -p python313 \
   -p python313Packages.pip \
-  -p python313Packages.setuptools \
   -p python313Packages.debugpy \
-  -p python313Packages.wheel
+  -p python313Packages.uv
 
 export venvFold=".venv"
 if [[ ! -d "$venvFold" ]]; then
@@ -81,16 +83,24 @@ if [[ ! -d "$venvFold" ]]; then
 fi
 echo "Loading python config..."
 source "$venvFold/bin/activate"
-# pip install -r requirements.txt
+# uv pip install -r requirements.txt
 EOF
 );;
         cmake)
             tmplNam="cmake"
             tmpl=$(cat <<'EOF'
+use nix -p cmake -p clang-tools
+
+cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON build
+EOF
+);;
+        cmakeQt)
+            tmplNam="cmake with Qt"
+            tmpl=$(cat <<'EOF'
 use nix -p cmake \
-    -p clang-tools # \
-    #-p qt6.qtbase -p qt6.qtbase.dev \
-    #-p qt6.qtwayland -p qt6.wrapQtAppsHook
+    -p clang-tools \
+    -p qt6.qtbase -p qt6.qtbase.dev \
+    -p qt6.qtwayland -p qt6.wrapQtAppsHook
 
 cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON build
 EOF

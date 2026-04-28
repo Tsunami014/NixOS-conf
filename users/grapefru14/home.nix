@@ -46,7 +46,6 @@
     gnome-calculator
     krita
     ollama
-    oterm
     arduino-ide
     wl-color-picker
     # Apps I needed to make myself for one reason or another
@@ -70,7 +69,7 @@
 
     # Extra executable stuff
     (pkgs.callPackage ./pkgs/profile.nix {})
-    (pkgs.callPackage ./pkgs/Documents.nix {})
+    (pkgs.callPackage ./pkgs/Documents.nix { inherit (pkgs) python3Packages; })
     (pkgs.writeScriptBin "navihex" ''
       #!${pkgs.python313.withPackages (ps: with ps; [ tkinter ])}/bin/python3
       ${builtins.readFile ./programs/navihex.py}
