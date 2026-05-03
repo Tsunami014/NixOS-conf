@@ -4,11 +4,22 @@ mainFold=/etc/nixos
 userFold="$mainFold/users/$USER"
 
 FLAGS=$(cat << EOF
-  -ol - run the operation completely offline (even if have wifi, don't use it)
+  -ol or --offline - run the operation completely offline (even if have wifi, don't use it)
+  -up or --upgrade - upgrade the packages from source
 EOF
 );if [ "${1-}" = "--flags" ]; then
     echo "$FLAGS"; exit 0
 fi
+if [ "${1-}" = "--map" ]; then
+  map() {
+    echo "$1=${2:-$1}";
+    if [[ "$1" != "$2" ]]; then echo "$2=$2"; fi
+  }
+  map "-ol" "--offline"
+  map "-up" "--upgrade"
+  exit 0
+fi
+
 HELP="Update this user
 
 Optional flags:
@@ -16,11 +27,13 @@ $FLAGS"
 
 fromAll=false
 offline=false
+upgrade=false
 for arg in "$@"; do
   case "$arg" in
     --help | -help | -h) echo "$HELP"; exit 0 ;;
     --from-all) fromAll=true ;;
-    -ol) offline=true ;;
+    -ol|--offline) offline=true ;;
+    -up|--upgrade) upgrade=true ;;
     *) echo "Unknown option '$arg'!"; echo "$HELP"; exit 1 ;;
   esac
 done
@@ -62,6 +75,14 @@ if ! $fromAll; then
 fi
 
 fprint "Running user rebuild..."
+if $upgrade; then
+    if $offline; then
+        fprint "Cannot upgrade packages offline!"
+        exit 1
+    fi
+    fprint "Upgrading packages..."
+    nix flake update --flake "$userFold"
+fi
 if $offline; then
     fprint "Using offline mode! The wifi will be temporarily disabled."
     wifi_on() { nmcli radio wifi on; }

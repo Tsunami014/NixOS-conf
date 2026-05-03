@@ -13,6 +13,12 @@ Optional flags for cleaning:
 This script runs the appropriate upd command for the requirement (upd-user if -usr, upd-system if -root, else upd-all) to fix generations and redownload some important things so you can update offline again
 Optional flags for update scripts:
 $(upd-all --flags)"
+
+declare -A flag_map
+while IFS='=' read -r key value; do
+  flag_map["$key"]="$value"
+done < <(upd-all --map)
+
 updargs=()
 upd="all"
 for arg in "$@"; do
@@ -26,8 +32,13 @@ for arg in "$@"; do
         upd="${arg:1}"
     ;;
 
-    -ol) updallargs+=("$arg") ;;
-    *) echo "Unknown option '$arg'!"; echo "$HELP"; exit 1 ;;
+    *)
+        if [[ ${flag_map["$arg"]+_} ]]; then
+            updargs+=("${flag_map["$arg"]}")
+        else
+            echo "Unknown option '$arg'!"; echo "$HELP"; exit 1
+        fi
+    ;;
   esac
 done
 

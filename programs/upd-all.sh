@@ -3,11 +3,30 @@ set -euo pipefail
 mainFold=/etc/nixos
 
 FLAGS=$(cat << EOF
-  -ol - run the operation completely offline (even if have wifi, don't use it)
+  -ol or --offline - run the operation completely offline (even if have wifi, don't use it)
+  -up or --upgrade - upgrade the packages from source
 EOF
 );if [ "${1-}" = "--flags" ]; then
     echo "$FLAGS"; exit 0
 fi
+declare -A flag_map
+outmap=""
+map() {
+  value="${2:-$1}"
+  outmap+="$1=$value\n"
+  flag_map["$1"]="$value"
+  if [[ "$1" != "$value" ]]; then
+    outmap+="$2=$2\n"
+    flag_map["$2"]="$2"
+  fi
+}
+map "-ol" "--offline"
+map "-up" "--upgrade"
+if [ "${1-}" = "--map" ]; then
+  echo "${outmap%?}"
+  exit 0
+fi
+
 HELP="Update the system and every user
 
 Optional flags:
@@ -17,8 +36,13 @@ updargs=()
 for arg in "$@"; do
   case "$arg" in
     --help | -help | -h) echo "$HELP"; exit 0 ;;
-    -ol) updallargs+=("$arg") ;;
-    *) echo "Unknown option '$arg'!"; echo "$HELP"; exit 1 ;;
+    *)
+        if [[ ${flag_map["$arg"]+_} ]]; then
+            updargs+=("${flag_map["$arg"]}")
+        else
+            echo "Unknown option '$arg'!"; echo "$HELP"; exit 1
+        fi
+    ;;
   esac
 done
 sudo -v

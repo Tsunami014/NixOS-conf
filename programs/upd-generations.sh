@@ -20,12 +20,17 @@ if [ ! -v 1 ]; then
     echo "$HELP"
     exit 0
 fi
+
+declare -A flag_map
+while IFS='=' read -r key value; do
+  flag_map["$key"]="$value"
+done < <(upd-system --map)
+
 updargs=()
 upd="all"
 for arg in "$@"; do
   case "$arg" in
     --help | -help | -h) echo "$HELP"; exit 0 ;;
-    -ol) updallargs+=("$arg") ;;
 
     -usr | -root)
         if [ "$upd" != "all" ]; then
@@ -37,7 +42,9 @@ for arg in "$@"; do
 
     old) num="1"; type="+" ;;
     *)
-        if [[ $1 =~ ^\+([1-9][0-9]*)+$ ]]; then
+        if [[ ${flag_map["$arg"]+_} ]]; then
+            updargs+=("${flag_map["$arg"]}")
+        elif [[ $1 =~ ^\+([1-9][0-9]*)+$ ]]; then
             num="${BASH_REMATCH[1]}"
             type="+"
         elif [[ $1 =~ ^([1-9][0-9]*)d$ ]]; then
@@ -126,8 +133,7 @@ fi
 
 printf "\e[1;92m%s\e[0m\n" "Deleted generations!"
 case "$upd" in
-    all) updscript="all" ;;
-    root) updscript="system" ;;
+    all|root) updscript="system" ;;
     usr) updscript="user" ;;
 esac
 "upd-$updscript" "${updargs[@]}"
