@@ -22,8 +22,14 @@
       url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    zen-browser.url = "github:0xc000022070/zen-browser-flake";
-    hexecute.url = "github:ThatOtherAndrew/Hexecute";
+    zen-browser = {
+      url = "github:0xc000022070/zen-browser-flake/efdd1e683da9412f515b9bd42c37861978c2fd3a";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    hexecute = {
+      url = "github:ThatOtherAndrew/Hexecute";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     hyprlock = {
       url = "github:Tsunami014/hyprlock";
       inputs.nixpkgs.follows = "nixpkgs";
