@@ -10,4 +10,4 @@ else
   NEW="$WPDIR/$1"
 fi
 ln -f "$NEW" "$CUR"
-swww img "$CUR" --transition-type fade --transition-duration 0.2
+swww img "$CUR" --resize fit --transition-type fade --transition-duration 0.2
