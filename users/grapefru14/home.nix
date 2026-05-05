@@ -32,6 +32,7 @@
     wl-clipboard
     fuzzel
     jq
+    imagemagick
 
     # File viewers
     sioyek

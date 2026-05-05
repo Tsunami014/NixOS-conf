@@ -29,6 +29,8 @@ binds {
     Mod+S repeat=false hotkey-overlay-title="Sapla" { spawn "~/Documents/Sapla/out/Sapla-x86_64.AppImage"; }
     Mod+Shift+S repeat=false hotkey-overlay-title="StudyRNG" { spawn-sh "$TermSpawn studyrng ~/"; }
 
+    Mod+Alt+B repeat=false hotkey-overlay-title="Change background" { spawn-sh "wallppr rand"; }
+
 
     // Misc stuff
     Mod+Escape allow-inhibiting=false { toggle-keyboard-shortcuts-inhibit; }
