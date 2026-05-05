@@ -74,7 +74,6 @@ if ! $fromAll; then
     git -C "$mainFold" add .
 fi
 
-fprint "Running user rebuild..."
 if $upgrade; then
     if $offline; then
         fprint "Cannot upgrade packages offline!"
@@ -83,6 +82,7 @@ if $upgrade; then
     fprint "Upgrading packages..."
     nix flake update --flake "$userFold"
 fi
+fprint "Running user rebuild..."
 if $offline; then
     fprint "Using offline mode! The wifi will be temporarily disabled."
     wifi_on() { nmcli radio wifi on; }

@@ -2,7 +2,7 @@
 
 let
   pname = "godsvg";
-  version = "v1.0-alpha14";
+  version = "v1.0-alpha15";
 
   libs = with pkgs; [
     wayland
@@ -14,8 +14,8 @@ in stdenv.mkDerivation rec {
   inherit pname version;
 
   src = fetchurl {
-    url = "https://github.com/MewPurPur/GodSVG/releases/download/${version}/GodSVG.Linux.zip";
-    sha256 = "sha256-G3nY8ufLTXwqPJXOCb0DypNwZHjQt18ZZNCuCBZhE6A=";
+    url = "https://github.com/MewPurPur/GodSVG/releases/download/${version}/GodSVG_${version}.Linux.x86_64.zip";
+    sha256 = "sha256-DtEeWSLD/rwrXNUQqW/7xFw9VHo76B7mN7uubcEWbqo=";
   };
 
   nativeBuildInputs = [
@@ -27,7 +27,7 @@ in stdenv.mkDerivation rec {
   unpackPhase = "unzip -q $src -d .";
   installPhase = ''
     mkdir -p $out/bin
-    install -m755 GodSVG.x86_64 $out/bin/godsvg
+    install -m755 GodSVG_${version}.x86_64 $out/bin/godsvg
     wrapProgram $out/bin/godsvg \
       --prefix LD_LIBRARY_PATH : ${pkgs.lib.makeLibraryPath libs}
   '';
