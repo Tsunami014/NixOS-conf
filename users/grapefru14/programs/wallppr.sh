@@ -14,7 +14,7 @@ fi
 rm "$CUR" 2&>/dev/null || true
 magick "$NEW" \
   -background grey -alpha remove -alpha off \
-  \( -clone 0 -resize "$SIZE^" -gravity center -extent "$SIZE" -blur 0x20 \) \
+  \( -clone 0 -resize "$SIZE^" -gravity center -extent "$SIZE" -blur 0x40 \) \
   \( -clone 0 -resize "$SIZE" -gravity center \) \
   -delete 0 -gravity center -composite -layers merge "$CUR"
 
