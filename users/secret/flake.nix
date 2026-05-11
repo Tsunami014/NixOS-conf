@@ -15,7 +15,7 @@
       config.allowUnfree = true;
     };
   in {
-    homeConfigurations.testy = uinputs.home-manager.lib.homeManagerConfiguration {
+    homeConfigurations.secret = uinputs.home-manager.lib.homeManagerConfiguration {
       inherit pkgs;
       modules = grapefru14.homeManagerModules ++ [
         ./home.nix

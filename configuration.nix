@@ -37,7 +37,7 @@ in {
   users.groups.config = {};
   # Define user accounts. Don't forget to set a password with 'sudo passwd username'.
   users.users.grapefru14 = mkuser "Grapefru14";
-  users.users.testy = mkuser "Testy";
+  users.users.secret = mkuser "Secret";
   # Add config access to root
   users.users.root = {
     extraGroups = [ "config" ];

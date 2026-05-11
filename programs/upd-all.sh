@@ -5,6 +5,7 @@ mainFold=/etc/nixos
 FLAGS=$(cat << EOF
   -ol or --offline - run the operation completely offline (even if have wifi, don't use it)
   -up or --upgrade - upgrade the packages from source
+  -usr or --users  - Only update all users, not the system
 EOF
 );if [ "${1-}" = "--flags" ]; then
     echo "$FLAGS"; exit 0
@@ -22,6 +23,7 @@ map() {
 }
 map "-ol" "--offline"
 map "-up" "--upgrade"
+map "-usr" "--users"
 if [ "${1-}" = "--map" ]; then
   echo "${outmap%?}"
   exit 0
@@ -33,9 +35,11 @@ Optional flags:
 $FLAGS"
 
 updargs=()
+usersOnly=false
 for arg in "$@"; do
   case "$arg" in
     --help | -help | -h) echo "$HELP"; exit 0 ;;
+    -usr | --users) usersOnly=true ;;
     *)
         if [[ ${flag_map["$arg"]+_} ]]; then
             updargs+=("${flag_map["$arg"]}")
@@ -55,21 +59,9 @@ fprint() {
     fi
 }
 
-syncall() {
-    fprint "Syncing all for $1..."
-    for folder in "$mainFold"/users/*; do
-        name=$(basename "$folder")
-        if [ -f "$folder/sync.sh" ]; then
-            fprint "Syncing $name..." "94"
-            sudo -u "$name" sh "$folder/sync.sh" "$1" "${updargs[@]}" || fprint "Sync script failed!" "94"
-        else
-            fprint "No sync script for $name" "94"
-        fi
-    done
-}
-syncall before
-
-sudo upd-system "${updargs[@]}" 
+if ! $usersOnly; then
+    sudo upd-system "${updargs[@]}" 
+fi
 
 echo
 fprint "Updating all users..."
@@ -81,6 +73,15 @@ for folder in "$mainFold"/users/*; do
 done
 fprint "Updated users!" "92"
 
-syncall after
+fprint "Syncing all..."
+for folder in "$mainFold"/users/*; do
+    name=$(basename "$folder")
+    if [ -f "$folder/sync.sh" ]; then
+        fprint "Syncing $name..." "94"
+        sudo -u "$name" sh "$folder/sync.sh" "${updargs[@]}" || fprint "Sync script failed!" "94"
+    else
+        fprint "No sync script for $name" "94"
+    fi
+done
 
 fprint "Finished updating system and users!" "95"

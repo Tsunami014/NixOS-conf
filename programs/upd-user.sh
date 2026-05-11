@@ -47,19 +47,6 @@ if [ ! -d "$HOME" ]; then
     exit 1
 fi
 
-sync() {
-    syncf="$userFold/sync.sh"
-    if [ -f "$syncf" ]; then
-        fprint "Syncing $1..."
-        sh "$syncf" "$@" || fprint "Sync script failed!"
-    else
-        fprint "No sync script for syncing $1"
-    fi
-}
-if ! $fromAll; then
-    sync before "$@"
-fi
-
 fprint "Updating git..."
 tmp=$(mktemp)
 if ! git -C "$mainFold" rev-parse --git-dir >/dev/null 2>"$tmp"; then
@@ -96,7 +83,13 @@ else
 fi
 
 if ! $fromAll; then
-    sync after "$@"
+    syncf="$userFold/sync.sh"
+    if [ -f "$syncf" ]; then
+        fprint "Syncing..."
+        sh "$syncf" "$@" || fprint "Sync script failed!"
+    else
+        fprint "No sync script!"
+    fi
 fi
 
 if ! $fromAll; then
