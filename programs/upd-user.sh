@@ -61,8 +61,9 @@ if ! $fromAll; then
 fi
 
 fprint "Updating git..."
-if ! git -C "$mainFold" rev-parse --git-dir >/dev/null 2>/tmp/err; then
-    if grep -q "dubious ownership" /tmp/err; then
+tmp=$(mktemp)
+if ! git -C "$mainFold" rev-parse --git-dir >/dev/null 2>"$tmp"; then
+    if grep -q "dubious ownership" "$tmp"; then
         fprint "Setting $mainFold as safe..."
         git config --global --add safe.directory "$mainFold"
     else

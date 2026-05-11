@@ -1,7 +1,9 @@
 { config, pkgs, master-pkgs, lib, inputs, ... }: {
   home.username = "grapefru14";
-  home.homeDirectory = "/home/grapefru14";
+  home.homeDirectory = "/home/${config.home.username}";
   home.stateVersion = "25.11";
+
+  nixpkgs.config.allowUnfree = true;
 
   home.pointerCursor = {
     package = pkgs.bibata-cursors;
@@ -21,8 +23,6 @@
   ];
 
   # Package stuff
-  nixpkgs.config.allowUnfree = true;
-
   home.packages = with pkgs; [
     alacritty
     htop

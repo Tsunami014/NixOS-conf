@@ -3,3 +3,4 @@ Documents
 Pictures
 Videos
 .study
+.zen

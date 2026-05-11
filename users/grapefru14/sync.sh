@@ -5,14 +5,16 @@ fi
 if ! [ -d $(dirname "$HOME") ]; then
   echo "Home directory does not exist!"
 fi
+[ ! "${1-}" = "copyover" ] && copyover=true || copyover=false
 mkdir -p "$HOME/.config" "$HOME/.local/share"
 mainFold="/etc/nixos/users/$USER"
-folders=("/config")
 for fold in "$mainFold"/*/ "$mainFold"/.*/; do
   if [ ! -f "$fold/list.txt" ]; then
     continue
   fi
-  chmod +r -R "$fold"
+  if ! $copyover; then
+    chmod +r -R "$fold"
+  fi
   while IFS= read -r line; do
     # Skip empty lines
     [ -z "$line" ] && continue
@@ -51,9 +53,16 @@ for fold in "$mainFold"/*/ "$mainFold"/.*/; do
       prt+="in ~/$prefix"
     fi
 
-    printf "%s\e[1m%s\e[0m%s\n" "Linking config for " "$prt" "..."
-    if [ -d "$link/$name" ] && [ ! -L "$link/$name" ]; then
+    if $copyover; then
+      doin="Linking"
+    else
+      doin="Copying over"
+    fi
+
+    printf "%s\e[1m%s\e[0m%s\n" "$doin config for " "$prt" "..."
+    if [ -d "$link/$name" ] && [ ! -L "$link/$name" ] && ! $copyover; then
       echo "Config already exists!"
+      echo "Old: $link/$name, new: $orig"
       printf "Opts: \tq: quit\n\tb: backup & combine \tB: backup and delete old\n\tc: combine \td: delete old\n"
       while true; do
         read -sn1 -p "What do you want to do? " OPT < /dev/tty
@@ -84,6 +93,10 @@ for fold in "$mainFold"/*/ "$mainFold"/.*/; do
       echo "Replacing config with new..."
     fi
     rm -rf "$link/$name"
-    ln -sfT "$orig" "$link/$name"
+    if $copyover; then
+      cp -r "$orig" "$link/$name"
+    else
+      ln -sfT "$orig" "$link/$name"
+    fi
   done < "$fold/list.txt"
 done

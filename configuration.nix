@@ -1,6 +1,13 @@
 { config, pkgs, ... }:
 
-{
+let
+  mkuser = usrname: {
+    isNormalUser = true;
+    description = usrname;
+    extraGroups = [ "networkmanager" "wheel" "config" "dialout" "input" ];
+    packages = with pkgs; [];
+  };
+in {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
@@ -28,15 +35,12 @@
 
   # Add groups to user
   users.groups.config = {};
-  # Define user accounts. Don't forget to set a password with ‘passwd’.
-  users.users.grapefru14 = {
-    isNormalUser = true;
-    description = "Grapefru14";
-    extraGroups = [ "networkmanager" "wheel" "config" "dialout" "input" ];
-    packages = with pkgs; [];
-  };
+  # Define user accounts. Don't forget to set a password with 'sudo passwd username'.
+  users.users.grapefru14 = mkuser "Grapefru14";
+  users.users.testy = mkuser "Testy";
+  # Add config access to root
   users.users.root = {
-    extraGroups = [ "gitaccess" ];
+    extraGroups = [ "config" ];
   };
 
   # Auto login for tty1

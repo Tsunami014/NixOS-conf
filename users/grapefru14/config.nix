@@ -35,9 +35,6 @@
         echo "Cloning $name config repo..."
         mkdir -p $(dirname "$fold")
         git clone "''${files[$fold]}" "$fold"
-      else
-        echo "Updating $name config..."
-        git -C "$HOME/.config/nvim" pull || true
       fi
     done
 

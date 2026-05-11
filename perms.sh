@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+if [ "${1:-}" = "own" ]; then
+  sudo chown -R "$USER" /etc/nixos/users
+  exit 0
+fi
 sudo chown root:config /etc/nixos/*
 sudo chmod 771 /etc/nixos/*
 sudo chown root:config -R /etc/nixos/.git
