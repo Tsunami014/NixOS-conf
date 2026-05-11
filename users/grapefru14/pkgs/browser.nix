@@ -3,7 +3,25 @@
     inputs.zen-browser.homeModules.twilight
   ];
 
+  # https://github.com/0xc000022070/zen-browser-flake/tree/efdd1e683da9412f515b9bd42c37861978c2fd3a
   programs.zen-browser.enable = true;
+  programs.zen-browser.policies = {
+    AutofillAddressEnabled = true;
+    AutofillCreditCardEnabled = false;
+    DisableAppUpdate = true;
+    DisableFeedbackCommands = true;
+    DisableFirefoxStudies = true;
+    DisablePocket = true;
+    DisableTelemetry = true;
+    DontCheckDefaultBrowser = true;
+    NoDefaultBookmarks = true;
+    EnableTrackingProtection = {
+      Value = true;
+      Locked = true;
+      Cryptomining = true;
+      Fingerprinting = true;
+    };
+  };
   programs.zen-browser.profiles.default = {
     id = 0;
     name = "default";
@@ -63,6 +81,22 @@
 
 '';
     };
+
+    search = {
+      force = true;
+      default = "google";
+    };
+
+    keyboardShortcuts = [
+      {
+        id = "new_temporary_container_tab";
+        key = "t";
+        modifiers = {
+          alt = true;
+        };
+      }
+    ];
+    keyboardShortcutsVersion = 14;
   };
 
   xdg.mimeApps =
