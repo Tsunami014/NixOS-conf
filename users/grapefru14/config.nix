@@ -39,6 +39,6 @@
     done
 
     projects="$HOME/.config/nvim/projects.json"
-    [ ! -f "$projects" ] && echo '{"projects": ["/etc/nixos/users/$USER", "/etc/nixos"]}' > "$projects"
+    [ ! -f "$projects" ] && echo '{"projects": ["/etc/nixos/users/${config.home.username}", "/etc/nixos"]}' > "$projects"
   '';
 }

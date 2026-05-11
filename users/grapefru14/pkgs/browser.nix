@@ -1,4 +1,4 @@
-{ config, pkgs, inputs, ... }: {
+{ config, pkgs, inputs, lib, ... }: {
   imports = [
     inputs.zen-browser.homeModules.twilight
   ];
@@ -11,9 +11,20 @@
 
     extensions.packages =
      with inputs.firefox-addons.packages.${pkgs.stdenv.hostPlatform.system}; [
-          ublock-origin
-          auto-tab-discard
-        ];
+        duckduckgo-privacy-essentials
+        multi-account-containers
+        temporary-containers
+        auto-tab-discard
+        ublock-origin
+        web-archives
+        numatrix
+        # Yes, this is the ONLY way.
+        (video-downloadhelper.overrideAttrs (_: {
+          meta = video-downloadhelper.meta // {
+            license = pkgs.lib.licenses.free;
+          };
+        }))
+      ];
     mods = [
         "906c6915-5677-48ff-9bfc-096a02a72379" # Floating status bar
         "c01d3e22-1cee-45c1-a25e-53c0f180eea8" # Ghost tabs

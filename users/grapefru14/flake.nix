@@ -39,22 +39,25 @@
   outputs = { nixpkgs, nixpkgs-master, home-manager, ... } @ inputs:
   let
     system = "x86_64-linux";
-    pkgs = nixpkgs.legacyPackages.${system};
-    master-pkgs = import nixpkgs-master {
-      system = system;
+    pkgs = import nixpkgs {
+      inherit system;
       config.allowUnfree = true;
     };
+    master-pkgs = import nixpkgs-master {
+      inherit system;
+      config.allowUnfree = true;
+    };
+    modules = [
+      ./home.nix
+    ];
   in {
-    home-manager.useGlobalPkgs = true;
-    home-manager.useUserPackages = true;
-    home-manager.backupFileExtension = "bak";
+    homeManagerModules = modules;
+    homeModules.grapefru14 = ./home.nix;
     homeConfigurations.grapefru14 = home-manager.lib.homeManagerConfiguration {
       inherit pkgs;
       extraSpecialArgs = { inherit inputs master-pkgs; };
 
-      modules = [
-        ./home.nix
-      ];
+      modules = modules;
     };
   };
 }
