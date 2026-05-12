@@ -33,6 +33,7 @@
     fuzzel
     jq
     imagemagick
+    exiftool
 
     # File viewers
     sioyek

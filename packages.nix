@@ -64,7 +64,7 @@
     })
     (pkgs.writeShellApplication {
       name = "upd-sync";
-      text = ''bash ${./users}/"$USER"/sync.sh'';
+      text = ''bash /etc/nixos/users/"$USER"/sync.sh'';
     })
 
     (pkgs.writeShellApplication {
