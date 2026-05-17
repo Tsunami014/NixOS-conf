@@ -12,14 +12,14 @@ num_fingers = 3
 kind = "SwipeUp"
 action = "niri msg action fullscreen-window"
 min_duration = 50
-max_distance = 200.0
+max_distance = 150.0
 on_edge = { Bottom = 300 }
 [[gestures]]
 num_fingers = 3
 kind = "SwipeDown"
 action = "niri msg action open-overview"
 min_duration = 50
-max_distance = 200.0
+max_distance = 150.0
 on_edge = { Top = 300 }
 [[gestures]]
 num_fingers = 4

@@ -22,3 +22,23 @@ desc = "Go /etc/nixos"
 on  = [ "g", "s", "u" ]
 run = "cd /etc/nixos/users/$USER"
 desc = "Go /etc/nixos/users/$USER"
+
+[[mgr.append_keymap]]
+on  = [ "g", "d" ]
+run = "cd /tmp/Download"
+desc = "Go /tmp/Download"
+
+[[mgr.append_keymap]]
+on  = [ "g", "D" ]
+run = "cd $HOME/Documents"
+desc = "Go ~/Documents"
+
+[[mgr.append_keymap]]
+on  = [ "g", "t" ]
+run = "cd /tmp"
+desc = "Go /tmp"
+
+[[mgr.prepend_keymap]]
+on = "Y"
+run = "plugin copy-quote"
+desc = "Copy hovered path with quotes"

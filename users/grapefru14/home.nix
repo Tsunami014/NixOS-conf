@@ -91,11 +91,22 @@ F12 to toggle on/off, though not recommended for long"
 wlanthy
 '';
     })
+    # Some sqlite stuff
+    sqlite
+    (pkgs.writeScriptBin "sqlitedump" ''
+      ${pkgs.sqlite}/bin/sqlite3 "$1" .dump > "$1.view"
+    '')
+    (pkgs.writeScriptBin "sqliteundump" ''
+      old="''${1%.*}"
+      rm -f "$old" || true
+      ${pkgs.sqlite}/bin/sqlite3 "$old" < "$1"
+    '')
     # Lazily loaded programs
     (pkgs.writeScriptBin "py" ''
       ${pkgs.python313.withPackages (ps: with ps; [ pyperclip numpy requests ])}/bin/python3
     '')
-    (pkgs.writeScriptBin "zed" "nix-shell -p zed-editor --run zeditor")
+    (pkgs.writeScriptBin "zed" ''nix-shell -p zed-editor --run "zeditor $@"'')
+    (pkgs.writeScriptBin "sqlit" "nix run github:Maxteabag/sqlit")
   ];
 
   programs.neovim = {
