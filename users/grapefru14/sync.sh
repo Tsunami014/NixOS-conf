@@ -1,7 +1,11 @@
 if ! [ -d $(dirname "$HOME") ]; then
   echo "Home directory does not exist!"
 fi
-[ ! "${1-}" = "copyover" ] && copyover=true || copyover=false
+
+# So it doesn't potentially cause issues
+umount ~/.config/niri/autorotate 2>/dev/null || true
+
+[ "${1-}" = "copyover" ] && copyover=true || copyover=false
 mkdir -p "$HOME/.config" "$HOME/.local/share"
 mainFold="/etc/nixos/users/$USER"
 for fold in "$mainFold"/*/ "$mainFold"/.*/; do
@@ -20,9 +24,10 @@ for fold in "$mainFold"/*/ "$mainFold"/.*/; do
       continue
     fi
   
-    orig="$fold/$name"
+    orig="$fold$name"
     if [ ! -d "$orig" ]; then
-      mkdir "$orig"
+      echo "Original config does not exist for '$name'"
+      continue
     fi
     if [ "$mutable" = "perm" ]; then
       prt="Permanent "
@@ -50,16 +55,16 @@ for fold in "$mainFold"/*/ "$mainFold"/.*/; do
     fi
 
     if $copyover; then
-      doin="Linking"
-    else
       doin="Copying over"
+    else
+      doin="Linking"
     fi
 
     printf "%s\e[1m%s\e[0m%s\n" "$doin config for " "$prt" "..."
     if [ -d "$link/$name" ] && [ ! -L "$link/$name" ] && ! $copyover; then
       echo "Config already exists!"
-      echo "Old: $link/$name, new: $orig"
-      printf "Opts: \tq: quit\n\tb: backup & combine \tB: backup and delete old\n\tc: combine \td: delete old\n"
+      printf "Old: $link/$name  \tNew: $orig\n"
+      printf "Opts: \tq: quit\n\tb: backup old & combine \tB: backup old & delete\n\tc: combine \td: delete old\n"
       while true; do
         read -sn1 -p "What do you want to do? " OPT < /dev/tty
         printf "\n\e[K"

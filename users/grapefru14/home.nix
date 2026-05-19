@@ -34,6 +34,7 @@
     jq
     imagemagick
     exiftool
+    sqlite
 
     # File viewers
     sioyek
@@ -81,6 +82,14 @@
       name = "wallppr";
       text = builtins.readFile ./programs/wallppr.sh;
     })
+    (pkgs.writeShellApplication {
+      name = "linkfile";
+      text = ''
+mkdir -p /tmp/Link
+chmod 0775 /tmp/Link 2&>/dev/null || true
+nvim /tmp/Link/"$USER".md -c 'cd /tmp/Link|exe "Neotree"|wincmd w'
+'';
+    })
     # A wrapper for wlanthy (above) with instructions
     (pkgs.writeShellApplication {
       name = "jap";
@@ -91,22 +100,11 @@ F12 to toggle on/off, though not recommended for long"
 wlanthy
 '';
     })
-    # Some sqlite stuff
-    sqlite
-    (pkgs.writeScriptBin "sqlitedump" ''
-      ${pkgs.sqlite}/bin/sqlite3 "$1" .dump > "$1.view"
-    '')
-    (pkgs.writeScriptBin "sqliteundump" ''
-      old="''${1%.*}"
-      rm -f "$old" || true
-      ${pkgs.sqlite}/bin/sqlite3 "$old" < "$1"
-    '')
     # Lazily loaded programs
     (pkgs.writeScriptBin "py" ''
       ${pkgs.python313.withPackages (ps: with ps; [ pyperclip numpy requests ])}/bin/python3
     '')
     (pkgs.writeScriptBin "zed" ''nix-shell -p zed-editor --run "zeditor $@"'')
-    (pkgs.writeScriptBin "sqlit" "nix run github:Maxteabag/sqlit")
   ];
 
   programs.neovim = {
