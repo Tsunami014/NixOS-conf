@@ -4,6 +4,7 @@ perm conf niri
 perm conf hypr
 perm conf yazi
 perm conf alacritty
+perm conf sioyek
 mut conf hexecute
 mut conf LDtk
 mut conf PureRef
