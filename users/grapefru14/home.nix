@@ -115,6 +115,7 @@ wlanthy
       nodejs
       fd
       ripgrep
+      texlivePackages.texfot # Better outputs
       (texlive.combine {
         inherit (texlive) scheme-full;
       })
@@ -123,6 +124,7 @@ wlanthy
       # For lsps and stuff
       python313
       clang-tools
+      gdb
       pyright
       ruff
     ];
