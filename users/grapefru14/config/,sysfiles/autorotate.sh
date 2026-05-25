@@ -19,6 +19,10 @@ fi
 echo "Using output '$OUTPUT'"
 
 rotate_output() {
+  if [ -f "/tmp/NOAUTOROTATE" ]; then
+    echo "Ignoring rotation"
+    return
+  fi
   orientation="$1"
   case "$orientation" in
     *normal*)

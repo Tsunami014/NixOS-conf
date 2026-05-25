@@ -16,6 +16,9 @@ input {
 
     keyboard {
         numlock
+        xkb {
+            layout "au"
+        }
     }
 
     touchpad {

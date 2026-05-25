@@ -72,25 +72,25 @@ button:focus, button:active, button:hover {
 
 #lock {
 	border-top-left-radius: 50px;
-    background-image: image(url("/nix/store/hipzlslq0xnlv3vcvf9zv6gnqbp866lm-wlogout-1.2.2/share/wlogout/icons/lock.png"), url("/nix/store/hipzlslq0xnlv3vcvf9zv6gnqbp866lm-wlogout-1.2.2/local/share/wlogout/icons/lock.png"));
+    background-image: image(url("${pkgs.wlogout}/share/wlogout/icons/lock.png"), url("${pkgs.wlogout}/local/share/wlogout/icons/lock.png"));
 }
 #logout {
 	border-bottom-left-radius: 50px;
-    background-image: image(url("/nix/store/hipzlslq0xnlv3vcvf9zv6gnqbp866lm-wlogout-1.2.2/share/wlogout/icons/logout.png"), url("/nix/store/hipzlslq0xnlv3vcvf9zv6gnqbp866lm-wlogout-1.2.2/local/share/wlogout/icons/logout.png"));
+    background-image: image(url("${pkgs.wlogout}/share/wlogout/icons/logout.png"), url("${pkgs.wlogout}/local/share/wlogout/icons/logout.png"));
 }
 #suspend {
-    background-image: image(url("/nix/store/hipzlslq0xnlv3vcvf9zv6gnqbp866lm-wlogout-1.2.2/share/wlogout/icons/suspend.png"), url("/nix/store/hipzlslq0xnlv3vcvf9zv6gnqbp866lm-wlogout-1.2.2/local/share/wlogout/icons/suspend.png"));
+    background-image: image(url("${pkgs.wlogout}/share/wlogout/icons/suspend.png"), url("${pkgs.wlogout}/local/share/wlogout/icons/suspend.png"));
 }
 #shutdown {
-    background-image: image(url("/nix/store/hipzlslq0xnlv3vcvf9zv6gnqbp866lm-wlogout-1.2.2/share/wlogout/icons/shutdown.png"), url("/nix/store/hipzlslq0xnlv3vcvf9zv6gnqbp866lm-wlogout-1.2.2/local/share/wlogout/icons/shutdown.png"));
+    background-image: image(url("${pkgs.wlogout}/share/wlogout/icons/shutdown.png"), url("${pkgs.wlogout}/local/share/wlogout/icons/shutdown.png"));
 }
 #hibernate {
 	border-top-right-radius: 50px;
-    background-image: image(url("/nix/store/hipzlslq0xnlv3vcvf9zv6gnqbp866lm-wlogout-1.2.2/share/wlogout/icons/hibernate.png"), url("/nix/store/hipzlslq0xnlv3vcvf9zv6gnqbp866lm-wlogout-1.2.2/local/share/wlogout/icons/hibernate.png"));
+    background-image: image(url("${pkgs.wlogout}/share/wlogout/icons/hibernate.png"), url("${pkgs.wlogout}/local/share/wlogout/icons/hibernate.png"));
 }
 #reboot {
 	border-bottom-right-radius: 50px;
-    background-image: image(url("/nix/store/hipzlslq0xnlv3vcvf9zv6gnqbp866lm-wlogout-1.2.2/share/wlogout/icons/reboot.png"), url("/nix/store/hipzlslq0xnlv3vcvf9zv6gnqbp866lm-wlogout-1.2.2/local/share/wlogout/icons/reboot.png"));
+    background-image: image(url("${pkgs.wlogout}/share/wlogout/icons/reboot.png"), url("${pkgs.wlogout}/local/share/wlogout/icons/reboot.png"));
 }
 '';
   };
