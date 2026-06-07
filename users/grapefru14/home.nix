@@ -161,7 +161,7 @@ wlanthy
     enableCompletion = true;
     bashrcExtra = ''
 alias downloads="mkdir /tmp/Download 2>/dev/null;cd /tmp/Download"
-alias mktmpplace='cd "$(mktemp -d)";yazi'
+alias mktmpplace='cd "$(mktemp -d)";bash'
 '';
     profileExtra = ''
 [[ -f ~/.bashrc ]] && . ~/.bashrc

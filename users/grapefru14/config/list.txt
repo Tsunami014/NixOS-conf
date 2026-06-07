@@ -8,4 +8,3 @@ perm conf sioyek
 mut conf hexecute
 mut conf LDtk
 mut conf PureRef
-mut conf zed
