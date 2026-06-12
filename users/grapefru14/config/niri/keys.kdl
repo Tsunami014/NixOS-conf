@@ -14,6 +14,7 @@ binds {
     Mod+D repeat=false hotkey-overlay-title="Downloads" { spawn-sh "mkdir -p /tmp/Download;$TermSpawn yazi /tmp/Download"; }
     Mod+N repeat=false hotkey-overlay-title="Neovim" { spawn-sh "$TermSpawn nvim"; }
     Mod+Y repeat=false hotkey-overlay-title="File browser" { spawn-sh "$TermSpawn yazi"; }
+    Mod+Apostrophe repeat=false hotkey-overlay-title="File browser" { spawn-sh "$TermSpawn yazi"; }
     Mod+A repeat=false hotkey-overlay-title="Almond" { spawn-sh "$TermSpawn almond"; }
     Mod+H repeat=false hotkey-overlay-title="Htop" { spawn-sh "$TermSpawn htop"; }
     Mod+J repeat=false hotkey-overlay-title="Japanese" { spawn-sh "$TermSpawn jap"; }

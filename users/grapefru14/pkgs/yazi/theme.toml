@@ -2,7 +2,7 @@
 cwd = { fg = "#DCD7BA", bold = true } # fg
 
 # Hovered
-hovered = { bg = "#2A2A37" }           # bg_p1
+hovered = { bg = "#3A3A37" }           # bg_p1
 preview_hovered = { underline = true }
 
 # Find
@@ -22,7 +22,7 @@ count_selected = { fg = "#8ea49e", bold = true, reversed = true } # cy
 
 # Border
 border_symbol = "│"
-border_style = { fg = "#363646" } # bg_p2
+border_style = { fg = "#565656" } # bg_p2
 
 [tabs]
 active = { fg = "#a292a3", bg = "#363646", bold = true } # ma, bg_p2

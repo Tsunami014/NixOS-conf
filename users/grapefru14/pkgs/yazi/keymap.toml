@@ -9,7 +9,7 @@ run = "shell --block -- lazygit"
 desc = "Launch lazygit"
 
 [[mgr.prepend_keymap]]
-on = [ "n" ]
+on = [ "`" ]
 run = "shell --block -- nvim ."
 desc = "Launch neovim here"
 
