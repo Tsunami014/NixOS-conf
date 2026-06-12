@@ -56,6 +56,7 @@
         # Various good things
         "zen.workspaces.continue-where-left-off" = true;
         "zen.welcome-screen.seen" = true;
+        "zen.updates.show-update-notification" = false;
         # Dark theme
         "layout.css.prefers-color-scheme.content-override" = 0;
         "zen.view.window.scheme" = 0;
@@ -71,6 +72,8 @@
         # The window layout
         "zen.urlbar.behavior" = "floating-on-type";
         "zen.view.experimental-no-window-controls" = true;
+
+        "zen.view.grey-out-inactive-windows" = false;
 
         "zen.view.use-single-toolbar" = false;
         "zen.view.compact.enable-at-startup" = true;

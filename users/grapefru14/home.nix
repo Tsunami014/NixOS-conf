@@ -18,6 +18,7 @@
   imports = [
     ./config.nix
 
+    ./pkgs/yazi/yaz.nix
     ./pkgs/browser.nix
     ./pkgs/wlogout.nix
   ];

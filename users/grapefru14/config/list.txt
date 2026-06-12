@@ -2,7 +2,6 @@ perm home .,sysfiles
 perm conf nixpkgs
 perm conf niri
 perm conf hypr
-perm conf yazi
 perm conf alacritty
 perm conf sioyek
 mut conf hexecute
