@@ -129,7 +129,7 @@ ln -sf ${pkgs.bash}/bin/bash /bin/bash
     ipafont
     kochi-substitute
     nerd-fonts.ubuntu
-    nerd-fonts.ubuntu-mono
+    nerd-fonts.adwaita-mono
   ];
 
   programs.neovim = {

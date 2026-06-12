@@ -23,8 +23,7 @@ background = "#1a1b26"
 foreground = "#a9b1d6"
 
 [font]
-size = 14
-
+size = 12
 [font.normal]
-family = "UbuntuMono Nerd Font Mono"
+family = "AdwaitaMono Nerd Font Mono"
 style = "Regular"
