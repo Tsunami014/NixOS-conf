@@ -5,10 +5,10 @@ quickshell -c bar -n &
 
 sleep 0.5
 
-~/,sysfiles/wallppr-daemon.sh &
-~/,sysfiles/idle.sh &
-~/,sysfiles/autorotate.sh &
-~/,sysfiles/gestures.sh &
+~/.,sysfiles/wallppr-daemon.sh &
+~/.,sysfiles/idle.sh &
+~/.,sysfiles/autorotate.sh &
+~/.,sysfiles/gestures.sh &
 
 wl-paste --watch cliphist store &
 ollama serve &
