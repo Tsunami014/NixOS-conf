@@ -78,6 +78,15 @@
       #!${pkgs.python313.withPackages (ps: with ps; [ tkinter ])}/bin/python3
       ${builtins.readFile ./programs/navihex.py}
     '')
+    (pkgs.writeShellApplication {
+      name = "fixbar";
+      text = ''
+pkill quickshell || true
+quickshell -c bar &
+bg
+disown
+'';
+    })
     swww
     (pkgs.writeShellApplication {
       name = "wallppr";
