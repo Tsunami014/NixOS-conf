@@ -37,8 +37,5 @@
         git clone "''${files[$fold]}" "$fold"
       fi
     done
-
-    projects="$HOME/.config/nvim/projects.json"
-    [ ! -f "$projects" ] && echo '{"projects": ["/etc/nixos/users/${config.home.username}", "/etc/nixos"]}' > "$projects"
   '';
 }
