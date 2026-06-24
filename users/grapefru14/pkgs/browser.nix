@@ -69,11 +69,15 @@
         "devtools.dom.enabled" = true;
         "devtools.inspector.showUserAgentStyles" = true;
         "devtools.toolbox.host" = "right"; # Put devtools on right
+        # Unload tabs
+        "browser.tabs.unloadOnLowMemory" = true;
+        "browser.tabs.fadeOutUnloadedTabs" = true;
         # The window layout
         "zen.urlbar.behavior" = "floating-on-type";
         "zen.view.experimental-no-window-controls" = true;
 
         "zen.view.grey-out-inactive-windows" = false;
+        "zen.window-sync.enabled" = false; # Each window has its own set of tabs, not shared
 
         "zen.view.use-single-toolbar" = false;
         "zen.view.compact.enable-at-startup" = true;
