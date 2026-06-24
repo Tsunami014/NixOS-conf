@@ -7,7 +7,7 @@ FLAGS=$(cat << EOF
   -up or --upgrade - upgrade the packages from source
 EOF
 );if [ "${1-}" = "--flags" ]; then
-    echo "$FLAGS"; exit 0
+  echo "$FLAGS"; exit 0
 fi
 if [ "${1-}" = "--map" ]; then
   map() {

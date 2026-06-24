@@ -115,6 +115,7 @@ wlanthy
       ${pkgs.python313.withPackages (ps: with ps; [ pyperclip numpy requests ])}/bin/python3
     '')
     (pkgs.writeScriptBin "zed" ''nix-shell -p zed-editor --run "zeditor $@"'')
+    (pkgs.writeScriptBin "baobab" ''nix-shell -p baobab --run "baobab $@"'')
   ];
 
   programs.neovim = {

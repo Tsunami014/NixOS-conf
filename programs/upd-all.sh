@@ -14,10 +14,12 @@ declare -A flag_map
 outmap=""
 map() {
   value="${2:-$1}"
-  outmap+="$1=$value\n"
+  outmap+="$1=$value
+"
   flag_map["$1"]="$value"
   if [[ "$1" != "$value" ]]; then
-    outmap+="$2=$2\n"
+    outmap+="$2=$2
+"
     flag_map["$2"]="$2"
   fi
 }
@@ -25,7 +27,7 @@ map "-ol" "--offline"
 map "-up" "--upgrade"
 map "-usr" "--users"
 if [ "${1-}" = "--map" ]; then
-  echo "${outmap%?}"
+  printf "%s" "${outmap%?}"
   exit 0
 fi
 

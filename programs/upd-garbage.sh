@@ -2,31 +2,49 @@
 set -euo pipefail
 mainFold=/etc/nixos
 
+FLAGS=$(cat << EOF
+  -t or --trash - ONLY clean local cache files, not nixos cache
+  -s - clean system garbage only
+  -a - clean both system and user garbage
+EOF
+);if [ "${1-}" = "--flags" ]; then
+    upd-all --flags; echo "$FLAGS"; exit 0
+fi
+
 HELP="Clean the garbage!
-This means it will have to recache everything again, and will probably require wifi.
-This by default cleans all the garbage, but flags can make it clean only the root or user's garbage
+If cleaning system, will have to recache everything again, and will probably require wifi.
+This by default only cleans the user garbage, but can clean system garbage too (requiring root).
 
 Optional flags for cleaning:
-  -usr - only collect user garbage, not root or any other user (does not require sudo)
-  -root - only collect garbage from root user
+$FLAGS
 
 This script runs the appropriate upd command for the requirement (upd-user if -usr, upd-system if -root, else upd-all) to fix generations and redownload some important things so you can update offline again
 Optional flags for update scripts:
 $(upd-all --flags)"
 
 declare -A flag_map
+outmap=""
 while IFS='=' read -r key value; do
   flag_map["$key"]="$value"
+  outmap+="$key=$value
+"
 done < <(upd-all --map)
+if [ "${1-}" = "--map" ]; then
+  printf "%s" "${outmap%?}"; echo
+  echo "-t=--trash"; echo "--trash=--trash"; echo "-s=-s"; echo "-a=-a"
+  exit 0
+fi
 
 updargs=()
-upd="all"
+upd="u"
+onlytrash=false
 for arg in "$@"; do
   case "$arg" in
     --help | -help | -h) echo "$HELP"; exit 0 ;;
-    -usr | -root)
-        if [ "$upd" != "all" ]; then
-            echo "Cannot have -usr and -root at the same time!"
+    -t | --trash) onlytrash=true ;;
+    -a | -s)
+        if [ "$upd" != "u" ]; then
+            echo "Cannot have -s and -a at the same time!"
             exit 1
         fi
         upd="${arg:1}"
@@ -42,7 +60,19 @@ for arg in "$@"; do
   esac
 done
 
-read -r -n 1 -p "Are you sure you want to collect garbage? This may make nix have to redownload a lot of cached stuff. [y/n] " RESP
+case "$upd" in
+    a) updscript="all"; scope="ALL USERS" ;;
+    s) updscript="system"; scope="ONLY THE SYSTEM" ;;
+    u) updscript="user"; scope="THIS USER" ;;
+esac
+if $onlytrash; then
+    trashtxt="ONLY THE TRASH"
+    suff=""
+else
+    trashtxt="ALL THE GARBAGE"
+    suff=" You may need to redownload stuff."
+fi
+read -r -n 1 -p "Are you sure you want to collect $trashtxt for $scope?$suff [y/n] " RESP
 echo
 if [ "$RESP" != "y" ]; then
     echo "Not cleaning."
@@ -51,18 +81,33 @@ fi
 
 printf "\e[1;93m%s\e[0m\n" "Collecting garbage..."
 case "$upd" in
-    all)
-        updscript="all"
+    a)
         printf "\e[1;94m%s\e[0m\n" "Cleaning root..."
         sudo nix-collect-garbage -d
         for folder in "$mainFold"/users/*; do
             name="$(basename "$folder")"
             printf "\e[1;94m%s\e[0m\n" "Cleaning $name..."
-            sudo -iu "$name" nix-collect-garbage -d
+            if ! $onlytrash; then
+                sudo -iu "$name" nix-collect-garbage -d
+            fi
+            echo "Cleaning trash for $name..."
+            sudo rm -rf /home/"$name"/.local/share/Trash/* /home/"$name"/.cache/*
+            echo "Done cleaning trash for $name!"
         done
     ;;
-    root) updscript="system"; sudo nix-collect-garbage -d ;;
-    usr) updscript="user"; nix-collect-garbage -d ;;
+    s)
+        if ! $onlytrash; then
+            sudo nix-collect-garbage -d
+        fi
+    ;;
+    u)
+        if ! $onlytrash; then
+            nix-collect-garbage -d
+        fi
+        echo "Cleaning trash..."
+        sudo rm -rf /home/"$name"/.local/share/Trash/* /home/"$name"/.cache/*
+        echo "Done cleaning trash!"
+    ;;
 esac
 
 printf "\e[1;92m%s\e[0m\n" "Collected garbage!"
