@@ -13,7 +13,6 @@
     fzf
     yazi
     unzip
-    comma
     iio-sensor-proxy
 
     # Printer stuff

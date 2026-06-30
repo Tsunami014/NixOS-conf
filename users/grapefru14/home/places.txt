@@ -1,6 +1,7 @@
-Downloads
-Documents
-Pictures
-Videos
+Downloads/
+Documents/
+Pictures/
+Videos/
+Notes/
 .study
-.zen
++index.md
