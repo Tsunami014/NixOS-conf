@@ -1,0 +1,7 @@
+/etc/nixos/
+~/Downloads/
+~/Documents/
+~/Pictures/
+~/Videos/
+~/Notes/
+~/.study

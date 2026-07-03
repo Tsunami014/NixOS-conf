@@ -1,7 +1,0 @@
-Downloads/
-Documents/
-Pictures/
-Videos/
-Notes/
-.study
-+index.md
