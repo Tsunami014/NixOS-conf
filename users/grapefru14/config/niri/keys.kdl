@@ -108,17 +108,17 @@ binds {
     Mod+Shift+Up    { move-window-up-or-to-workspace-up; }
     Mod+Shift+Right { move-column-right-or-to-monitor-right; }
 
-    // Monitor focus (ctrl)
-    Mod+Ctrl+Left  { focus-monitor-left; }
-    Mod+Ctrl+Down  { focus-monitor-down; }
-    Mod+Ctrl+Up    { focus-monitor-up; }
-    Mod+Ctrl+Right { focus-monitor-right; }
+    // New workspace/monitor focus (ctrl)
+    Mod+Ctrl+Left  repeat=false { focus-monitor-left; }
+    Mod+Ctrl+Down  repeat=false { spawn-sh "~/.config/niri/rel_ws.sh 1"; }
+    Mod+Ctrl+Up    repeat=false { spawn-sh "~/.config/niri/rel_ws.sh 0"; }
+    Mod+Ctrl+Right repeat=false { focus-monitor-right; }
 
-    // Monitor movement (ctrl+shift)
-    Mod+Shift+Ctrl+Left  { move-column-to-monitor-left; }
-    Mod+Shift+Ctrl+Down  { move-column-to-monitor-down; }
-    Mod+Shift+Ctrl+Up    { move-column-to-monitor-up; }
-    Mod+Shift+Ctrl+Right { move-column-to-monitor-right; }
+    // New workspace/monitor movement (ctrl+shift)
+    Mod+Ctrl+Shift+Left  repeat=false { move-column-to-monitor-left; }
+    Mod+Ctrl+Shift+Down  repeat=false { spawn-sh "~/.config/niri/rel_ws.sh 1 --take"; }
+    Mod+Ctrl+Shift+Up    repeat=false { spawn-sh "~/.config/niri/rel_ws.sh 0 --take"; }
+    Mod+Ctrl+Shift+Right repeat=false { move-column-to-monitor-right; }
 
     // Workspace focus (fn)
     Mod+Home      repeat=false { focus-column-first; }
@@ -131,18 +131,6 @@ binds {
     Mod+Shift+Page_Down repeat=false { move-window-to-workspace-down; }
     Mod+Shift+Page_Up   repeat=false { move-window-to-workspace-up; }
     Mod+Shift+End       repeat=false { move-column-to-last; }
-
-    // New workspace focus (fn+ctrl)
-    Mod+Ctrl+Home      repeat=false { focus-column-first; }
-    Mod+Ctrl+Page_Down repeat=false { spawn-sh "~/.config/niri/rel_ws.sh 1"; }
-    Mod+Ctrl+Page_Up   repeat=false { spawn-sh "~/.config/niri/rel_ws.sh 0"; }
-    Mod+Ctrl+End       repeat=false { focus-column-last; }
-
-    // New workspace movement (fn+ctrl+shift)
-    Mod+Shift+Ctrl+Home      repeat=false { move-column-to-first; }
-    Mod+Shift+Ctrl+Page_Down repeat=false { spawn-sh "~/.config/niri/rel_ws.sh 1 --take"; }
-    Mod+Shift+Ctrl+Page_Up   repeat=false { spawn-sh "~/.config/niri/rel_ws.sh 0 --take"; }
-    Mod+Shift+Ctrl+End       repeat=false { move-column-to-last; }
 
     // Start/end focus (fn/numbers)
     Mod+1 repeat=false { focus-workspace 1; }

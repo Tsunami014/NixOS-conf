@@ -132,9 +132,9 @@ wlanthy
         inherit (texlive) scheme-full;
       })
       pandoc
+      (python313.withPackages (ps: with ps; [ debugpy ]))
 
       # For lsps and stuff
-      python313
       clang-tools
       gdb
       pyright
@@ -172,6 +172,8 @@ wlanthy
     enable = true;
     enableCompletion = true;
     bashrcExtra = ''
+alias copy=wl-copy
+alias paste=wl-paste
 alias downloads="mkdir /tmp/Download 2>/dev/null;cd /tmp/Download"
 alias mktmpplace='cd "$(mktemp -d)";bash'
 '';

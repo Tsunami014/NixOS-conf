@@ -76,6 +76,8 @@
     enable = true;
 
     interactiveShellInit = ''
+      alias q=exit
+
       mnt() {
         [[ $PWD == /mnt* ]] && cd ~
 
