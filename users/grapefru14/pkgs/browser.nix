@@ -54,7 +54,6 @@
 
     settings = {
         # Various good things
-        "zen.workspaces.continue-where-left-off" = true;
         "zen.welcome-screen.seen" = true;
         "zen.updates.show-update-notification" = false;
         # Dark theme
@@ -77,6 +76,7 @@
         "zen.view.experimental-no-window-controls" = true;
 
         "zen.view.grey-out-inactive-windows" = false;
+        "zen.workspaces.continue-where-left-off" = false; # New windows shouldn't reuse old tabs
         "zen.window-sync.enabled" = false; # Each window has its own set of tabs, not shared
 
         "zen.view.use-single-toolbar" = false;
