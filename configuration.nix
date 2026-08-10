@@ -7,6 +7,13 @@ let
     extraGroups = [ "networkmanager" "wheel" "config" "dialout" "input" ];
     packages = with pkgs; [];
   };
+  autologin = user: {
+    overrideStrategy = "asDropin";
+    serviceConfig.ExecStart = [
+      ""
+      "${pkgs.util-linux}/sbin/agetty --autologin ${user} --noclear %I $TERM"
+    ];
+  };
 in {
   imports =
     [ # Include the results of the hardware scan.
@@ -43,11 +50,9 @@ in {
     extraGroups = [ "config" ];
   };
 
-  # Auto login for tty1
-  services.getty = {
-    autologinOnce = true;
-    autologinUser = "grapefru14";
-  };
+  # Auto logins
+  systemd.services."getty@tty1" = autologin "grapefru14";
+  systemd.services."getty@tty2" = autologin "secret";
 
   # Bluetooth
   hardware.bluetooth.enable = true;

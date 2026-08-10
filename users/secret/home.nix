@@ -6,61 +6,37 @@
   nixpkgs.config.allowUnfree = true;
 
   imports = [
+    ./desktop.nix
     (import ../grapefru14/base.nix { full = false; })
   ];
 
   home.packages = with pkgs; [
-    kitty
+    lazygit
+    cliphist
+    wl-clipboard
+
     #protonvpn-gui
     #mullvad-vpn
     #tor-browser
+
+    (pkgs.writeShellApplication {
+      name = "rand-wallppr";
+      text = ''
+PIC=$(find "/etc/nixos/users/grapefru14/backgrounds" -maxdepth 1 -type f \( -iname '*.png' -o -iname '*.jpg' -o -iname '*.jpeg' \) | shuf -n 1)
+caelestia wallpaper -f "$PIC"
+'';
+    })
   ];
 
-  programs.caelestia = {
+  services.cliphist = {
     enable = true;
-    systemd = {
-      enable = true;
-      target = "graphical-session.target";
-      environment = [];
-    };
-    settings = {
-      bar.statusIcons = [
-        { id = "lockStatus"; enabled = true; }
-        { id = "network"; enabled = true; }
-        { id = "bluetooth"; enabled = true; }
-        { id = "battery"; enabled = false; }
-      ];
-      paths.wallpaperDir = "/etc/nixos/users/grapefru14/backgrounds/";
-    };
-    cli = {
-      enable = true; # Also add caelestia-cli to path
-      settings = {
-        theme.enableGtk = false;
-      };
-    };
+    systemdTargets = [ "config.wayland.systemd.target" ];
   };
 
-  wayland.windowManager.hyprland = {
+  programs.kitty = {
     enable = true;
     settings = {
-      "$mod" = "SUPER";
-
-      exec-once = [
-        "caelestia shell -d"
-      ];
-
-      bind = [
-        "$mod, RETURN, exec, ${pkgs.kitty}/bin/kitty"
-        "$mod, Q, killactive,"
-        "$mod, M, exit,"
-        "$mod, V, togglefloating,"
-
-        # Move focus
-        "$mod, h, movefocus, l"
-        "$mod, l, movefocus, r"
-        "$mod, k, movefocus, u"
-        "$mod, j, movefocus, d"
-      ];
+      confirm_os_window_close = 0;
     };
   };
 
@@ -83,4 +59,11 @@
       fi
     done
   '';
+
+  programs.bash.profileExtra = ''
+[[ -f ~/.bashrc ]] && . ~/.bashrc
+# Only exec Hyprland if no display is running and you're on TTY2
+if [[ -z $DISPLAY && $XDG_VTNR -eq 2 ]]; then
+    exec hyprland
+fi'';
 }

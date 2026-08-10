@@ -5,13 +5,6 @@
 
   nixpkgs.config.allowUnfree = true;
 
-  home.pointerCursor = {
-    package = pkgs.bibata-cursors;
-    name = "Bibata-Modern-Ice";
-    size = 24;
-    gtk.enable = true;
-  };
-
   # Allow bluetooth headphones buttons to control media
   services.mpris-proxy.enable = true;
 
@@ -96,14 +89,6 @@ disown
     (pkgs.writeShellApplication {
       name = "wallppr";
       text = builtins.readFile ./programs/wallppr.sh;
-    })
-    (pkgs.writeShellApplication {
-      name = "linkfile";
-      text = ''
-mkdir -p /tmp/Link
-chmod 0775 /tmp/Link 2&>/dev/null || true
-nvim /tmp/Link/"$USER".md -c 'cd /tmp/Link|exe "Neotree"|wincmd w'
-'';
     })
     # A wrapper for wlanthy (above) with instructions
     (pkgs.writeShellApplication {

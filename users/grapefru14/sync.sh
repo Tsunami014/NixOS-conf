@@ -13,7 +13,7 @@ for fold in "$mainFold"/*/ "$mainFold"/.*/; do
   fi
   while IFS= read -r line; do
     # Skip empty lines
-    [ -z "$line" ] && continue
+    [[ -z "$line" || "$line" =~ ^# ]] && continue
     read -r mutable prefix name <<< "$line"
 
     if [ "$mutable" = "#" ]; then

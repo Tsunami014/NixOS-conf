@@ -30,6 +30,16 @@
       text = ''sudo yazi "$@"'';
     })
 
+    (pkgs.writeShellApplication {
+      name = "linkfile";
+      text = ''
+mkdir -p /tmp/Link
+chmod 0775 /tmp/Link 2&>/dev/null || true
+cd /tmp/Link
+nvim "$USER".md -c 'exe "Neotree"|wincmd w'
+'';
+    })
+
     # The upd scripts
     (pkgs.writeShellApplication {
       name = "upd-user";
@@ -59,6 +69,10 @@
     (pkgs.writeShellApplication {
       name = "dirinit";
       text = builtins.readFile ./programs/dirinit.sh;
+    })
+    (pkgs.writeShellApplication {
+      name = "close";
+      text = builtins.readFile ./programs/close.sh;
     })
   ];
 
