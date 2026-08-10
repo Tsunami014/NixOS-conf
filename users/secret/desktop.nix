@@ -21,6 +21,7 @@
 
   wayland.windowManager.hyprland = {
     enable = true;
+    systemd.enable = false;
     settings = {
       "$mod" = "SUPER";
 
@@ -30,8 +31,10 @@
 
       "exec-once" = [
         "caelestia shell -d"
-        "rand-wallppr"
-        "bash -c 'until caelestia shell lock lock 2>/dev/null; do sleep 0.1; done'"
+        "bash -c 'until caelestia shell lock lock 2>/dev/null; do sleep 0.1; done; wallppr rand'"
+        # Required things to start, *after* caelestia shell
+        "dbus-update-activation-environment --systemd --all"
+        "systemctl --user start hyprland-session.target"
       ];
 
       input = {
@@ -39,12 +42,16 @@
           natural_scroll = true;
         };
       };
+      decoration = {
+        rounding = 10;
+      };
 
       bind = [
         "$mod_CONTROL_SHIFT, ESCAPE, exit,"
+        "$mod, SPACE, global, caelestia:launcher"
         "$mod, RETURN, exec, ${pkgs.kitty}/bin/kitty"
         "$mod, L, exec, ${pkgs.kitty}/bin/kitty linkfile"
-        "$mod, SPACE, global, caelestia:launcher"
+        "$mod, APOSTROPHE, exec, ${pkgs.kitty}/bin/kitty yazi"
         "$mod, V, exec, cliphist-fuzzel-img"
         "$mod, Q, killactive,"
         "$mod, X, togglefloating,"

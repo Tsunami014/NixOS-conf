@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
-WPDIR="$HOME/Pictures/backgrounds"
+WPDIR="/etc/nixos/users/grapefru14/backgrounds"
 CUR="$HOME/Pictures/currentBg.jpg"
 SIZE="1920x1200"
 if ! [[ -v 1 ]]; then
@@ -18,5 +18,9 @@ magick "$NEW" \
   \( -clone 0 -resize "$SIZE" -gravity center \) \
   -delete 0 -gravity center -composite -layers merge "$CUR"
 
-swww clear-cache
-swww img "$CUR" --transition-type none
+if [ -n "${NIRI_SOCKET:-}" ]; then
+  swww clear-cache
+  swww img "$CUR" --transition-type none
+else
+  caelestia wallpaper -f "$CUR"
+fi

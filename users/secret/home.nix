@@ -8,10 +8,13 @@
   imports = [
     ./desktop.nix
     (import ../grapefru14/base.nix { full = false; })
+
+    ../grapefru14/pkgs/yazi/yaz.nix
   ];
 
   home.packages = with pkgs; [
     lazygit
+    fuzzel
     cliphist
     wl-clipboard
 
@@ -20,11 +23,8 @@
     #tor-browser
 
     (pkgs.writeShellApplication {
-      name = "rand-wallppr";
-      text = ''
-PIC=$(find "/etc/nixos/users/grapefru14/backgrounds" -maxdepth 1 -type f \( -iname '*.png' -o -iname '*.jpg' -o -iname '*.jpeg' \) | shuf -n 1)
-caelestia wallpaper -f "$PIC"
-'';
+      name = "wallppr";
+      text = builtins.readFile ../grapefru14/programs/wallppr.sh;
     })
   ];
 

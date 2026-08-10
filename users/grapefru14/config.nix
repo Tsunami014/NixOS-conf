@@ -1,10 +1,5 @@
 { config, pkgs, master-pkgs, lib, inputs, ... }: {
   home.file = {
-    "Pictures/backgrounds" = {
-      source = ./backgrounds;
-      recursive = true;
-    };
-
     ".local/share/fonts" = {
       source = ./fonts;
       recursive = true;
