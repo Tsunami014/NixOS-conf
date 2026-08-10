@@ -17,6 +17,7 @@
 
   imports = [
     ./config.nix
+    (import ./base.nix { full = true; })
 
     ./pkgs/yazi/yaz.nix
     ./pkgs/browser.nix
@@ -79,6 +80,10 @@
       ${builtins.readFile ./programs/navihex.py}
     '')
     (pkgs.writeShellApplication {
+      name = "printer-settings";
+      text = "zen --private-window http://localhost:631";
+    })
+    (pkgs.writeShellApplication {
       name = "fixbar";
       text = ''
 pkill quickshell || true
@@ -119,30 +124,6 @@ wlanthy
     (pkgs.writeScriptBin "baobab" ''nix-shell -p baobab --run "baobab $@"'')
   ];
 
-  programs.neovim = {
-    enable = true;
-    extraPackages = with pkgs; [
-      tree-sitter
-      unzip
-      nodejs
-      fd
-      ripgrep
-      texlivePackages.texfot # Better outputs
-      (texlive.combine {
-        inherit (texlive) scheme-full;
-      })
-      pandoc
-      (python313.withPackages (ps: with ps; [ debugpy ]))
-
-      # For lsps and stuff
-      clang-tools
-      gdb
-      pyright
-      ruff
-    ];
-  };
-
-
   # To find mime type of file: `= file --mime-type -b <filename>`
   # To list global package desktop files: `ls /run/current-system/sw/share/applications`
   # To list local package desktop files: `ls /etc/profiles/per-user/$(id -n -u)/share/applications`
@@ -168,35 +149,10 @@ wlanthy
     systemdTargets = [ "config.wayland.systemd.target" ];
   };
 
-  programs.bash = {
-    enable = true;
-    enableCompletion = true;
-    bashrcExtra = ''
-alias copy=wl-copy
-alias paste=wl-paste
-alias downloads="mkdir /tmp/Download 2>/dev/null;cd /tmp/Download"
-alias mktmpplace='cd "$(mktemp -d)";bash'
-'';
-    profileExtra = ''
+  programs.bash.profileExtra = ''
 [[ -f ~/.bashrc ]] && . ~/.bashrc
 # Only exec Niri if no display is running and you're on TTY1
 if [[ -z $DISPLAY && $XDG_VTNR -eq 1 ]]; then
     exec niri
 fi'';
-  };
-
-  programs.git = {
-    enable = true;
-    settings = {
-      user = {
-        name  = "Tsunami014";
-        email = "tsunami014@duck.com";
-      };
-      init.defaultBranch = "main";
-    };
-  };
-  # So setting global git config sets onto this writable empty file, not the unwritable git config defined above
-  home.activation.makeGitConfig = config.lib.dag.entryAfter [ "writeBoundary" ] ''
-    touch "$HOME/.gitconfig"
-  '';
 }

@@ -1,26 +1,36 @@
 {
   inputs = {
-    grapefru14.url = "../grapefru14";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
+    home-manager = {
+      url = "github:nix-community/home-manager/release-25.11";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    caelestia-shell = {
+      url = "github:caelestia-dots/shell";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
   };
-  outputs = inputs: let
+
+  outputs = { nixpkgs, home-manager, caelestia-shell, ... } @ inputs:
+  let
     system = "x86_64-linux";
-    grapefru14 = inputs.grapefru14;
-    uinputs = grapefru14.inputs;
-    pkgs = import uinputs.nixpkgs {
+    pkgs = import nixpkgs {
       inherit system;
       config.allowUnfree = true;
     };
-    master-pkgs = import uinputs.nixpkgs-master {
-      inherit system;
-      config.allowUnfree = true;
-    };
+    modules = [
+      ./home.nix
+      caelestia-shell.homeManagerModules.default
+    ];
   in {
-    homeConfigurations.secret = uinputs.home-manager.lib.homeManagerConfiguration {
+    homeManagerModules = modules;
+    homeModules.secret = ./home.nix;
+    homeConfigurations.secret = home-manager.lib.homeManagerConfiguration {
       inherit pkgs;
-      modules = grapefru14.homeManagerModules ++ [
-        ./home.nix
-      ];
-      extraSpecialArgs = { inputs = uinputs; inherit master-pkgs; };
+      extraSpecialArgs = { inherit inputs; };
+      modules = modules;
     };
   };
 }

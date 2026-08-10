@@ -5,15 +5,11 @@ fi
 # So it doesn't potentially cause issues
 umount ~/.config/niri/autorotate 2>/dev/null || true
 
-[ "${1-}" = "copyover" ] && copyover=true || copyover=false
 mkdir -p "$HOME/.config" "$HOME/.local/share"
 mainFold="/etc/nixos/users/$USER"
 for fold in "$mainFold"/*/ "$mainFold"/.*/; do
   if [ ! -f "$fold/list.txt" ]; then
     continue
-  fi
-  if ! $copyover; then
-    chmod +r -R "$fold"
   fi
   while IFS= read -r line; do
     # Skip empty lines
@@ -23,7 +19,7 @@ for fold in "$mainFold"/*/ "$mainFold"/.*/; do
     if [ "$mutable" = "#" ]; then
       continue
     fi
-  
+
     orig="$fold$name"
     if [ ! -d "$orig" ]; then
       echo "Original config does not exist for '$name'"
@@ -54,14 +50,8 @@ for fold in "$mainFold"/*/ "$mainFold"/.*/; do
       prt+="in ~/$prefix"
     fi
 
-    if $copyover; then
-      doin="Copying over"
-    else
-      doin="Linking"
-    fi
-
-    printf "%s\e[1m%s\e[0m%s\n" "$doin config for " "$prt" "..."
-    if [ -d "$link/$name" ] && [ ! -L "$link/$name" ] && ! $copyover; then
+    printf "%s\e[1m%s\e[0m%s\n" "Linking config for " "$prt" "..."
+    if [ -d "$link/$name" ] && [ ! -L "$link/$name" ]; then
       echo "Config already exists!"
       printf "Old: $link/$name  \tNew: $orig\n"
       printf "Opts: \tq: quit\n\tb: backup old & combine \tB: backup old & delete\n\tc: combine \td: delete old\n"
@@ -94,10 +84,6 @@ for fold in "$mainFold"/*/ "$mainFold"/.*/; do
       echo "Replacing config with new..."
     fi
     rm -rf "$link/$name"
-    if $copyover; then
-      cp -r "$orig" "$link/$name"
-    else
-      ln -sfT "$orig" "$link/$name"
-    fi
+    ln -sfT "$orig" "$link/$name"
   done < "$fold/list.txt"
 done

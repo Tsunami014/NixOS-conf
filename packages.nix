@@ -15,12 +15,6 @@
     unzip
     iio-sensor-proxy
 
-    # Printer stuff
-    (pkgs.writeShellApplication {
-      name = "printer-settings";
-      text = "zen --private-window http://localhost:631";
-    })
-
     # Various custom commands
     (pkgs.writeShellApplication {
       name = "+";
@@ -31,10 +25,6 @@
       text = ''nix-shell -p "$1" --run "$*"'';
     })
 
-    (pkgs.writeShellApplication {
-      name = "navi";
-      text = builtins.readFile ./programs/navi.sh;
-    })
     (pkgs.writeShellApplication {
       name = "suyazi";
       text = ''sudo yazi "$@"'';
