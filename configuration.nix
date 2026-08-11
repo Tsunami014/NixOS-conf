@@ -43,6 +43,9 @@ in {
     PATH = [ "/bin" ];
   };
 
+  # Enable upower
+  services.upower.enable = true;
+
   # Disable handling of the power button
   services.logind.settings.Login.HandlePowerKey = "ignore";
 

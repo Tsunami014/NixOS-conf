@@ -7,8 +7,24 @@
         { id = "lockStatus"; enabled = true; }
         { id = "network"; enabled = true; }
         { id = "bluetooth"; enabled = true; }
-        { id = "battery"; enabled = false; }
+        { id = "battery"; enabled = true; }
       ];
+
+      # Don't be able to scroll for volume control
+      bar.scrollActions.volume = false;
+
+      # Change active window display
+      bar.activeWindow.compact = true;
+      bar.activeWindow.showOnHover = false;
+
+      launcher.vimKeybinds = true;
+
+      # Default apps
+      general.apps.terminal = [ "kitty" ];
+      general.apps.explorer = [ "kitty yazi" ];
+      #general.apps.playback = [ ];
+      #general.apps.audio = [ ];
+
       paths.wallpaperDir = "/etc/nixos/users/grapefru14/backgrounds/";
     };
     cli = {
@@ -35,7 +51,7 @@
           "bash -c '"
             "until caelestia shell lock lock 2>/dev/null; do sleep 0.1; done;"
             "wallppr rand;"
-            "cp ${./keys.conf} ~/.config/hypr/keys.conf;"
+            "ln -f ${./keys.conf} ~/.config/hypr/keys.conf;"
           "'"
         ])
         # Required things to start, *after* caelestia shell

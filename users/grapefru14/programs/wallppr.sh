@@ -23,4 +23,5 @@ if [ -n "${NIRI_SOCKET:-}" ]; then
   swww img "$CUR" --transition-type none
 else
   caelestia wallpaper -f "$CUR"
+  caelestia shell wallpaper set "$HOME/.local/state/caelestia/wallpaper/current"
 fi
