@@ -33,7 +33,6 @@
         duckduckgo-privacy-essentials
         multi-account-containers
         temporary-containers
-        auto-tab-discard
         ublock-origin
         web-archives
         numatrix

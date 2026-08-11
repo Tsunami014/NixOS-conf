@@ -63,11 +63,25 @@
       input = {
         touchpad = {
           natural_scroll = true;
+          disable_while_typing = false;
         };
       };
       decoration = {
         rounding = 10;
       };
+      animations = {
+        enabled = true;
+        # Increase speed of some animations
+        bezier = "fastShot, 0.05, 0.9, 0.1, 1.05";
+        animation = [
+          "workspaces, 1, 5, fastShot, slide"
+          "windows, 1, 6, fastShot, slide"
+        ];
+      };
+
+      gesture = [
+        "3, horizontal, workspace, scale: 0.1"
+      ];
 
       source = "$HOME/.config/hypr/keys.conf";
       bind = [

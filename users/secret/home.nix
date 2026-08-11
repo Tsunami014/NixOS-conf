@@ -10,6 +10,7 @@
     (import ../grapefru14/base.nix { full = false; })
 
     ../grapefru14/pkgs/yazi/yaz.nix
+    ../grapefru14/pkgs/browser.nix
   ];
 
   home.packages = with pkgs; [
@@ -46,6 +47,21 @@ exec hyprland
     settings = {
       confirm_os_window_close = 0;
     };
+  };
+
+  programs.zen-browser.profiles.default = {
+    settings = lib.mkAfter {
+      "browser.newtabpage.enabled" = false;
+      "privacy.clearOnShutdown_v2.cache" = true;
+      "privacy.clearOnShutdown_v2.cookiesAndStorage" = true;
+      "privacy.clearOnShutdown.cache" = true;
+      "privacy.clearOnShutdown.cookies" = true;
+      "privacy.sanitize.sanitizeOnShutdown" = true;
+    };
+    extensions.packages = lib.mkAfter (
+      with inputs.firefox-addons.packages.${pkgs.stdenv.hostPlatform.system}; [
+        firemonkey
+      ]);
   };
 
   home.activation.makeFolders = config.lib.dag.entryAfter [ "writeBoundary" ]
