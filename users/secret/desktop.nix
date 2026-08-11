@@ -55,7 +55,7 @@
       source = "./keys.conf";
       bind = [
         "$mod_CONTROL_SHIFT, ESCAPE, exit,"
-        ''$mod_CONTROL_SHIFT, DELETE, exec, ${pkgs.kitty}/bin/kitty -- sh -c 'close; read -rs -p "\nPress any key"' ''
+        ''$mod_CONTROL_SHIFT, DELETE, exec, ${pkgs.kitty}/bin/kitty -- sh -c 'close; echo;read -rs -p "Press any key"' ''
       ];
     };
   };
