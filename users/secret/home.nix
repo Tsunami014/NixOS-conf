@@ -23,6 +23,13 @@
     #tor-browser
 
     (pkgs.writeShellApplication {
+      name = "hyprwrap";
+      text = ''
+:> ~/.config/hypr/keys.conf
+exec hyprland
+      '';
+    })
+    (pkgs.writeShellApplication {
       name = "wallppr";
       text = builtins.readFile ../grapefru14/programs/wallppr.sh;
     })
@@ -64,6 +71,6 @@
 [[ -f ~/.bashrc ]] && . ~/.bashrc
 # Only exec Hyprland if no display is running and you're on TTY2
 if [[ -z $DISPLAY && $XDG_VTNR -eq 2 ]]; then
-    exec hyprland
+    exec hyprwrap
 fi'';
 }

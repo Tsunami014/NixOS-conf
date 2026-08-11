@@ -31,7 +31,13 @@
 
       "exec-once" = [
         "caelestia shell -d"
-        "bash -c 'until caelestia shell lock lock 2>/dev/null; do sleep 0.1; done; wallppr rand'"
+        (pkgs.lib.concatStrings [
+          "bash -c '"
+            "until caelestia shell lock lock 2>/dev/null; do sleep 0.1; done;"
+            "wallppr rand;"
+            "cp ${./keys.conf} ~/.config/hypr/keys.conf;"
+          "'"
+        ])
         # Required things to start, *after* caelestia shell
         "dbus-update-activation-environment --systemd --all"
         "systemctl --user start hyprland-session.target"
@@ -46,32 +52,10 @@
         rounding = 10;
       };
 
+      source = "./keys.conf";
       bind = [
         "$mod_CONTROL_SHIFT, ESCAPE, exit,"
-        "$mod, SPACE, global, caelestia:launcher"
-        "$mod, RETURN, exec, ${pkgs.kitty}/bin/kitty"
-        "$mod, L, exec, ${pkgs.kitty}/bin/kitty linkfile"
-        "$mod, APOSTROPHE, exec, ${pkgs.kitty}/bin/kitty yazi"
-        "$mod, V, exec, cliphist-fuzzel-img"
-        "$mod, Q, killactive,"
-        "$mod, X, togglefloating,"
-
-        # Move focus
-        "$mod, h, movefocus, l"
-        "$mod, l, movefocus, r"
-        "$mod, k, movefocus, u"
-        "$mod, j, movefocus, d"
-
-        "$mod, 1, workspace, 1"
-        "$mod, 2, workspace, 2"
-        "$mod, 3, workspace, 3"
-        "$mod, 4, workspace, 4"
-        "$mod, 5, workspace, 5"
-        "$mod_SHIFT, 1, movetoworkspace, 1"
-        "$mod_SHIFT, 2, movetoworkspace, 2"
-        "$mod_SHIFT, 3, movetoworkspace, 3"
-        "$mod_SHIFT, 4, movetoworkspace, 4"
-        "$mod_SHIFT, 5, movetoworkspace, 5"
+        ''$mod_CONTROL_SHIFT, DELETE, exec, ${pkgs.kitty}/bin/kitty -- sh -c 'close; read -rs -p "\nPress any key"' ''
       ];
     };
   };

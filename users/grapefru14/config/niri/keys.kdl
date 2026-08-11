@@ -39,6 +39,7 @@ binds {
         // In case something needs to use keybinds taken by niri
 
     Mod+Control+Shift+Escape { quit; }
+    Mod+Control+Shift+Delete { spawn-sh "$TermSpawn sh -c 'close; read -rs -p \"\nPress any key\"'"; }
 
     Mod+F1 { show-hotkey-overlay; }
 
