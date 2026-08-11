@@ -9,10 +9,16 @@ let
   };
   autologin = user: {
     overrideStrategy = "asDropin";
-    serviceConfig.ExecStart = [
-      ""
-      "${pkgs.util-linux}/sbin/agetty --autologin ${user} --noclear %I $TERM"
-    ];
+    serviceConfig = {
+      ExecStart = [
+        ""
+        "${pkgs.util-linux}/sbin/agetty --autologin ${user} --noclear %I $TERM"
+      ];
+      Type = "oneshot";
+      RemainAfterExit = true;
+
+      Restart = "no";
+    };
   };
 in {
   imports =
