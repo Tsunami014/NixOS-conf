@@ -50,8 +50,7 @@
         (pkgs.lib.concatStrings [
           "bash -c '"
             "until caelestia shell lock lock 2>/dev/null; do sleep 0.1; done;"
-            ''rm -f "$HOME/.config/hypr/keys.conf";''
-            ''ln -s ${./keys.conf} "$HOME/.config/hypr/keys.conf";''
+            ''cp ${./keys.conf} "$HOME/.config/hypr/keys.conf";''
             "sleep 1; wallppr rand &"
           "'"
         ])
