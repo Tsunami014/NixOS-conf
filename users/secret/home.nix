@@ -25,7 +25,8 @@
     (pkgs.writeShellApplication {
       name = "hyprwrap";
       text = ''
-:> ~/.config/hypr/keys.conf
+rm -f ~/.config/hypr/keys.conf
+touch ~/.config/hypr/keys.conf
 exec hyprland
       '';
     })

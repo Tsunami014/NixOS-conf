@@ -15,8 +15,7 @@ let
         "${pkgs.util-linux}/sbin/agetty --autologin ${user} --noclear %I $TERM"
       ];
       Type = "oneshot";
-      RemainAfterExit = true;
-
+      RemainAfterExit = false;
       Restart = "no";
     };
   };
@@ -61,9 +60,7 @@ in {
 
   # Auto logins
   systemd.services."getty@tty1" = autologin "grapefru14";
-  systemd.services."autovt@tty1" = autologin "grapefru14";
   systemd.services."getty@tty2" = autologin "secret";
-  systemd.services."autovt@tty2" = autologin "secret";
 
   # Bluetooth
   hardware.bluetooth.enable = true;

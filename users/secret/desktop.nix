@@ -50,8 +50,9 @@
         (pkgs.lib.concatStrings [
           "bash -c '"
             "until caelestia shell lock lock 2>/dev/null; do sleep 0.1; done;"
-            "wallppr rand;"
-            "ln -f ${./keys.conf} ~/.config/hypr/keys.conf;"
+            ''rm -f "$HOME/.config/hypr/keys.conf";''
+            ''ln -s ${./keys.conf} "$HOME/.config/hypr/keys.conf";''
+            "sleep 1; wallppr rand &"
           "'"
         ])
         # Required things to start, *after* caelestia shell
@@ -68,11 +69,16 @@
         rounding = 10;
       };
 
-      source = "./keys.conf";
+      source = "$HOME/.config/hypr/keys.conf";
       bind = [
         "$mod_CONTROL_SHIFT, ESCAPE, exit,"
         ''$mod_CONTROL_SHIFT, DELETE, exec, ${pkgs.kitty}/bin/kitty -- sh -c 'close; echo;read -rs -p "Press any key"' ''
       ];
+
+      misc = {
+        disable_hyprland_logo = true;
+        background_color = "rgb(111111)";
+      };
     };
   };
 }
