@@ -2,6 +2,7 @@
 set -euo pipefail
 WPDIR="/etc/nixos/users/grapefru14/backgrounds"
 CUR="$HOME/Pictures/currentBg.jpg"
+mkdir -p "$HOME/Pictures"
 SIZE="1920x1200"
 if ! [[ -v 1 ]]; then
   NEW="$WPDIR/$(find "$WPDIR" -mindepth 1 -printf "%f\n" | sort | fzf --no-sort)"
@@ -11,7 +12,7 @@ else
   NEW="$WPDIR/$1"
 fi
 
-rm "$CUR" 2&>/dev/null || true
+rm -f "$CUR"
 magick "$NEW" \
   -background grey -alpha remove -alpha off \
   \( -clone 0 -resize "$SIZE^" -gravity center -extent "$SIZE" -blur 0x40 \) \

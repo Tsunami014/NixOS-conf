@@ -51,9 +51,12 @@
           "bash -c '"
             "until caelestia shell lock lock 2>/dev/null; do sleep 0.1; done;"
             ''cp ${./keys.conf} "$HOME/.config/hypr/keys.conf";''
-            "sleep 1; wallppr rand &"
+            "wallppr rand"
           "'"
         ])
+        # Setup cliphist
+        "wl-paste --type text --watch cliphist store"
+        "wl-paste --type image --watch cliphist store"
         # Required things to start, *after* caelestia shell
         "dbus-update-activation-environment --systemd --all"
         "systemctl --user start hyprland-session.target"

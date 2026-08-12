@@ -18,6 +18,7 @@
     fuzzel
     cliphist
     wl-clipboard
+    imagemagick
 
     #protonvpn-gui
     #mullvad-vpn
@@ -37,13 +38,9 @@ exec hyprland
     })
   ];
 
-  services.cliphist = {
-    enable = true;
-    systemdTargets = [ "config.wayland.systemd.target" ];
-  };
-
   programs.kitty = {
     enable = true;
+    themeFile = "Catppuccin-Macchiato";
     settings = {
       confirm_os_window_close = 0;
     };
@@ -80,6 +77,8 @@ exec hyprland
         echo "Cloning $name config repo..."
         mkdir -p $(dirname "$fold")
         git clone "''${files[$fold]}" "$fold"
+      else
+        git -C "$fold" pull
       fi
     done
   '';
