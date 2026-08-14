@@ -19,8 +19,13 @@
     cliphist
     wl-clipboard
     imagemagick
+    bluez # For caelestia
     iio-hyprland # Autorotate
     jq # For iio-hyprland and other things
+
+    (prismlauncher.override {
+      #additionalPrograms = [ ];
+    })
 
     #protonvpn-gui
     #mullvad-vpn
