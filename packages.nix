@@ -26,6 +26,14 @@
     })
 
     (pkgs.writeShellApplication {
+      name = "fixprinter";
+      text = ''
+sudo systemctl restart avahi-daemon
+sudo systemctl restart cups
+'';
+    })
+
+    (pkgs.writeShellApplication {
       name = "suyazi";
       text = ''sudo yazi "$@"'';
     })

@@ -1,6 +1,5 @@
 #!/bin/sh
-exec > /tmp/autorotate.log 2>&1
-set -x
+exec > /tmp/"autorotate-$USER".log
 get_outp() {
   if [ "${1-}" ]; then
     OUTPUT="$1"
@@ -19,24 +18,16 @@ fi
 echo "Using output '$OUTPUT'"
 
 rotate_output() {
-  if [ -f "/tmp/NOAUTOROTATE" ]; then
+  if [ -f "/tmp/NOAUTOROTATE-$USER" ]; then
     echo "Ignoring rotation"
     return
   fi
   orientation="$1"
   case "$orientation" in
-    *normal*)
-      rot=normal
-      ;;
-    *right-up*)
-      rot=270
-      ;;
-    *bottom-up*)
-      rot=180
-      ;;
-    *left-up*)
-      rot=90
-      ;;
+    *normal*) rot=normal ;;
+    *right-up*) rot=270 ;;
+    *bottom-up*) rot=180 ;;
+    *left-up*) rot=90 ;;
     *) echo "Unknown orientation: $orientation" >&2; return ;;
   esac
   matrix="1.0 0.0 0.0 0.0 1.0 0.0"

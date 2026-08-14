@@ -21,6 +21,7 @@ binds {
     Mod+T repeat=false hotkey-overlay-title="Temp place" { spawn-sh "$TermSpawn bash -ic mktmpplace"; }
     Mod+P repeat=false hotkey-overlay-title="Temporary python" { spawn-sh "$TermSpawn bash -ic 'py'"; }
     Mod+L repeat=false hotkey-overlay-title="Open link file" { spawn-sh "$TermSpawn linkfile"; }
+    Mod+W repeat=false hotkey-overlay-title="Choose wallpaper" { spawn-sh "$TermSpawn wallppr"; }
 
     Mod+B repeat=false hotkey-overlay-title="Web browser" { spawn "zen"; }
     Mod+Shift+B repeat=false hotkey-overlay-title="Private web browser" { spawn-sh "zen --private-window"; }

@@ -45,6 +45,7 @@
     krita
     ollama
     arduino-ide
+    pdfarranger
     wl-color-picker
     # Apps I needed to make myself for one reason or another
     (pkgs.callPackage ./pkgs/godsvg.nix {})

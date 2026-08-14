@@ -19,6 +19,8 @@
     cliphist
     wl-clipboard
     imagemagick
+    iio-hyprland # Autorotate
+    jq # For iio-hyprland and other things
 
     #protonvpn-gui
     #mullvad-vpn

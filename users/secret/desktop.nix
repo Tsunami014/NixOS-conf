@@ -45,6 +45,10 @@
         "XDG_DATA_HOME,/home/secret/.local/share"
       ];
 
+      monitor = [
+        "eDP-1,preferred,auto,1.3333334"
+      ];
+
       "exec-once" = [
         "caelestia shell -d"
         (pkgs.lib.concatStrings [
@@ -54,6 +58,7 @@
             "wallppr rand"
           "'"
         ])
+        "iio-hyprland &"
         # Setup cliphist
         "wl-paste --type text --watch cliphist store"
         "wl-paste --type image --watch cliphist store"
