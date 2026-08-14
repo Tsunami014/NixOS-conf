@@ -80,7 +80,7 @@ exec hyprland
         mkdir -p $(dirname "$fold")
         git clone "''${files[$fold]}" "$fold"
       else
-        git -C "$fold" pull
+        git -C "$fold" pull || true
       fi
     done
   '';
