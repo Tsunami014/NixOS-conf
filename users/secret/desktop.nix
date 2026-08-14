@@ -99,6 +99,7 @@
       misc = {
         disable_hyprland_logo = true;
         background_color = "rgb(111111)";
+        mouse_move_enables_dpms = true;
       };
     };
   };
