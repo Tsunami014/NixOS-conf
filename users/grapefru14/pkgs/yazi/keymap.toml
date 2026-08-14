@@ -30,8 +30,8 @@ desc = "Go /etc/nixos/users/$USER"
 
 [[mgr.prepend_keymap]]
 on  = [ "g", "d" ]
-run = "cd /tmp/Download"
-desc = "Go /tmp/Download"
+run = 'cd /tmp/"Download-$USER"'
+desc = 'Go Temporary Downloads'
 
 [[mgr.prepend_keymap]]
 on  = [ "g", "D" ]

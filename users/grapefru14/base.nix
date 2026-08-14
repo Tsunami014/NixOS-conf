@@ -38,7 +38,7 @@
     bashrcExtra = ''
 alias copy=wl-copy
 alias paste=wl-paste
-alias downloads="mkdir /tmp/Download 2>/dev/null;cd /tmp/Download"
+alias downloads='mkdir /tmp/"Download-$USER" 2>/dev/null;cd /tmp/"Download-$USER"'
 alias mktmpplace='cd "$(mktemp -d)";bash'
 '';
   };

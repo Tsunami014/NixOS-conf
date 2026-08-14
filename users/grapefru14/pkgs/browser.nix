@@ -58,9 +58,9 @@
         # Dark theme
         "layout.css.prefers-color-scheme.content-override" = 0;
         "zen.view.window.scheme" = 0;
-        # Download to /tmp/Download
+        # Download to /tmp/Download-$USER
         "browser.download.folderList" = 2;
-        "browser.download.dir" = "/tmp/Download";
+        "browser.download.dir" = "/tmp/Download-${config.home.username}";
         "browser.download.useDownloadDir" = true;
         # Devtools
         "devtools.accessibility.enabled" = false;
