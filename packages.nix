@@ -151,4 +151,12 @@ ln -sf ${pkgs.bash}/bin/bash /bin/bash
     viAlias = true;
     vimAlias = true;
   };
+
+  # Unfortunately, steam must be installed globally
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = true;
+    dedicatedServer.openFirewall = true;
+    localNetworkGameTransfers.openFirewall = true;
+  };
 }

@@ -63,7 +63,10 @@ in {
   systemd.services."getty@tty2" = autologin "secret";
 
   # Bluetooth
-  hardware.bluetooth.enable = true;
+  hardware.bluetooth = {
+    enable = true;
+    powerOnBoot = true;
+  };
   services.blueman.enable = true; # bluetooth gui
 
   # Sound settings
@@ -76,6 +79,12 @@ in {
     alsa.support32Bit = true;
     pulse.enable = true;
     wireplumber.enable = true;
+
+    wireplumber.extraConfig."11-bluetooth-policy" = {
+      "wireplumber.settings" = {
+        "bluetooth.autoswitch-to-headset-profile" = false;
+      };
+    };
   };
 
   # Input remapping service

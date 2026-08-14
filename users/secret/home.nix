@@ -18,14 +18,16 @@
     fuzzel
     cliphist
     wl-clipboard
+    pavucontrol
     imagemagick
+    htop
     bluez # For caelestia
     iio-hyprland # Autorotate
     jq # For iio-hyprland and other things
 
-    (prismlauncher.override {
-      #additionalPrograms = [ ];
-    })
+    # Games
+    prismlauncher # Minecraft
+    (olympus.override { celesteWrapper = "steam-run"; })
 
     #protonvpn-gui
     #mullvad-vpn

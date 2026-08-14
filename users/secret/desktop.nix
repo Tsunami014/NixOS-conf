@@ -96,6 +96,8 @@
         ''$mod_CONTROL_SHIFT, DELETE, exec, ${pkgs.kitty}/bin/kitty -- sh -c 'close; echo;read -rs -p "Press any key"' ''
       ];
 
+      xwayland.force_zero_scaling = true;
+
       misc = {
         disable_hyprland_logo = true;
         background_color = "rgb(111111)";
