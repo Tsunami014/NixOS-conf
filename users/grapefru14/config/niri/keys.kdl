@@ -49,12 +49,8 @@ binds {
     Alt+Print { screenshot-window; }
 
     Mod+Grave { power-off-monitors; }  // To turn back on do anything
-
     Mod+Space repeat=false { toggle-overview; }
-
     Mod+Q repeat=false { close-window; }
-    Mod+Backspace repeat=false { close-window; }
-    Mod+Delete { close-window; }
 
 
     // Window moving
