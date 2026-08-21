@@ -14,16 +14,9 @@
   ];
 
   home.packages = with pkgs; [
-    lazygit
-    fuzzel
-    cliphist
-    wl-clipboard
-    pavucontrol
     imagemagick
-    htop
     bluez # For caelestia
     iio-hyprland # Autorotate
-    jq # For iio-hyprland and other things
 
     # Games
     prismlauncher # Minecraft

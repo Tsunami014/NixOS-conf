@@ -15,6 +15,14 @@
     unzip
     iio-sensor-proxy
 
+    lazygit
+    fuzzel
+    pavucontrol
+    cliphist
+    wl-clipboard
+    jq
+    htop
+
     # Various custom commands
     (pkgs.writeShellApplication {
       name = "+";

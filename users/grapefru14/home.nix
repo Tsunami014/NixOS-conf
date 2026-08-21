@@ -20,13 +20,7 @@
   # Package stuff
   home.packages = with pkgs; [
     alacritty
-    htop
     gh
-    lazygit
-    cliphist
-    wl-clipboard
-    fuzzel
-    jq
     imagemagick
     exiftool
     sqlite
@@ -40,7 +34,6 @@
 
     inputs.hexecute.packages.${system}.default
     # Various apps
-    pavucontrol
     gnome-calculator
     krita
     ollama
