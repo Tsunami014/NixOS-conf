@@ -84,7 +84,7 @@ disown
       name = "wallppr";
       text = builtins.readFile ./programs/wallppr.sh;
     })
-    # A wrapper for wlanthy (above) with instructions
+    # Wrappers
     (pkgs.writeShellApplication {
       name = "jap";
       text = ''
@@ -93,6 +93,11 @@ Space or up/down to choose, enter to commit, backspace to undo
 F12 to toggle on/off, though not recommended for long"
 wlanthy
 '';
+    })
+    (pkgs.writeShellApplication {
+      name = "ocode";
+      text = "ollama launch opencode";
+      runtimeInputs = [ pkgs.opencode ];
     })
     # Lazily loaded programs
     (pkgs.writeScriptBin "py" ''
