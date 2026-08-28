@@ -111,6 +111,7 @@ EOF
 # use nix -p packagename -p anotherPackage.Name
 # use nix -p athird.package \
 #     -p fourthPkg
+# use nix # For loading shell.nix
 EOF
 );;
         blank | "") tmplNam="blank"; tmpl="" ;;

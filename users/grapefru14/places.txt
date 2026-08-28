@@ -6,3 +6,4 @@
 
 ~/.zen/
 ~/.study
+~/.ssh

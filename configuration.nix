@@ -4,7 +4,7 @@ let
   mkuser = usrname: {
     isNormalUser = true;
     description = usrname;
-    extraGroups = [ "networkmanager" "wheel" "config" "dialout" "input" ];
+    extraGroups = [ "networkmanager" "wheel" "config" "dialout" "input" "plugdev" ];
     packages = with pkgs; [];
   };
   autologin = user: {
@@ -48,8 +48,11 @@ in {
   # Disable handling of the power button
   services.logind.settings.Login.HandlePowerKey = "ignore";
 
-  # Add groups to user
-  users.groups.config = {};
+  # Add extra groups
+  users.groups = {
+    config = {};
+    plugdev = {};
+  };
   # Define user accounts. Don't forget to set a password with 'sudo passwd username'.
   users.users.grapefru14 = mkuser "Grapefru14";
   users.users.secret = mkuser "Secret";
@@ -173,10 +176,11 @@ efi /EFI/ubuntu/grubx64.efi
   programs.fuse.userAllowOther = true;
   hardware.graphics.enable = true;
 
-  # Fix udev sometimes freaking out
-#   services.udev.extraRules = ''
-#     SUBSYSTEM=="power_supply", KERNEL=="BAT1", ACTION=="change", OPTIONS+="ignore_device"
-#   '';
+  # Add extra udev rules
+  services.udev.extraRules = ''
+    SUBSYSTEM=="usb", ATTR{idVendor}=="0d28", ATTR{idProduct}=="0204", MODE="0666", GROUP="plugdev"
+    KERNEL=="hidraw*", ATTRS{idVendor}=="0d28", ATTRS{idProduct}=="0204", MODE="0666", GROUP="plugdev"
+  '';
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
