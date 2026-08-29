@@ -2,6 +2,7 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
     nixpkgs-master.url = "github:NixOS/nixpkgs/master";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     home-manager = {
       url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -36,7 +37,7 @@
     };
   };
 
-  outputs = { nixpkgs, nixpkgs-master, home-manager, ... } @ inputs:
+  outputs = { nixpkgs, nixpkgs-master, nixpkgs-unstable, home-manager, ... } @ inputs:
   let
     system = "x86_64-linux";
     pkgs = import nixpkgs {
@@ -44,6 +45,10 @@
       config.allowUnfree = true;
     };
     master-pkgs = import nixpkgs-master {
+      inherit system;
+      config.allowUnfree = true;
+    };
+    unstable-pkgs = import nixpkgs-unstable {
       inherit system;
       config.allowUnfree = true;
     };
@@ -55,7 +60,7 @@
     homeModules.grapefru14 = ./home.nix;
     homeConfigurations.grapefru14 = home-manager.lib.homeManagerConfiguration {
       inherit pkgs;
-      extraSpecialArgs = { inherit inputs master-pkgs; };
+      extraSpecialArgs = { inherit inputs master-pkgs unstable-pkgs; };
 
       modules = modules;
     };

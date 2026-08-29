@@ -105,7 +105,7 @@ case "$upd" in
             nix-collect-garbage -d
         fi
         echo "Cleaning trash..."
-        sudo rm -rf /home/"$name"/.local/share/Trash/* /home/"$name"/.cache/*
+        sudo rm -rf /home/"$USER"/.local/share/Trash/* /home/"$USER"/.cache/*
         echo "Done cleaning trash!"
     ;;
 esac

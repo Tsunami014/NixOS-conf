@@ -1,4 +1,4 @@
-{ config, pkgs, master-pkgs, lib, inputs, ... }: {
+{ config, pkgs, master-pkgs, unstable-pkgs, lib, inputs, ... }: {
   home.username = "grapefru14";
   home.homeDirectory = "/home/${config.home.username}";
   home.stateVersion = "25.11";
@@ -15,6 +15,7 @@
     ./pkgs/yazi/yaz.nix
     ./pkgs/browser.nix
     ./pkgs/wlogout.nix
+    ./pkgs/opencode.nix
   ];
 
   # Package stuff
@@ -36,10 +37,10 @@
     # Various apps
     gnome-calculator
     krita
-    ollama
     arduino-ide
     pdfarranger
     wl-color-picker
+    opencode
     # Apps I needed to make myself for one reason or another
     (pkgs.callPackage ./pkgs/godsvg.nix {})
     (pkgs.callPackage ./pkgs/wlanthy.nix {})
@@ -94,11 +95,6 @@ F12 to toggle on/off, though not recommended for long"
 wlanthy
 '';
     })
-    (pkgs.writeShellApplication {
-      name = "ocode";
-      text = "ollama launch opencode";
-      runtimeInputs = [ pkgs.opencode ];
-    })
     # Lazily loaded programs
     (pkgs.writeScriptBin "py" ''
       ${pkgs.python313.withPackages (ps: with ps; [ pyperclip numpy requests ])}/bin/python3
@@ -123,6 +119,16 @@ wlanthy
       "image/webp" = "swayimg.desktop";
       "image/bmp"  = "swayimg.desktop";
       "image/tiff" = "swayimg.desktop";
+    };
+  };
+
+  services.ollama = {
+    enable = true;
+    package = unstable-pkgs.ollama;
+    environmentVariables = {
+      OLLAMA_NUM_THREADS = "6";
+      OLLAMA_NUM_THREAD = "6";
+      OLLAMA_CONTEXT_LENGTH = "4096";
     };
   };
 
