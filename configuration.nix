@@ -4,7 +4,7 @@ let
   mkuser = usrname: {
     isNormalUser = true;
     description = usrname;
-    extraGroups = [ "networkmanager" "wheel" "config" "dialout" "input" "plugdev" ];
+    extraGroups = [ "networkmanager" "wheel" "config" "dialout" "input" "uinput" "plugdev" ];
     packages = with pkgs; [];
   };
   autologin = user: {
@@ -175,6 +175,7 @@ efi /EFI/ubuntu/grubx64.efi
   # Misc other stuff
   programs.fuse.userAllowOther = true;
   hardware.graphics.enable = true;
+  hardware.uinput.enable = true;
 
   # Add extra udev rules
   services.udev.extraRules = ''

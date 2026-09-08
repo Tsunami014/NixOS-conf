@@ -15,6 +15,7 @@
     unzip
     iio-sensor-proxy
 
+    # Some packages that are useful, so put here as to not duplicate them across users
     lazygit
     fuzzel
     pavucontrol
@@ -22,6 +23,9 @@
     wl-clipboard
     jq
     htop
+    swayimg
+    amberol # Music
+    sioyek
 
     # Various custom commands
     (pkgs.writeShellApplication {

@@ -2,7 +2,7 @@
 
 let
   pname = "godsvg";
-  version = "v1.0-alpha15";
+  version = "v1.0-alpha17";
 
   libs = with pkgs; [
     wayland
@@ -15,7 +15,7 @@ in stdenv.mkDerivation rec {
 
   src = fetchurl {
     url = "https://github.com/MewPurPur/GodSVG/releases/download/${version}/GodSVG_${version}.Linux.x86_64.zip";
-    sha256 = "sha256-DtEeWSLD/rwrXNUQqW/7xFw9VHo76B7mN7uubcEWbqo=";
+    sha256 = "sha256-utPvFuZmxNFMldtEUgkvJ+6TtFDlJc8D20yaHbcgElg=";
   };
 
   nativeBuildInputs = [
@@ -33,7 +33,7 @@ in stdenv.mkDerivation rec {
   '';
 
   meta = {
-    description = "GodSVG — structured SVG editor built with Godot (wrapped prebuilt release)";
+    description = "GodSVG — structured SVG editor built with Godot";
     homepage = "https://github.com/MewPurPur/GodSVG";
     changelog = "https://github.com/MewPurPur/GodSVG/releases";
     license = lib.licenses.mit;

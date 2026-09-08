@@ -38,6 +38,9 @@ exec hyprland
       name = "wallppr";
       text = builtins.readFile ../grapefru14/programs/wallppr.sh;
     })
+
+    # Lazily loaded programs
+    (pkgs.writeScriptBin "protonvpn" ''nix-shell -p protonvpn-gui --run "protonvpn-app $@"'')
   ];
 
   programs.kitty = {

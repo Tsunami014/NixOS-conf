@@ -26,10 +26,6 @@
     exiftool
     sqlite
 
-    # File viewers
-    sioyek
-    swayimg
-
     # Background apps
     wakatime-cli
 
@@ -45,6 +41,7 @@
     (pkgs.callPackage ./pkgs/godsvg.nix {})
     (pkgs.callPackage ./pkgs/wlanthy.nix {})
     (pkgs.callPackage ./pkgs/roland.nix {})
+    (pkgs.callPackage ./pkgs/wvkbd.nix {})
     # Apps I'm version-conscious for
     ldtk
     master-pkgs.aseprite
@@ -57,7 +54,6 @@
     acpi
     brightnessctl
     inputs.hyprlock.packages.${system}.default
-    wvkbd
     wtype
 
     # Extra executable stuff
