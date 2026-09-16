@@ -15,6 +15,10 @@
     unzip
     iio-sensor-proxy
 
+    # Icon themes (otherwise some icons won't exist)
+    hicolor-icon-theme
+    papirus-icon-theme
+
     # Some packages that are useful, so put here as to not duplicate them across users
     lazygit
     fuzzel

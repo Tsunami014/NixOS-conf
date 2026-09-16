@@ -100,6 +100,10 @@ wlanthy
     (pkgs.writeScriptBin "baobab" ''nix-shell -p baobab --run "baobab $@"'')
   ];
 
+  home.sessionVariables = {
+    QS_ICON_THEME = "Papirus"; # Use the correct icon theme
+  };
+
   # To find mime type of file: `= file --mime-type -b <filename>`
   # To list global package desktop files: `ls /run/current-system/sw/share/applications`
   # To list local package desktop files: `ls /etc/profiles/per-user/$(id -n -u)/share/applications`
