@@ -14,6 +14,5 @@ wl-paste --watch cliphist store &
 ollama serve &
 
 kdeconnect-indicator &
-blueman-applet &
 
 wait

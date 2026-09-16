@@ -31,6 +31,7 @@
 
     inputs.hexecute.packages.${system}.default
     # Various apps
+    chromium # Some things need chrome to work, this is the backup browser for that
     gnome-calculator
     krita
     arduino-ide
@@ -144,17 +145,17 @@ if [[ -z $NIRI_LAUNCHED ]]; then
   launch=false
 
   if [[ $XDG_VTNR == 1 ]]; then
-    launch=true
-  elif [[ -n $XDG_VTNR && -t 0 && -t 1 ]]; then
-    read -n 1 -p "Launch Niri? (y/n): " response
-    echo
-    [[ "$response" =~ ^[Yy]$ ]] && launch=true
-  fi
-
-  if [[ $launch == true ]]; then
     export NIRI_LAUNCHED=1
     export XDG_SESSION_TYPE=wayland
     exec niri-session
+  elif [[ -n $XDG_VTNR && -t 0 && -t 1 ]]; then
+    read -n 1 -p "Launch Niri? (y/n): " response
+    echo
+    if [[ "$response" =~ ^[Yy]$ ]]; then
+      export NIRI_LAUNCHED=1
+      export XDG_SESSION_TYPE=wayland
+      exec niri --session
+    fi
   fi
 fi'';
 }

@@ -71,7 +71,11 @@ in {
     powerOnBoot = true;
   };
   services.blueman.enable = true; # bluetooth gui
-  environment.etc."xdg/autostart/blueman.desktop".enable = false; # Disable the applet auto starting
+  # Disable the applet/system tray icon
+  environment.etc."xdg/autostart/blueman.desktop".text = ''
+    [Desktop Entry]
+    Hidden=true
+  '';
 
   # Sound settings
   security.rtkit.enable = true; # Enable RealtimeKit for audio purposes
