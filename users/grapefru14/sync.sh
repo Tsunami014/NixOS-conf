@@ -21,10 +21,7 @@ for fold in "$mainFold"/*/ "$mainFold"/.*/; do
     fi
 
     orig="$fold$name"
-    if [ ! -d "$orig" ]; then
-      echo "Original config does not exist for '$name'"
-      continue
-    fi
+    mkdir "$orig" 2>/dev/null || true
     if [ "$mutable" = "perm" ]; then
       prt="Permanent "
     elif [ "$mutable" = "mut" ]; then
@@ -51,39 +48,44 @@ for fold in "$mainFold"/*/ "$mainFold"/.*/; do
     fi
 
     printf "%s\e[1m%s\e[0m%s\n" "Linking config for " "$prt" "..."
-    if [ -d "$link/$name" ] && [ ! -L "$link/$name" ]; then
-      echo "Config already exists!"
-      printf "Old: $link/$name  \tNew: $orig\n"
-      printf "Opts: \tq: quit\n\tb: backup old & combine \tB: backup old & delete\n\tc: combine \td: delete old\n"
-      while true; do
-        read -sn1 -p "What do you want to do? " OPT < /dev/tty
-        printf "\n\e[K"
-        case "$OPT" in
-          b|B)
-            echo "Backing up existing config..."
-            cp -r "$link/$name" "$link/$name.backup"
+    if [ -z "$(find "$orig" -mindepth 1 -maxdepth 1 -print -quit)" ]; then
+      echo "Copying existing config..."
+      mv "$link/$name" "$fold"
+    else
+      if [ -d "$link/$name" ] && [ ! -L "$link/$name" ]; then
+        echo "Config already exists!"
+        printf "Old: $link/$name  \tNew: $orig\n"
+        printf "Opts: \tq: quit\n\tb: backup old & combine \tB: backup old & delete\n\tc: combine \td: delete old\n"
+        while true; do
+          read -sn1 -p "What do you want to do? " OPT < /dev/tty
+          printf "\n\e[K"
+          case "$OPT" in
+            b|B)
+              echo "Backing up existing config..."
+              cp -r "$link/$name" "$link/$name.backup"
+              ;;
+            c|d);;
+            q)
+              echo "Quitting!"
+              exit 1
+              ;;
+            *)
+              printf "Unknown option '$OPT'!\e[999D\e[1A\e[K"
+              ;;
+          esac
+          case "$OPT" in
+            b|c)
+              echo "Syncing existing config..."
+              rsync -a --delete "$link/$name/" "$fold/$name/"
+              break
             ;;
-          c|d);;
-          q)
-            echo "Quitting!"
-            exit 1
-            ;;
-          *)
-            printf "Unknown option '$OPT'!\e[999D\e[1A\e[K"
-            ;;
-        esac
-        case "$OPT" in
-          b|c)
-            echo "Syncing existing config..."
-            rsync -a --delete "$link/$name/" "$fold/$name/"
-            break
-          ;;
-          B|d) break ;;
-        esac
-      done
-      echo "Replacing config with new..."
+            B|d) break ;;
+          esac
+        done
+        echo "Replacing config with new..."
+      fi
+      rm -rf "$link/$name"
     fi
-    rm -rf "$link/$name"
     ln -sfT "$orig" "$link/$name"
   done < "$fold/list.txt"
 done

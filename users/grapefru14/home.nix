@@ -39,6 +39,7 @@
     wl-color-picker
     opencode
     # Apps I needed to make myself for one reason or another
+    (pkgs.callPackage ./pkgs/kando.nix {})
     (pkgs.callPackage ./pkgs/godsvg.nix {})
     (pkgs.callPackage ./pkgs/wlanthy.nix {})
     (pkgs.callPackage ./pkgs/roland.nix {})
@@ -103,6 +104,7 @@ wlanthy
 
   home.sessionVariables = {
     QS_ICON_THEME = "Papirus"; # Use the correct icon theme
+    NIXOS_OZONE_WL = "1"; # Force wayland for some apps
   };
 
   # To find mime type of file: `= file --mime-type -b <filename>`

@@ -1,3 +1,2 @@
 mut shr GodSVG
-mut conf zed
 mut conf aseprite
