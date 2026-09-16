@@ -140,9 +140,21 @@ wlanthy
   };
 
   programs.bash.profileExtra = ''
-[[ -f ~/.bashrc ]] && . ~/.bashrc
-# Only exec Niri if no display is running and you're on TTY1
-if [[ -z $DISPLAY && $XDG_VTNR -eq 1 ]]; then
-    exec niri
+if [[ -z $NIRI_LAUNCHED ]]; then
+  launch=false
+
+  if [[ $XDG_VTNR == 1 ]]; then
+    launch=true
+  elif [[ -n $XDG_VTNR && -t 0 && -t 1 ]]; then
+    read -n 1 -p "Launch Niri? (y/n): " response
+    echo
+    [[ "$response" =~ ^[Yy]$ ]] && launch=true
+  fi
+
+  if [[ $launch == true ]]; then
+    export NIRI_LAUNCHED=1
+    export XDG_SESSION_TYPE=wayland
+    exec niri-session
+  fi
 fi'';
 }

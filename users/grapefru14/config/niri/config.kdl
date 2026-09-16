@@ -7,7 +7,10 @@ include "windowRules.kdl"
 include "keys.kdl"
 include "autorotate/rotate.kdl"
 
-spawn-at-startup "sh" "-c" "systemctl --user import-environment WAYLAND_DISPLAY XDG_RUNTIME_DIR && ~/.,sysfiles/,startup.sh"
+spawn-at-startup "systemctl" "--user" "import-environment" "WAYLAND_DISPLAY" "XDG_RUNTIME_DIR"
+spawn-at-startup "dbus-update-activation-environment" "--systemd" "DISPLAY" "WAYLAND_DISPLAY" "XDG_CURRENT_DESKTOP" "XDG_SESSION_TYPE"
+spawn-at-startup "systemctl" "--user" "restart" "xdg-desktop-portal.service" "xdg-desktop-portal-gnome.service"
+spawn-at-startup "~/.,sysfiles/,startup.sh"
 
 // Input device configuration.
 // https://yalter.github.io/niri/Configuration:-Input

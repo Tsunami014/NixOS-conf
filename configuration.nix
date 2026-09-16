@@ -4,7 +4,7 @@ let
   mkuser = usrname: {
     isNormalUser = true;
     description = usrname;
-    extraGroups = [ "networkmanager" "wheel" "config" "dialout" "input" "uinput" "plugdev" ];
+    extraGroups = [ "networkmanager" "wheel" "config" "dialout" "input" "uinput" "plugdev" "video" "render" ];
     packages = with pkgs; [];
   };
   autologin = user: {
@@ -22,7 +22,7 @@ let
 in {
   imports =
     [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
+      ./hardware-configuration.nix # Generate this with 'nixos-generate-config'
       ./packages.nix
       ./userConfig.nix
     ];
@@ -71,6 +71,7 @@ in {
     powerOnBoot = true;
   };
   services.blueman.enable = true; # bluetooth gui
+  environment.etc."xdg/autostart/blueman.desktop".enable = false; # Disable the applet auto starting
 
   # Sound settings
   security.rtkit.enable = true; # Enable RealtimeKit for audio purposes
@@ -81,6 +82,7 @@ in {
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
+    jack.enable = true;
     wireplumber.enable = true;
 
     wireplumber.extraConfig."11-bluetooth-policy" = {
