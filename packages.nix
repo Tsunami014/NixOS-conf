@@ -34,11 +34,11 @@
     # Various custom commands
     (pkgs.writeShellApplication {
       name = "+";
-      text = ''nix-shell -p "$@"'';
+      text = ''nix-shell --log-format bar-with-logs -p "$@"'';
     })
     (pkgs.writeShellApplication {
       name = "=";
-      text = ''nix-shell -p "$1" --run "$*"'';
+      text = ''nix-shell --log-format bar-with-logs -p "$1" --run "$*"'';
     })
 
     (pkgs.writeShellApplication {

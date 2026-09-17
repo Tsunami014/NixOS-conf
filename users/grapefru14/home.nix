@@ -97,9 +97,9 @@ wlanthy
     (pkgs.writeScriptBin "py" ''
       ${pkgs.python313.withPackages (ps: with ps; [ pyperclip numpy requests ])}/bin/python3
     '')
-    (pkgs.writeScriptBin "zed" ''nix-shell -p zed-editor --run "zeditor $@"'')
-    (pkgs.writeScriptBin "obs" ''nix-shell -p obs-studio --run "obs $@"'')
-    (pkgs.writeScriptBin "baobab" ''nix-shell -p baobab --run "baobab $@"'')
+    (pkgs.writeScriptBin "zed" ''nix-shell --log-format bar-with-logs -p zed-editor --run "zeditor $@"'')
+    (pkgs.writeScriptBin "obs" ''nix-shell --log-format bar-with-logs -p obs-studio --run "obs $@"'')
+    (pkgs.writeScriptBin "baobab" ''nix-shell --log-format bar-with-logs -p baobab --run "baobab $@"'')
   ];
 
   home.sessionVariables = {
