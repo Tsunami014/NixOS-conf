@@ -8,6 +8,7 @@ binds {
 
     // Apps / User stuff
     Mod+MouseMiddle repeat=false hotkey-overlay-title="Hexecute" { spawn-sh "$EXECUTE"; }
+    Mod+Ctrl+Space repeat=false hotkey-overlay-title="Apps menu" { spawn-sh "kando -t apps"; }
     Mod+Ctrl+P repeat=false hotkey-overlay-title="Pointer" { spawn-sh "HOME='/tmp';hexecute"; }
 
     Mod+Return repeat=false hotkey-overlay-title="Terminal" { spawn "alacritty"; }

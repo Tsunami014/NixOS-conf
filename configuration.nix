@@ -171,7 +171,10 @@ efi /EFI/ubuntu/grubx64.efi
   security.polkit.enable = true;
   xdg.portal = {
     enable = true;
-    extraPortals = [ pkgs.xdg-desktop-portal-wlr ];
+    extraPortals = [
+      pkgs.xdg-desktop-portal-gnome
+      pkgs.xdg-desktop-portal-wlr
+    ];
   };
 
   # Misc nix stuff

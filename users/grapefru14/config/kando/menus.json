@@ -4,357 +4,281 @@
     {
       "root": {
         "type": "submenu",
-        "name": "Example Menu",
+        "name": "Keybinds",
         "icon": "award_star",
+        "iconTheme": "material-symbols-rounded",
+        "children": [
+          {
+            "type": "hotkey",
+            "name": "Undo",
+            "icon": "undo",
+            "iconTheme": "material-symbols-rounded",
+            "data": {
+              "hotkey": "ControlLeft+KeyZ",
+              "delayed": true,
+              "inhibitShortcuts": false
+            },
+            "angle": 270
+          },
+          {
+            "type": "hotkey",
+            "name": "Redo",
+            "icon": "redo",
+            "iconTheme": "material-symbols-rounded",
+            "data": {
+              "hotkey": "ControlLeft+ShiftLeft+KeyZ",
+              "delayed": true,
+              "inhibitShortcuts": false
+            }
+          }
+        ]
+      },
+      "shortcut": "Control+Space",
+      "shortcutID": "keys",
+      "centered": false,
+      "anchored": false,
+      "hoverMode": false,
+      "tags": []
+    },
+    {
+      "shortcut": "",
+      "shortcutID": "apps",
+      "centered": false,
+      "anchored": false,
+      "hoverMode": false,
+      "tags": [],
+      "root": {
+        "type": "submenu",
+        "name": "Apps menu",
+        "icon": "apps",
         "iconTheme": "material-symbols-rounded",
         "children": [
           {
             "type": "submenu",
             "name": "Apps",
-            "icon": "apps",
+            "icon": "view_apps",
             "iconTheme": "material-symbols-rounded",
+            "data": {},
             "children": [
               {
                 "type": "command",
+                "name": "LdTK",
+                "icon": "construction",
+                "iconTheme": "material-symbols-rounded",
                 "data": {
-                  "command": "x-www-browser"
-                },
-                "name": "Web Browser",
-                "icon": "globe",
-                "iconTheme": "material-symbols-rounded"
+                  "command": "ldtk",
+                  "detached": true,
+                  "isolated": false,
+                  "delayed": false
+                }
               },
               {
                 "type": "command",
+                "name": "Arduino IDE",
+                "icon": "arduino",
+                "iconTheme": "simple-icons",
                 "data": {
-                  "command": "xdg-email"
-                },
-                "name": "E-Mail",
-                "icon": "mail",
-                "iconTheme": "material-symbols-rounded"
+                  "command": "arduino-ide",
+                  "detached": true,
+                  "isolated": false,
+                  "delayed": false
+                }
               },
               {
                 "type": "command",
+                "name": "Pureref",
+                "icon": "mobile_layout",
+                "iconTheme": "material-symbols-rounded",
                 "data": {
-                  "command": "gimp"
-                },
-                "name": "GIMP",
-                "icon": "gimp",
-                "iconTheme": "simple-icons"
+                  "command": "PureRef",
+                  "detached": true,
+                  "isolated": false,
+                  "delayed": false
+                }
               },
               {
                 "type": "command",
-                "data": {
-                  "command": "xdg-open ~"
-                },
-                "name": "File Browser",
-                "icon": "folder_shared",
-                "iconTheme": "material-symbols-rounded"
-              },
-              {
-                "type": "command",
-                "data": {
-                  "command": "x-terminal-emulator"
-                },
-                "name": "Terminal",
+                "name": "Opencode",
                 "icon": "terminal",
-                "iconTheme": "material-symbols-rounded"
+                "iconTheme": "material-symbols-rounded",
+                "data": {
+                  "command": "$TermSpawn opencode",
+                  "detached": true,
+                  "isolated": false,
+                  "delayed": false
+                }
+              },
+              {
+                "type": "command",
+                "name": "Study RNG",
+                "icon": "🎲",
+                "iconTheme": "emoji",
+                "data": {
+                  "command": "$TermSpawn studyrng ~/",
+                  "detached": true,
+                  "isolated": false,
+                  "delayed": false
+                }
+              }
+            ]
+          },
+          {
+            "type": "submenu",
+            "name": "Settings",
+            "icon": "settings-item.svg",
+            "iconTheme": "kando",
+            "data": {},
+            "children": [
+              {
+                "type": "settings",
+                "name": "Open Settings",
+                "icon": "settings-item.svg",
+                "iconTheme": "kando",
+                "data": null
+              },
+              {
+                "type": "command",
+                "name": "Printer settings",
+                "icon": "print",
+                "iconTheme": "material-symbols-rounded",
+                "data": {
+                  "command": "printer-settings",
+                  "detached": true,
+                  "isolated": false,
+                  "delayed": false
+                }
+              },
+              {
+                "type": "command",
+                "name": "Bluetooth manager",
+                "icon": "bluetooth",
+                "iconTheme": "material-symbols-rounded",
+                "data": {
+                  "command": "blueman-manager",
+                  "detached": true,
+                  "isolated": false,
+                  "delayed": false
+                }
+              },
+              {
+                "type": "command",
+                "name": "Audio settings",
+                "icon": "volume_up",
+                "iconTheme": "material-symbols-rounded",
+                "data": {
+                  "command": "pavucontrol",
+                  "detached": true,
+                  "isolated": false,
+                  "delayed": false
+                }
+              },
+              {
+                "type": "command",
+                "name": "Input remapper",
+                "icon": "videogame_asset",
+                "iconTheme": "material-symbols-rounded",
+                "data": {
+                  "command": "$TermSpawn input-remapper-gtk",
+                  "detached": true,
+                  "isolated": false,
+                  "delayed": false
+                }
               }
             ],
-            "quickSelectKey": ""
+            "angle": 135
           },
           {
             "type": "submenu",
-            "name": "Web Links",
-            "icon": "public",
+            "name": "Tools",
+            "icon": "tools_power_drill",
             "iconTheme": "material-symbols-rounded",
+            "data": {},
             "children": [
               {
-                "type": "uri",
-                "data": {
-                  "uri": "https://www.google.com"
-                },
-                "name": "Google",
-                "icon": "google",
-                "iconTheme": "simple-icons"
-              },
-              {
-                "type": "uri",
-                "data": {
-                  "uri": "https://github.com/kando-menu/kando"
-                },
-                "name": "Kando on GitHub",
-                "icon": "github",
-                "iconTheme": "simple-icons"
-              },
-              {
-                "type": "uri",
-                "data": {
-                  "uri": "https://ko-fi.com/schneegans"
-                },
-                "name": "Kando on Ko-fi",
-                "icon": "kofi",
-                "iconTheme": "simple-icons"
-              },
-              {
-                "type": "uri",
-                "data": {
-                  "uri": "https://www.youtube.com/@simonschneegans"
-                },
-                "name": "Kando on YouTube",
-                "icon": "youtube",
-                "iconTheme": "simple-icons"
-              },
-              {
-                "type": "uri",
-                "data": {
-                  "uri": "https://discord.gg/hZwbVSDkhy"
-                },
-                "name": "Kando on Discord",
-                "icon": "discord",
-                "iconTheme": "simple-icons"
-              }
-            ],
-            "quickSelectKey": ""
-          },
-          {
-            "type": "hotkey",
-            "data": {
-              "hotkey": "ControlLeft+AltLeft+ArrowRight",
-              "delayed": false
-            },
-            "name": "Next Workspace",
-            "icon": "arrow_forward",
-            "iconTheme": "material-symbols-rounded"
-          },
-          {
-            "type": "submenu",
-            "name": "Clipboard",
-            "icon": "assignment",
-            "iconTheme": "material-symbols-rounded",
-            "children": [
-              {
-                "type": "hotkey",
-                "data": {
-                  "hotkey": "ControlLeft+KeyV",
-                  "delayed": true
-                },
-                "name": "Paste",
-                "icon": "content_paste_go",
+                "type": "command",
+                "name": "PDF Arranger",
+                "icon": "edit_document",
                 "iconTheme": "material-symbols-rounded",
-                "angle": 90
+                "data": {
+                  "command": "pdfarranger",
+                  "detached": true,
+                  "isolated": false,
+                  "delayed": false
+                }
               },
               {
-                "type": "hotkey",
+                "type": "command",
+                "name": "Calculator",
+                "icon": "calculate",
+                "iconTheme": "material-symbols-rounded",
                 "data": {
-                  "hotkey": "ControlLeft+KeyC",
-                  "delayed": true
-                },
-                "name": "Copy",
-                "icon": "content_copy",
-                "iconTheme": "material-symbols-rounded"
+                  "command": "gnome-calculator",
+                  "detached": true,
+                  "isolated": false,
+                  "delayed": false
+                }
               },
               {
-                "type": "hotkey",
+                "type": "command",
+                "name": "Logic analyser",
+                "icon": "bar_chart_4_bars",
+                "iconTheme": "material-symbols-rounded",
                 "data": {
-                  "hotkey": "ControlLeft+KeyX",
-                  "delayed": true
-                },
-                "name": "Cut",
-                "icon": "cut",
-                "iconTheme": "material-symbols-rounded"
+                  "command": "saleae-logic-2",
+                  "detached": true,
+                  "isolated": false,
+                  "delayed": false
+                }
               }
             ]
           },
           {
             "type": "submenu",
-            "name": "Audio",
-            "icon": "play_circle",
+            "name": "Drawing",
+            "icon": "ink_pen",
             "iconTheme": "material-symbols-rounded",
-            "children": [
-              {
-                "type": "hotkey",
-                "data": {
-                  "hotkey": "MediaTrackNext",
-                  "delayed": false
-                },
-                "name": "Next Track",
-                "icon": "skip_next",
-                "iconTheme": "material-symbols-rounded",
-                "angle": 90
-              },
-              {
-                "type": "hotkey",
-                "data": {
-                  "hotkey": "MediaPlayPause",
-                  "delayed": false
-                },
-                "name": "Play / Pause",
-                "icon": "play_pause",
-                "iconTheme": "material-symbols-rounded"
-              },
-              {
-                "type": "hotkey",
-                "data": {
-                  "hotkey": "AudioVolumeMute",
-                  "delayed": false
-                },
-                "name": "Mute",
-                "icon": "music_off",
-                "iconTheme": "material-symbols-rounded"
-              },
-              {
-                "type": "hotkey",
-                "data": {
-                  "hotkey": "MediaTrackPrevious",
-                  "delayed": false
-                },
-                "name": "Previous Track",
-                "icon": "skip_previous",
-                "iconTheme": "material-symbols-rounded",
-                "angle": 270
-              }
-            ]
-          },
-          {
-            "type": "submenu",
-            "name": "Windows",
-            "icon": "select_window",
-            "iconTheme": "material-symbols-rounded",
-            "children": [
-              {
-                "type": "hotkey",
-                "data": {
-                  "hotkey": "MetaLeft+ArrowUp",
-                  "delayed": true
-                },
-                "name": "Toggle Maximize",
-                "icon": "open_in_full",
-                "iconTheme": "material-symbols-rounded",
-                "angle": 0
-              },
-              {
-                "type": "hotkey",
-                "data": {
-                  "hotkey": "MetaLeft+ArrowRight",
-                  "delayed": true
-                },
-                "name": "Tile Right",
-                "icon": "text_select_jump_to_end",
-                "iconTheme": "material-symbols-rounded",
-                "angle": 90
-              },
-              {
-                "type": "hotkey",
-                "data": {
-                  "hotkey": "AltLeft+F4",
-                  "delayed": true
-                },
-                "name": "Close Window",
-                "icon": "cancel_presentation",
-                "iconTheme": "material-symbols-rounded"
-              },
-              {
-                "type": "hotkey",
-                "data": {
-                  "hotkey": "MetaLeft+ArrowLeft",
-                  "delayed": true
-                },
-                "name": "Tile Left",
-                "icon": "text_select_jump_to_beginning",
-                "iconTheme": "material-symbols-rounded",
-                "angle": 270
-              }
-            ]
-          },
-          {
-            "type": "hotkey",
-            "data": {
-              "hotkey": "ControlLeft+AltLeft+ArrowLeft",
-              "delayed": false
-            },
-            "name": "Previous Workspace",
-            "icon": "arrow_back",
-            "iconTheme": "material-symbols-rounded"
-          },
-          {
-            "type": "submenu",
-            "name": "Bookmarks",
-            "icon": "folder_special",
-            "iconTheme": "material-symbols-rounded",
+            "data": {},
             "children": [
               {
                 "type": "command",
+                "name": "SVG editor",
+                "icon": "draw_collage",
+                "iconTheme": "material-symbols-rounded",
                 "data": {
-                  "command": "xdg-open \"$(xdg-user-dir DOWNLOAD)\""
-                },
-                "name": "Downloads",
-                "icon": "download",
-                "iconTheme": "material-symbols-rounded"
+                  "command": "godsvg",
+                  "detached": true,
+                  "isolated": false,
+                  "delayed": false
+                }
               },
               {
                 "type": "command",
+                "name": "Krita",
+                "icon": "draw",
+                "iconTheme": "material-symbols-rounded",
                 "data": {
-                  "command": "xdg-open \"$(xdg-user-dir VIDEOS)\""
-                },
-                "name": "Videos",
-                "icon": "video_camera_front",
-                "iconTheme": "material-symbols-rounded"
+                  "command": "krita",
+                  "detached": true,
+                  "isolated": false,
+                  "delayed": false
+                }
               },
               {
                 "type": "command",
+                "name": "Aseprite",
+                "icon": "draw_abstract",
+                "iconTheme": "material-symbols-rounded",
                 "data": {
-                  "command": "xdg-open \"$(xdg-user-dir PICTURES)\""
-                },
-                "name": "Pictures",
-                "icon": "imagesmode",
-                "iconTheme": "material-symbols-rounded"
-              },
-              {
-                "type": "command",
-                "data": {
-                  "command": "xdg-open \"$(xdg-user-dir DOCUMENTS)\""
-                },
-                "name": "Documents",
-                "icon": "text_ad",
-                "iconTheme": "material-symbols-rounded"
-              },
-              {
-                "type": "command",
-                "data": {
-                  "command": "xdg-open \"$(xdg-user-dir DESKTOP)\""
-                },
-                "name": "Desktop",
-                "icon": "desktop_windows",
-                "iconTheme": "material-symbols-rounded"
-              },
-              {
-                "type": "command",
-                "data": {
-                  "command": "xdg-open ~"
-                },
-                "name": "Home",
-                "icon": "home",
-                "iconTheme": "material-symbols-rounded"
-              },
-              {
-                "type": "command",
-                "data": {
-                  "command": "xdg-open \"$(xdg-user-dir MUSIC)\""
-                },
-                "name": "Music",
-                "icon": "music_note",
-                "iconTheme": "material-symbols-rounded"
+                  "command": "aseprite",
+                  "detached": true,
+                  "isolated": false,
+                  "delayed": false
+                }
               }
             ]
           }
         ]
-      },
-      "shortcut": "Control+Space",
-      "shortcutID": "example-menu",
-      "centered": false,
-      "anchored": false,
-      "hoverMode": false,
-      "tags": []
+      }
     }
   ],
   "collections": [

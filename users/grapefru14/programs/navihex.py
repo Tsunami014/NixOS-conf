@@ -1,3 +1,4 @@
+import ast
 import json
 import math
 import os
@@ -7,6 +8,24 @@ import tkinter.font as tkfont
 from tkinter import messagebox
 
 GESTURES_FPATH = os.path.expanduser("~/.config/hexecute/gestures.json")
+
+# Presets live alongside gestures.json. Each preset is a hand-written
+# (command, points) pair -- see load_presets()/PRESETS_FPATH format notes
+# below -- that gets turned into a real gesture entry on every launch and
+# every Refresh.
+PRESETS_FPATH = os.path.expanduser("~/.config/hexecute/presets.txt")
+
+# Presets don't store a full shell command, just the niri action name, so
+# it gets substituted into this template to build the gesture's actual
+# "command" field. Note this deliberately does NOT end with ';' -- that's
+# how sync_presets_into_gestures() tells "generated from presets.txt"
+# gestures apart from hand-authored ones (which all end with ';'), so it
+# knows which entries it's allowed to replace on the next sync.
+PRESET_COMMAND_TEMPLATE = "niri msg action %s; hexecute"
+
+PRESET_TEMPLATE_POINT_COUNT = 64
+GESTURE_SIZE = 250
+PRESET_ROTATION = range(-2, 3, 2)
 
 # The gesture grid is responsive: the number of columns is derived from
 # the available page width (MIN_CELL_W..MAX_GRID_COLS), not fixed, so wide
@@ -148,126 +167,156 @@ def normalize_points(points, width, height, padding=20):
 # ---------------------------------------------------------------------------
 
 def resample_points_arc(points, n):
-    """Resample a path to n evenly (by arc length) spaced points."""
+    """Resample a path to n evenly spaced points by true arc length."""
     if not points:
         return []
+    if n <= 1:
+        return [points[0]]
     if len(points) == 1:
         return [points[0]] * n
 
-    def path_length(pts):
-        d = 0.0
-        for i in range(1, len(pts)):
-            d += math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1])
-        return d
+    # Cumulative true arc lengths along the preset path.
+    cumulative = [0.0]
+    for i in range(1, len(points)):
+        cumulative.append(
+            cumulative[-1]
+            + math.hypot(
+                points[i][0] - points[i - 1][0],
+                points[i][1] - points[i - 1][1],
+            )
+        )
 
-    total = path_length(points)
+    total = cumulative[-1]
     if total == 0:
         return [points[0]] * n
 
-    interval = total / (n - 1)
-    pts = list(points)
-    new_points = [pts[0]]
-    D = 0.0
-    i = 1
-    while i < len(pts):
-        x0, y0 = pts[i - 1]
-        x1, y1 = pts[i]
-        d = math.hypot(x1 - x0, y1 - y0)
-        if (D + d) >= interval and d > 0:
-            t = (interval - D) / d
-            qx = x0 + t * (x1 - x0)
-            qy = y0 + t * (y1 - y0)
-            new_points.append((qx, qy))
-            pts.insert(i, (qx, qy))
-            D = 0.0
-        else:
-            D += d
-        i += 1
+    result = []
+    segment = 1
 
-    while len(new_points) < n:
-        new_points.append(pts[-1])
+    for j in range(n):
+        target = total * j / (n - 1)
 
-    return new_points[:n]
+        while segment < len(points) - 1 and cumulative[segment] < target:
+            segment += 1
 
+        lo = segment - 1
+        hi = segment
+        span = cumulative[hi] - cumulative[lo]
 
-def normalize_unit(points):
-    """Translate to the origin and uniformly scale into a unit box,
-    preserving aspect ratio (so shape AND relative start position survive)."""
-    xs = [p[0] for p in points]
-    ys = [p[1] for p in points]
-    min_x, max_x = min(xs), max(xs)
-    min_y, max_y = min(ys), max(ys)
-    span_x = max_x - min_x or 1
-    span_y = max_y - min_y or 1
-    scale = 1.0 / max(span_x, span_y)
-    return [((x - min_x) * scale, (y - min_y) * scale) for x, y in points]
-
-
-def gesture_similarity(raw_points_a, raw_points_b):
-    """Return a 0-100 conflict/similarity score between two raw gesture
-    point lists (each a list of {"X":..,"Y":..} dicts)."""
-    p1 = [(p["X"], p["Y"]) for p in raw_points_a]
-    p2 = [(p["X"], p["Y"]) for p in raw_points_b]
-
-    n1 = normalize_unit(p1)
-    n2 = normalize_unit(p2)
-
-    r1 = resample_points_arc(n1, RESAMPLE_N)
-    r2 = resample_points_arc(n2, RESAMPLE_N)
-
-    # Shape: average distance between corresponding resampled points.
-    point_dists = [math.hypot(a[0] - b[0], a[1] - b[1]) for a, b in zip(r1, r2)]
-    shape_dist = sum(point_dists) / len(point_dists)
-    shape_sim = max(0.0, 1.0 - shape_dist / 0.6)
-
-    # Start point: distance between the first points of each normalized path.
-    start_dist = math.hypot(r1[0][0] - r2[0][0], r1[0][1] - r2[0][1])
-    start_sim = max(0.0, 1.0 - start_dist / 0.5)
-
-    # Direction: how aligned the step-by-step travel direction is.
-    def vectors(rp):
-        return [(rp[i + 1][0] - rp[i][0], rp[i + 1][1] - rp[i][1]) for i in range(len(rp) - 1)]
-
-    v1 = vectors(r1)
-    v2 = vectors(r2)
-    angle_sims = []
-    for (ax, ay), (bx, by) in zip(v1, v2):
-        la = math.hypot(ax, ay)
-        lb = math.hypot(bx, by)
-        if la == 0 or lb == 0:
-            angle_sims.append(1.0)
+        if span == 0:
+            result.append(points[lo])
             continue
-        cos_sim = (ax * bx + ay * by) / (la * lb)
-        cos_sim = max(-1.0, min(1.0, cos_sim))
-        angle_sims.append((cos_sim + 1) / 2)
-    direction_sim = sum(angle_sims) / len(angle_sims) if angle_sims else 1.0
 
-    # Point count / complexity: very different raw point counts make the
-    # gestures less likely to be confused for one another.
-    c1, c2 = len(p1), len(p2)
-    count_sim = 1.0 - (abs(c1 - c2) / max(c1, c2)) if max(c1, c2) else 1.0
+        t = (target - cumulative[lo]) / span
+        x = points[lo][0] + t * (points[hi][0] - points[lo][0])
+        y = points[lo][1] + t * (points[hi][1] - points[lo][1])
+        result.append((x, y))
 
-    overall = (
-        shape_sim * 0.50 +
-        direction_sim * 0.25 +
-        start_sim * 0.15 +
-        count_sim * 0.10
-    )
-    return max(0.0, min(1.0, overall)) * 100.0
+    return result
+
+
+def _normalize_template(points):
+    """Put a preset into the point-space used by Hexecute's recognizer.
+
+    Hexecute independently scales X and Y to 250 and then translates the
+    centroid to (0, 0). A zero-width/zero-height preset is special-cased
+    because the Go code would otherwise divide by zero.
+    """
+    xs = [x for x, _ in points]
+    ys = [y for _, y in points]
+
+    width = max(xs) - min(xs)
+    height = max(ys) - min(ys)
+
+    scaled = []
+    for x, y in points:
+        sx = x * GESTURE_SIZE / width if width else 0.0
+        sy = y * GESTURE_SIZE / height if height else 0.0
+        scaled.append((sx, sy))
+
+    mean_x = sum(x for x, _ in scaled) / len(scaled)
+    mean_y = sum(y for _, y in scaled) / len(scaled)
+
+    return [
+        {"X": x - mean_x, "Y": y - mean_y}
+        for x, y in scaled
+    ]
+
+
+def _rotate_template(points, degrees):
+    """Rotate a processed template around its centroid."""
+    angle = math.radians(degrees)
+    c = math.cos(angle)
+    s = math.sin(angle)
+
+    cx = sum(p["X"] for p in points) / len(points)
+    cy = sum(p["Y"] for p in points) / len(points)
+
+    result = []
+    for p in points:
+        x = p["X"] - cx
+        y = p["Y"] - cy
+        result.append({
+            "X": x * c - y * s + cx,
+            "Y": x * s + y * c + cy,
+        })
+    return result
+
+
+def template_similarity(points_a, points_b):
+    """Return Hexecute's recognizer score for two processed templates.
+
+    This is the actual score calculation used by UnistrokeRecognise:
+        1 - average point distance /
+            (0.5 * sqrt(2 * size * size))
+
+    There is no separate shape/start/direction/point-count weighting in the
+    recognizer.
+    """
+    if not points_a or not points_b or len(points_a) != len(points_b):
+        return 0.0
+
+    total = 0.0
+    for a, b in zip(points_a, points_b):
+        total += math.hypot(
+            float(a["X"]) - float(b["X"]),
+            float(a["Y"]) - float(b["Y"]),
+        )
+
+    average_distance = total / len(points_a)
+    denominator = 0.5 * math.sqrt(2.0 * GESTURE_SIZE * GESTURE_SIZE)
+    score = (1.0 - average_distance / denominator) * 100.0
+
+    # The Go recognizer can mathematically produce negative scores. A conflict
+    # score is displayed as a 0-100 value, so keep that UI value non-negative.
+    return max(0.0, score)
+
+
+def gesture_similarity(templates_a, templates_b):
+    """Return the best recognizer score between two gestures.
+
+    Hexecute recognizes a gesture by taking the best matching template, so a
+    conflict score must likewise use the best pair of templates.
+    """
+    best = 0.0
+    for points_a in templates_a:
+        for points_b in templates_b:
+            best = max(best, template_similarity(points_a, points_b))
+    return best
 
 
 def compute_conflicts(gestures):
     """Return rows of (name, total_score, [(other_name, score), ...])
     for every gesture that has at least one conflict at/above
     CONFLICT_PAIR_CUTOFF, sorted by total_score descending."""
-    items = [(g["command"], g["templates"][0]) for g in gestures]
+    items = [(g["command"], g.get("templates", [])) for g in gestures]
     per_gesture = {name: [] for name, _ in items}
 
     for i in range(len(items)):
         for j in range(i + 1, len(items)):
-            name_a, pts_a = items[i]
-            name_b, pts_b = items[j]
-            score = gesture_similarity(pts_a, pts_b)
+            name_a, templates_a = items[i]
+            name_b, templates_b = items[j]
+            score = gesture_similarity(templates_a, templates_b)
             if score >= CONFLICT_PAIR_CUTOFF:
                 per_gesture[name_a].append((name_b, score))
                 per_gesture[name_b].append((name_a, score))
@@ -282,6 +331,145 @@ def compute_conflicts(gestures):
 
     rows.sort(key=lambda r: r[1], reverse=True)
     return rows
+
+
+
+def load_presets(path):
+    """Parse presets.txt into a list of (name, raw_points) pairs, where
+    raw_points is a list of (x, y) numeric tuples exactly as written in
+    the file. Returns [] if the file doesn't exist or is empty."""
+    if not os.path.exists(path):
+        return []
+
+    with open(path, "r", encoding="utf-8") as f:
+        lines = [ln.strip() for ln in f.readlines() if ln.strip()]
+
+    presets = []
+    i = 0
+    while i + 1 < len(lines):
+        name = lines[i]
+        points_text = lines[i + 1]
+        try:
+            raw_points = ast.literal_eval(points_text)
+        except (ValueError, SyntaxError):
+            # Malformed line -- skip just this pair rather than aborting
+            # the whole file.
+            i += 2
+            continue
+        presets.append((name, list(raw_points)))
+        i += 2
+
+    return presets
+
+
+def preset_points_to_template(raw_points):
+    """Convert a preset's intended path into one canonical 64-point template.
+
+    Presets describe the desired gesture rather than reproducing Hexecute's
+    raw recording quirks. We therefore use true arc-length resampling, then
+    reproduce the recognizer's 250-unit independent X/Y scaling and centroid
+    translation.
+    """
+    if not raw_points:
+        return []
+
+    points = [(float(x), float(y)) for x, y in raw_points]
+    points = resample_points_arc(points, PRESET_TEMPLATE_POINT_COUNT)
+    return _normalize_template(points)
+
+
+def preset_points_to_templates(raw_points):
+    """Build a preset template plus rotated copies.
+
+    The Go recognizer tries to compensate for rotation, but rotateBy() currently
+    modifies copies of the Point values, so that search is effectively a
+    no-op. Stored orientation variants compensate for that bug without changing
+    Hexecute.
+    """
+    base = preset_points_to_template(raw_points)
+    if not base:
+        return []
+
+    templates = []
+    for angle in range(PRESET_ROTATION.start, PRESET_ROTATION.stop, PRESET_ROTATION.step):
+        templates.append(_rotate_template(base, angle))
+
+    return templates
+
+
+
+def build_preset_gesture_entries(path):
+    """Build fresh gesture dicts (command + single-template templates)
+    from presets.txt. These are the entries sync_presets_into_gestures()
+    will (re)insert into gestures.json."""
+    entries = []
+    for name, raw_points in load_presets(path):
+        templates = preset_points_to_templates(raw_points)
+        if not templates:
+            continue
+        entries.append({
+            "command": PRESET_COMMAND_TEMPLATE % name,
+            "templates": templates
+        })
+    return entries
+
+
+def sync_presets_into_gestures(gestures_path=GESTURES_FPATH, presets_path=PRESETS_FPATH):
+    """Regenerate every preset-derived gesture in gestures.json from the
+    current contents of presets.txt.
+
+    Any existing gesture whose command does NOT end with ';' is treated
+    as preset-derived (that's the marker: hand-authored gestures always
+    end with ';', see PRESET_COMMAND_TEMPLATE) and is a candidate for
+    removal. Fresh entries are then rebuilt from presets.txt and take
+    their place.
+
+    Confirmation is only asked for when a removal is a *real* change --
+    i.e. some preset-derived gesture is going away without an identical
+    (same command AND same template points) replacement coming back. If
+    nothing is removed, or every removed entry is simply being
+    regenerated unchanged, this proceeds silently.
+    """
+    try:
+        with open(gestures_path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+    except (OSError, json.JSONDecodeError):
+        return
+
+    kept = [g for g in data if str(g.get("command", "")).endswith(";")]
+    removed = [g for g in data if not str(g.get("command", "")).endswith(";")]
+
+    new_entries = build_preset_gesture_entries(presets_path)
+
+    if not removed and not new_entries:
+        return
+
+    def entry_key(g):
+        # (command, templates) as a hashable, order/format-independent key
+        # so an unchanged preset -- same command, same points -- is
+        # recognized as "not really removed" even after a JSON
+        # round-trip.
+        return (g.get("command"), json.dumps(g.get("templates"), sort_keys=True))
+
+    new_keys = {entry_key(g) for g in new_entries}
+    truly_removed = [g for g in removed if entry_key(g) not in new_keys]
+
+    if truly_removed:
+        names = "\n".join(f"- {g.get('command')}" for g in truly_removed)
+        ok = messagebox.askyesno(
+            "Sync Presets",
+            f"The following {len(truly_removed)} preset gesture(s) will be "
+            f"removed:\n\n{names}\n\nContinue?"
+        )
+        if not ok:
+            return
+
+    updated = kept + new_entries
+    try:
+        with open(gestures_path, "w", encoding="utf-8") as f:
+            json.dump(updated, f, separators=(",", ":"))
+    except OSError as e:
+        messagebox.showerror("Sync Presets", f"Failed to write {gestures_path}\n\n{e}")
 
 
 def draw_round_rect(canvas, x0, y0, x1, y1, r, tags=(), **kwargs):
@@ -505,6 +693,31 @@ def build_rounded_entry(parent, textvariable, font, height, readonly=False):
     redraw()
 
     return container, entry
+
+
+def bind_entry_extras(entry):
+    """Fix two Entry quirks that don't match how most other apps behave:
+    - Ctrl+A: Tk's default Entry binding moves the cursor to the start of
+      the line (an Emacs-style binding) instead of selecting all text, so
+      rebind it to a normal "select all".
+    - Escape: give the user a way to get *out* of a text box -- clear any
+      selection and hand focus back to the window -- instead of the
+      cursor staying stuck there.
+    """
+
+    def select_all(_event):
+        entry.select_range(0, tk.END)
+        entry.icursor(tk.END)
+        return "break"
+
+    def release_focus(_event):
+        entry.selection_clear()
+        entry.winfo_toplevel().focus_set()
+        return "break"
+
+    entry.bind("<Control-a>", select_all)
+    entry.bind("<Control-A>", select_all)
+    entry.bind("<Escape>", release_focus)
 
 
 _label_font_cache = {}
@@ -805,6 +1018,7 @@ def main():
         SIDEBAR_TEXT_SIZE * 2
     )
     search_container.pack(padx=SIDEBAR_PAD_X, fill="x")
+    bind_entry_extras(search_entry)
 
     def delete_prev_word(_):
         text = search_var.get()
@@ -853,6 +1067,7 @@ def main():
         SIDEBAR_TEXT_SIZE * 2
     )
     new_container.pack(padx=SIDEBAR_PAD_X, fill="x")
+    bind_entry_extras(new_entry)
 
     new_button = RoundedButton(
         sidebar,
@@ -892,6 +1107,7 @@ def main():
         readonly=False  # now editable for rename
     )
     selected_container.pack(side="left", fill="x", expand=True)
+    bind_entry_extras(selected_entry)
 
     def refresh_selected_icon(name):
         for child in selected_icon_holder.winfo_children():
@@ -1164,6 +1380,7 @@ def main():
     conflicts_canvas.bind("<Configure>", _on_conflicts_canvas_configure)
 
     current_canvas = {"value": canvas}
+    current_tab = {"value": "gestures"}
 
     # --- Tab bar buttons ---------------------------------------------------
     tab_gestures_btn = RoundedButton(
@@ -1196,7 +1413,34 @@ def main():
     )
     tab_conflicts_btn.pack(side="left")
 
+    # Refresh button lives on the same row as the tab buttons, pushed to
+    # the far right. Its width is measured from its own label text rather
+    # than a hardcoded pixel value -- a fixed 150px was narrower than the
+    # "⟳ Refresh" label at SIDEBAR_TEXT_SIZE actually needs, which clipped
+    # the text.
+    refresh_button_text = "\u27f3 Refresh"
+    refresh_button_font = ("Arial", SIDEBAR_TEXT_SIZE)
+    refresh_button_width = tkfont.Font(family="Arial", size=SIDEBAR_TEXT_SIZE).measure(
+        refresh_button_text
+    ) + 48  # horizontal padding so the label isn't flush with the edges
+
+    refresh_button = RoundedButton(
+        tab_bar,
+        text=refresh_button_text,
+        command=None,
+        font=refresh_button_font,
+        height=BUTTON_HEIGHT,
+        radius=BUTTON_RADIUS,
+        bg_color=BUTTON_BG,
+        border_color=BUTTON_BORDER_COLOR,
+        border_width=BUTTON_BORDER_WIDTH,
+        text_color=BUTTON_TEXT_COLOR,
+        width=refresh_button_width
+    )
+    refresh_button.pack(side="right")
+
     def show_tab(tab):
+        current_tab["value"] = tab
         if tab == "gestures":
             gestures_page_frame.tkraise()
             tab_gestures_btn.set_active(True)
@@ -1310,36 +1554,51 @@ def main():
         if new_name == old_name:
             return
 
-        old_token = f'"command":"{old_name}"'
-        new_token = f'"command":"{new_name}"'
-
         try:
             with open(GESTURES_FPATH, "r", encoding="utf-8") as f:
-                content = f.read()
-        except OSError as e:
+                data = json.load(f)
+        except (OSError, json.JSONDecodeError) as e:
             messagebox.showerror("Rename Gesture", f"Failed to read {GESTURES_FPATH}\n\n{e}")
             return
 
-        occurrences = content.count(old_token)
-        if occurrences == 0:
+        # Match on the *parsed* command strings rather than doing a raw
+        # text search-and-replace against the file's bytes. Commands that
+        # contain characters JSON has to escape -- quotes, backslashes,
+        # control characters, etc. (e.g. a gesture literally named
+        # echo "Do nothing") -- never matched the hand-built
+        # `"command":"..."` search token, which is why rename silently
+        # failed with "Did not find ..." for anything but the simplest
+        # names.
+        matches = [entry for entry in data if entry.get("command") == old_name]
+        if not matches:
             messagebox.showerror(
                 "Rename Gesture",
-                f"Did not find {old_token} in:\n{GESTURES_FPATH}"
+                f"Did not find a gesture named '{old_name}' in:\n{GESTURES_FPATH}"
             )
             return
 
-        if occurrences > 1:
+        if len(matches) > 1:
             messagebox.showwarning(
                 "Rename Gesture",
-                f"Found {occurrences} instances of {old_token} in:\n{GESTURES_FPATH}\n\n"
-                f"Only the first instance will be replaced."
+                f"Found {len(matches)} gestures named '{old_name}' in:\n{GESTURES_FPATH}\n\n"
+                f"Only the first instance will be renamed."
             )
 
-        updated = content.replace(old_token, new_token, 1)
+        if any(entry.get("command") == new_name for entry in data):
+            messagebox.showerror(
+                "Rename Gesture",
+                f"A gesture named '{new_name}' already exists."
+            )
+            return
+
+        matches[0]["command"] = new_name
 
         try:
             with open(GESTURES_FPATH, "w", encoding="utf-8") as f:
-                f.write(updated)
+                # Keep the same compact formatting (no extra whitespace)
+                # that hexecute itself writes, rather than switching the
+                # whole file over to json.dump's default spacing.
+                json.dump(data, f, separators=(",", ":"))
         except OSError as e:
             messagebox.showerror("Rename Gesture", f"Failed to write {GESTURES_FPATH}\n\n{e}")
             return
@@ -1348,10 +1607,33 @@ def main():
         selected_var.set(new_name)
         rebuild_all()
 
+    def do_refresh():
+        """Reload gesture data from disk and redraw, but stay on whichever
+        tab/scroll position the user was already looking at instead of
+        snapping back to the "just launched" look (Gestures tab, top of
+        page, nothing selected)."""
+        tab = current_tab["value"]
+        gestures_scroll = canvas.yview()[0]
+        conflicts_scroll = conflicts_canvas.yview()[0]
+
+        sync_presets_into_gestures()
+        rebuild_all()
+        show_tab(tab)
+
+        canvas.update_idletasks()
+        conflicts_canvas.update_idletasks()
+        canvas.yview_moveto(gestures_scroll)
+        conflicts_canvas.yview_moveto(conflicts_scroll)
+
+        # A refresh shouldn't leave (or put) the text cursor sitting in
+        # any input box.
+        root.focus_set()
+
     new_button.command = run_new_gesture
     delete_button.command = run_delete_gesture
     edit_button.command = run_edit_gesture
     rename_button.command = run_rename_gesture
+    refresh_button.command = do_refresh
 
     def clear_highlights():
         for _, c, label_id in label_index:
@@ -1421,6 +1703,19 @@ def main():
     canvas.bind_all("<Button-4>", _on_mousewheel)
     canvas.bind_all("<Button-5>", _on_mousewheel)
 
+    # Give the user a way *out* of whichever text box currently has focus:
+    # Escape always hands focus back to the window, and clicking any blank
+    # (non-widget) area of the sidebar, tab bar, or content panes does the
+    # same. This is on top of the per-entry Escape binding in
+    # bind_entry_extras, which also clears the text selection.
+    def release_all_focus(_event=None):
+        root.focus_set()
+
+    root.bind_all("<Escape>", release_all_focus)
+    for widget in (sidebar, tab_bar, main_frame, content_frame, canvas, conflicts_canvas):
+        widget.bind("<Button-1>", release_all_focus, add="+")
+
+    sync_presets_into_gestures()
     rebuild_all()
     hide_selected_section()
     show_tab("gestures")

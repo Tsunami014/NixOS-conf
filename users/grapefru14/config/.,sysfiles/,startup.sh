@@ -13,7 +13,7 @@ sleep 0.5
 wl-paste --watch cliphist store &
 ollama serve &
 
-kando &
+kando >/tmp/kando.log 2>&1 &
 kdeconnect-indicator &
 
 disown
