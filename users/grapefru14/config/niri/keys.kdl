@@ -8,7 +8,7 @@ binds {
 
     // Apps / User stuff
     Mod+MouseMiddle repeat=false hotkey-overlay-title="Hexecute" { spawn-sh "$EXECUTE"; }
-    Mod+Ctrl+Space repeat=false hotkey-overlay-title="Apps menu" { spawn-sh "kando -t apps"; }
+    Mod+Ctrl+MouseMiddle repeat=false hotkey-overlay-title="Apps menu" { spawn-sh "kando -t apps"; }
     Mod+Ctrl+P repeat=false hotkey-overlay-title="Pointer" { spawn-sh "HOME='/tmp';hexecute"; }
 
     Mod+Return repeat=false hotkey-overlay-title="Terminal" { spawn "alacritty"; }
@@ -74,9 +74,19 @@ binds {
     Mod+Equal { set-column-width "+10%"; }
     Mod+Shift+Minus { set-window-height "-10%"; }
     Mod+Shift+Equal { set-window-height "+10%"; }
+    Mod+Backspace { set-window-height "+0%"; }
 
-    Mod+X       { toggle-window-floating; }
-    Mod+Shift+X { switch-focus-between-floating-and-tiling; }
+    Mod+X { switch-focus-between-floating-and-tiling; }
+    Mod+Shift+X { toggle-window-floating; }
+
+
+    // "Dynamic casting" (when screen casting, it's the window "niri Dynamic Cast Target")
+    Mod+E hotkey-overlay-title="Cast focused window" { set-dynamic-cast-window; }
+    Mod+Shift+E { set-dynamic-cast-monitor; }
+    Mod+Ctrl+E { clear-dynamic-cast-target; }
+
+    // Streaming stuff
+    Mod+O { spawn "obs-scene-pick"; }
 
 
     // The do stuff buttons

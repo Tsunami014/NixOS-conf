@@ -10,26 +10,26 @@
         "children": [
           {
             "type": "hotkey",
-            "name": "Undo",
-            "icon": "undo",
-            "iconTheme": "material-symbols-rounded",
             "data": {
               "hotkey": "ControlLeft+KeyZ",
               "delayed": true,
               "inhibitShortcuts": false
             },
+            "name": "Undo",
+            "icon": "undo",
+            "iconTheme": "material-symbols-rounded",
             "angle": 270
           },
           {
             "type": "hotkey",
-            "name": "Redo",
-            "icon": "redo",
-            "iconTheme": "material-symbols-rounded",
             "data": {
               "hotkey": "ControlLeft+ShiftLeft+KeyZ",
               "delayed": true,
               "inhibitShortcuts": false
-            }
+            },
+            "name": "Redo",
+            "icon": "redo",
+            "iconTheme": "material-symbols-rounded"
           }
         ]
       },
@@ -41,12 +41,6 @@
       "tags": []
     },
     {
-      "shortcut": "",
-      "shortcutID": "apps",
-      "centered": false,
-      "anchored": false,
-      "hoverMode": false,
-      "tags": [],
       "root": {
         "type": "submenu",
         "name": "Apps menu",
@@ -55,42 +49,51 @@
         "children": [
           {
             "type": "submenu",
-            "name": "Apps",
-            "icon": "view_apps",
+            "name": "Creation apps",
+            "icon": "new_window",
             "iconTheme": "material-symbols-rounded",
             "data": {},
             "children": [
               {
                 "type": "command",
-                "name": "LdTK",
-                "icon": "construction",
-                "iconTheme": "material-symbols-rounded",
                 "data": {
                   "command": "ldtk",
                   "detached": true,
                   "isolated": false,
                   "delayed": false
-                }
+                },
+                "name": "LdTK",
+                "icon": "construction",
+                "iconTheme": "material-symbols-rounded"
               },
               {
                 "type": "command",
-                "name": "Arduino IDE",
-                "icon": "arduino",
-                "iconTheme": "simple-icons",
                 "data": {
                   "command": "arduino-ide",
                   "detached": true,
                   "isolated": false,
                   "delayed": false
-                }
-              },
+                },
+                "name": "Arduino IDE",
+                "icon": "arduino",
+                "iconTheme": "simple-icons"
+              }
+            ]
+          },
+          {
+            "type": "submenu",
+            "data": {},
+            "name": "Misc apps",
+            "icon": "view_apps",
+            "iconTheme": "material-symbols-rounded",
+            "children": [
               {
                 "type": "command",
-                "name": "Pureref",
-                "icon": "mobile_layout",
-                "iconTheme": "material-symbols-rounded",
+                "name": "OBS",
+                "icon": "obsstudio",
+                "iconTheme": "simple-icons",
                 "data": {
-                  "command": "PureRef",
+                  "command": "obs",
                   "detached": true,
                   "isolated": false,
                   "delayed": false
@@ -98,187 +101,216 @@
               },
               {
                 "type": "command",
-                "name": "Opencode",
-                "icon": "terminal",
-                "iconTheme": "material-symbols-rounded",
-                "data": {
-                  "command": "$TermSpawn opencode",
-                  "detached": true,
-                  "isolated": false,
-                  "delayed": false
-                }
-              },
-              {
-                "type": "command",
-                "name": "Study RNG",
-                "icon": "🎲",
-                "iconTheme": "emoji",
                 "data": {
                   "command": "$TermSpawn studyrng ~/",
                   "detached": true,
                   "isolated": false,
                   "delayed": false
+                },
+                "name": "Study RNG",
+                "icon": "🎲",
+                "iconTheme": "emoji"
+              },
+              {
+                "type": "command",
+                "data": {
+                  "command": "$TermSpawn opencode",
+                  "detached": true,
+                  "isolated": false,
+                  "delayed": false
+                },
+                "name": "Opencode",
+                "icon": "terminal",
+                "iconTheme": "material-symbols-rounded"
+              },
+              {
+                "type": "command",
+                "name": "Chromium",
+                "icon": "googlechrome",
+                "iconTheme": "simple-icons",
+                "data": {
+                  "command": "chromium",
+                  "detached": true,
+                  "isolated": false,
+                  "delayed": false
                 }
               }
             ]
           },
           {
             "type": "submenu",
+            "data": {},
             "name": "Settings",
             "icon": "settings-item.svg",
             "iconTheme": "kando",
-            "data": {},
             "children": [
               {
                 "type": "settings",
+                "data": null,
                 "name": "Open Settings",
                 "icon": "settings-item.svg",
-                "iconTheme": "kando",
-                "data": null
+                "iconTheme": "kando"
               },
               {
                 "type": "command",
-                "name": "Printer settings",
-                "icon": "print",
-                "iconTheme": "material-symbols-rounded",
                 "data": {
                   "command": "printer-settings",
                   "detached": true,
                   "isolated": false,
                   "delayed": false
-                }
+                },
+                "name": "Printer settings",
+                "icon": "print",
+                "iconTheme": "material-symbols-rounded"
               },
               {
                 "type": "command",
-                "name": "Bluetooth manager",
-                "icon": "bluetooth",
-                "iconTheme": "material-symbols-rounded",
                 "data": {
                   "command": "blueman-manager",
                   "detached": true,
                   "isolated": false,
                   "delayed": false
-                }
+                },
+                "name": "Bluetooth manager",
+                "icon": "bluetooth",
+                "iconTheme": "material-symbols-rounded"
               },
               {
                 "type": "command",
-                "name": "Audio settings",
-                "icon": "volume_up",
-                "iconTheme": "material-symbols-rounded",
                 "data": {
                   "command": "pavucontrol",
                   "detached": true,
                   "isolated": false,
                   "delayed": false
-                }
+                },
+                "name": "Audio settings",
+                "icon": "volume_up",
+                "iconTheme": "material-symbols-rounded"
               },
               {
                 "type": "command",
-                "name": "Input remapper",
-                "icon": "videogame_asset",
-                "iconTheme": "material-symbols-rounded",
                 "data": {
                   "command": "$TermSpawn input-remapper-gtk",
                   "detached": true,
                   "isolated": false,
                   "delayed": false
-                }
+                },
+                "name": "Input remapper",
+                "icon": "videogame_asset",
+                "iconTheme": "material-symbols-rounded"
               }
-            ],
-            "angle": 135
+            ]
           },
           {
             "type": "submenu",
+            "data": {},
             "name": "Tools",
             "icon": "tools_power_drill",
             "iconTheme": "material-symbols-rounded",
-            "data": {},
             "children": [
               {
                 "type": "command",
-                "name": "PDF Arranger",
-                "icon": "edit_document",
-                "iconTheme": "material-symbols-rounded",
                 "data": {
                   "command": "pdfarranger",
                   "detached": true,
                   "isolated": false,
                   "delayed": false
-                }
+                },
+                "name": "PDF Arranger",
+                "icon": "edit_document",
+                "iconTheme": "material-symbols-rounded"
               },
               {
                 "type": "command",
-                "name": "Calculator",
-                "icon": "calculate",
-                "iconTheme": "material-symbols-rounded",
                 "data": {
                   "command": "gnome-calculator",
                   "detached": true,
                   "isolated": false,
                   "delayed": false
-                }
+                },
+                "name": "Calculator",
+                "icon": "calculate",
+                "iconTheme": "material-symbols-rounded"
               },
               {
                 "type": "command",
-                "name": "Logic analyser",
-                "icon": "bar_chart_4_bars",
-                "iconTheme": "material-symbols-rounded",
                 "data": {
                   "command": "saleae-logic-2",
                   "detached": true,
                   "isolated": false,
                   "delayed": false
-                }
+                },
+                "name": "Logic analyser",
+                "icon": "bar_chart_4_bars",
+                "iconTheme": "material-symbols-rounded"
+              },
+              {
+                "type": "command",
+                "data": {
+                  "command": "PureRef",
+                  "detached": true,
+                  "isolated": false,
+                  "delayed": false
+                },
+                "name": "Pureref",
+                "icon": "mobile_layout",
+                "iconTheme": "material-symbols-rounded"
               }
             ]
           },
           {
             "type": "submenu",
+            "data": {},
             "name": "Drawing",
             "icon": "ink_pen",
             "iconTheme": "material-symbols-rounded",
-            "data": {},
             "children": [
               {
                 "type": "command",
-                "name": "SVG editor",
-                "icon": "draw_collage",
-                "iconTheme": "material-symbols-rounded",
                 "data": {
                   "command": "godsvg",
                   "detached": true,
                   "isolated": false,
                   "delayed": false
-                }
+                },
+                "name": "SVG editor",
+                "icon": "draw_collage",
+                "iconTheme": "material-symbols-rounded"
               },
               {
                 "type": "command",
-                "name": "Krita",
-                "icon": "draw",
-                "iconTheme": "material-symbols-rounded",
                 "data": {
                   "command": "krita",
                   "detached": true,
                   "isolated": false,
                   "delayed": false
-                }
+                },
+                "name": "Krita",
+                "icon": "draw",
+                "iconTheme": "material-symbols-rounded"
               },
               {
                 "type": "command",
-                "name": "Aseprite",
-                "icon": "draw_abstract",
-                "iconTheme": "material-symbols-rounded",
                 "data": {
                   "command": "aseprite",
                   "detached": true,
                   "isolated": false,
                   "delayed": false
-                }
+                },
+                "name": "Aseprite",
+                "icon": "draw_abstract",
+                "iconTheme": "material-symbols-rounded"
               }
             ]
           }
         ]
-      }
+      },
+      "shortcut": "",
+      "shortcutID": "apps",
+      "centered": false,
+      "anchored": false,
+      "hoverMode": false,
+      "tags": []
     }
   ],
   "collections": [

@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, unstable-pkgs, ... }:
 
 let
   mkuser = usrname: {
@@ -64,6 +64,10 @@ in {
   # Auto logins
   systemd.services."getty@tty1" = autologin "grapefru14";
   systemd.services."getty@tty2" = autologin "secret";
+
+  # Enable the keyring
+  services.gnome.gnome-keyring.enable = true;
+  security.pam.services.login.enableGnomeKeyring = true;
 
   # Bluetooth
   hardware.bluetooth = {
@@ -167,7 +171,10 @@ efi /EFI/ubuntu/grubx64.efi
   };
 
   # The desktop environment stuff
-  programs.niri.enable = true;
+  programs.niri = {
+    enable = true;
+    package = unstable-pkgs.niri;
+  };
   security.polkit.enable = true;
   xdg.portal = {
     enable = true;

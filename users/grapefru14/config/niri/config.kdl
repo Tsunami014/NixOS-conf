@@ -108,6 +108,19 @@ layout {
         bottom -1
     }
 }
+window-rule {
+    match is-window-cast-target=true
+
+    focus-ring { off; }
+
+    shadow {
+        on
+        offset x=0 y=0
+        softness 0
+        spread 4
+        color "#FC5BA7"
+    }
+}
 
 recent-windows {
     debounce-ms 750 // Delay between selecting a window and having it in the 'recent windows' list

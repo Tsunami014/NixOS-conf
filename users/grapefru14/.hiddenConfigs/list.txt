@@ -1,2 +1,3 @@
 mut shr GodSVG
 mut conf aseprite
+mut conf obs-studio

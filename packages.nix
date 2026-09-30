@@ -15,6 +15,9 @@
     unzip
     iio-sensor-proxy
 
+    # Some packages needed for some Steam games
+    love
+
     # Icon themes (otherwise some icons won't exist)
     hicolor-icon-theme
     papirus-icon-theme
@@ -166,6 +169,14 @@ ln -sf ${pkgs.bash}/bin/bash /bin/bash
     defaultEditor = true;
     viAlias = true;
     vimAlias = true;
+  };
+
+  programs.obs-studio = {
+    enable = true;
+    enableVirtualCamera = true;
+    plugins = with pkgs.obs-studio-plugins; [
+      obs-pipewire-audio-capture
+    ];
   };
 
   # Unfortunately, steam must be installed globally

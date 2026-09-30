@@ -32,6 +32,7 @@
     inputs.hexecute.packages.${system}.default
     # Various apps
     chromium # Some things need chrome to work, this is the backup browser for that
+    obs-cmd # Actual OBS can be lazily loaded
     gnome-calculator
     krita
     arduino-ide
@@ -70,6 +71,26 @@
       text = "zen --private-window http://localhost:631";
     })
     (pkgs.writeShellApplication {
+      name = "obs-scene-pick";
+      text = ''
+CFG=~/.config/obs-studio
+PASS=$(jq -r .server_password "$CFG/plugin_config/obs-websocket/config.json")
+
+scene=$(jq -r '.scene_order[].name' "$CFG"/basic/scenes/*.json \
+  | fuzzel --dmenu -p 'Scene: ')
+[ -n "$scene" ] && obs-cmd -w "obsws://localhost:4455/$PASS" scene switch "$scene"
+'';
+    })
+    (pkgs.writeShellApplication {
+      name = "obs-web-stream";
+      text = ''
+echo http://localhost:8889/obs
+echo "http://$(hostname -I | tr -d ' '):8889/obs"
+echo Use 'Web' OBS profile
+exec "=" mediamtx <(printf 'paths:\n  all_others:\n')
+'';
+    })
+    (pkgs.writeShellApplication {
       name = "fixbar";
       text = ''
 pkill quickshell || true
@@ -98,7 +119,6 @@ wlanthy
       ${pkgs.python313.withPackages (ps: with ps; [ pyperclip numpy requests ])}/bin/python3
     '')
     (pkgs.writeScriptBin "zed" ''nix-shell --log-format bar-with-logs -p zed-editor --run "zeditor $@"'')
-    (pkgs.writeScriptBin "obs" ''nix-shell --log-format bar-with-logs -p obs-studio --run "obs $@"'')
     (pkgs.writeScriptBin "baobab" ''nix-shell --log-format bar-with-logs -p baobab --run "baobab $@"'')
   ];
 
