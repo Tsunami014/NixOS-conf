@@ -7,4 +7,6 @@
 ~/.zen/
 ~/.ssh/
 
+~/.local/share/grayjay
+
 ~/Study

@@ -49,10 +49,10 @@
         "children": [
           {
             "type": "submenu",
+            "data": {},
             "name": "Creation apps",
             "icon": "new_window",
             "iconTheme": "material-symbols-rounded",
-            "data": {},
             "children": [
               {
                 "type": "command",
@@ -89,51 +89,72 @@
             "children": [
               {
                 "type": "command",
-                "name": "OBS",
-                "icon": "obsstudio",
-                "iconTheme": "simple-icons",
                 "data": {
                   "command": "obs",
                   "detached": true,
                   "isolated": false,
                   "delayed": false
+                },
+                "name": "OBS",
+                "icon": "obsstudio",
+                "iconTheme": "simple-icons"
+              },
+              {
+                "type": "command",
+                "name": "Grayjay",
+                "icon": "headphones",
+                "iconTheme": "material-symbols-rounded",
+                "data": {
+                  "command": "grayjay",
+                  "detached": true,
+                  "isolated": false,
+                  "delayed": false
                 }
               },
               {
-                "type": "command",
-                "data": {
-                  "command": "$TermSpawn studyrng ~/",
-                  "detached": true,
-                  "isolated": false,
-                  "delayed": false
-                },
-                "name": "Study RNG",
-                "icon": "🎲",
-                "iconTheme": "emoji"
+                "type": "submenu",
+                "name": "Misc-er Apps",
+                "icon": "submenu-item.svg",
+                "iconTheme": "kando",
+                "data": {},
+                "children": [
+                  {
+                    "type": "command",
+                    "data": {
+                      "command": "$TermSpawn opencode",
+                      "detached": true,
+                      "isolated": false,
+                      "delayed": false
+                    },
+                    "name": "Opencode",
+                    "icon": "terminal",
+                    "iconTheme": "material-symbols-rounded"
+                  },
+                  {
+                    "type": "command",
+                    "data": {
+                      "command": "$TermSpawn studyrng ~/",
+                      "detached": true,
+                      "isolated": false,
+                      "delayed": false
+                    },
+                    "name": "Study RNG",
+                    "icon": "🎲",
+                    "iconTheme": "emoji"
+                  }
+                ]
               },
               {
                 "type": "command",
-                "data": {
-                  "command": "$TermSpawn opencode",
-                  "detached": true,
-                  "isolated": false,
-                  "delayed": false
-                },
-                "name": "Opencode",
-                "icon": "terminal",
-                "iconTheme": "material-symbols-rounded"
-              },
-              {
-                "type": "command",
-                "name": "Chromium",
-                "icon": "googlechrome",
-                "iconTheme": "simple-icons",
                 "data": {
                   "command": "chromium",
                   "detached": true,
                   "isolated": false,
                   "delayed": false
-                }
+                },
+                "name": "Chromium",
+                "icon": "googlechrome",
+                "iconTheme": "simple-icons"
               }
             ]
           },

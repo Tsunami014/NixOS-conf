@@ -45,6 +45,7 @@
     (pkgs.callPackage ./pkgs/wlanthy.nix {})
     (pkgs.callPackage ./pkgs/roland.nix {})
     (pkgs.callPackage ./pkgs/wvkbd.nix {})
+    (pkgs.callPackage ./pkgs/grayjay.nix {})
     # Apps I'm version-conscious for
     ldtk
     master-pkgs.aseprite
