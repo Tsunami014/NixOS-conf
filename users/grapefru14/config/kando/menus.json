@@ -101,22 +101,22 @@
               },
               {
                 "type": "command",
-                "name": "Grayjay",
-                "icon": "headphones",
-                "iconTheme": "material-symbols-rounded",
                 "data": {
                   "command": "grayjay",
                   "detached": true,
                   "isolated": false,
                   "delayed": false
-                }
+                },
+                "name": "Grayjay",
+                "icon": "music_note_2",
+                "iconTheme": "material-symbols-rounded"
               },
               {
                 "type": "submenu",
+                "data": {},
                 "name": "Misc-er Apps",
                 "icon": "submenu-item.svg",
                 "iconTheme": "kando",
-                "data": {},
                 "children": [
                   {
                     "type": "command",

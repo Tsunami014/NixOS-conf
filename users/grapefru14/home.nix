@@ -83,15 +83,6 @@ scene=$(jq -r '.scene_order[].name' "$CFG"/basic/scenes/*.json \
 '';
     })
     (pkgs.writeShellApplication {
-      name = "obs-web-stream";
-      text = ''
-echo http://localhost:8889/obs
-echo "http://$(hostname -I | tr -d ' '):8889/obs"
-echo Use 'Web' OBS profile
-exec "=" mediamtx <(printf 'paths:\n  all_others:\n')
-'';
-    })
-    (pkgs.writeShellApplication {
       name = "fixbar";
       text = ''
 pkill quickshell || true

@@ -13,8 +13,9 @@ binds {
 
     Mod+Return repeat=false hotkey-overlay-title="Terminal" { spawn "alacritty"; }
     Mod+D repeat=false hotkey-overlay-title="Downloads" { spawn-sh "$TermSpawn bash -ic 'downloads; yazi'"; }
-    Mod+N repeat=false hotkey-overlay-title="Neovim" { spawn-sh "$TermSpawn nvim"; }
-    Mod+Shift+N repeat=false { spawn-sh "NVIM_PROFILE=choose $TermSpawn nvim"; }
+    Mod+N repeat=false hotkey-overlay-title="Neovim" { spawn-sh "NVIM_PROFILE=choose $TermSpawn nvim"; }
+    Mod+Shift+N repeat=false { spawn-sh "NVIM_PROFILE=Full2 $TermSpawn nvim"; }
+    Mod+Ctrl+N repeat=false { spawn-sh "NVIM_PROFILE=Full $TermSpawn nvim"; }
     Mod+Apostrophe repeat=false hotkey-overlay-title="File browser" { spawn-sh "$TermSpawn yazi"; }
     Mod+Semicolon repeat=false hotkey-overlay-title="Notes viewer" { spawn-sh "mkdir -p ~/Notes;NVIM_PROFILE=Notes $TermSpawn yazi ~/Notes"; }
     Mod+I repeat=false hotkey-overlay-title="Index file" { spawn-sh "cd ~/Notes/; NVIM_PROFILE=Notes $TermSpawn nvim ./+index.md"; }
