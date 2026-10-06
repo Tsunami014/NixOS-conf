@@ -7,6 +7,10 @@
 ~/.zen/
 ~/.ssh/
 
+~/.local/share/Steam/steamapps/common
 ~/.local/share/grayjay
+~/.local/share/GodSVG
+~/.config/aseprite
+~/.config/obs-studio
 
 ~/Study

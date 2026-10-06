@@ -224,6 +224,39 @@
           },
           {
             "type": "submenu",
+            "name": "Games",
+            "icon": "stadia_controller",
+            "iconTheme": "material-symbols-rounded",
+            "data": {},
+            "children": [
+              {
+                "type": "command",
+                "name": "Steam",
+                "icon": "steam",
+                "iconTheme": "simple-icons",
+                "data": {
+                  "command": "steam",
+                  "detached": true,
+                  "isolated": false,
+                  "delayed": false
+                }
+              },
+              {
+                "type": "command",
+                "name": "Olympus",
+                "icon": "mountain_flag",
+                "iconTheme": "material-symbols-rounded",
+                "data": {
+                  "command": "olympus",
+                  "detached": true,
+                  "isolated": false,
+                  "delayed": false
+                }
+              }
+            ]
+          },
+          {
+            "type": "submenu",
             "data": {},
             "name": "Tools",
             "icon": "tools_power_drill",

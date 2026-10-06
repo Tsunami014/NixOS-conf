@@ -29,6 +29,10 @@
     # Background apps
     wakatime-cli
 
+    # Games
+    prismlauncher # Minecraft
+    (olympus.override { celesteWrapper = "steam-run"; })
+
     inputs.hexecute.packages.${system}.default
     # Various apps
     chromium # Some things need chrome to work, this is the backup browser for that
@@ -112,6 +116,7 @@ wlanthy
     '')
     (pkgs.writeScriptBin "zed" ''nix-shell --log-format bar-with-logs -p zed-editor --run "zeditor $@"'')
     (pkgs.writeScriptBin "baobab" ''nix-shell --log-format bar-with-logs -p baobab --run "baobab $@"'')
+    (pkgs.writeScriptBin "protonvpn" ''nix-shell -p protonvpn-gui --run "protonvpn-app $@"'')
   ];
 
   home.sessionVariables = {
