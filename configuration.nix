@@ -55,7 +55,6 @@ in {
   };
   # Define user accounts. Don't forget to set a password with 'sudo passwd username'.
   users.users.grapefru14 = mkuser "Grapefru14";
-  users.users.secret = mkuser "Secret";
   # Add config access to root
   users.users.root = {
     extraGroups = [ "config" ];
@@ -63,7 +62,6 @@ in {
 
   # Auto logins
   systemd.services."getty@tty1" = autologin "grapefru14";
-  systemd.services."getty@tty2" = autologin "secret";
 
   # Enable the keyring
   services.gnome.gnome-keyring.enable = true;

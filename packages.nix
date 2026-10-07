@@ -15,9 +15,6 @@
     unzip
     iio-sensor-proxy
 
-    # Some packages needed for some Steam games
-    love
-
     # Icon themes (otherwise some icons won't exist)
     hicolor-icon-theme
     papirus-icon-theme

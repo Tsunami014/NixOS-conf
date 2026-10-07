@@ -224,18 +224,30 @@
           },
           {
             "type": "submenu",
+            "data": {},
             "name": "Games",
             "icon": "stadia_controller",
             "iconTheme": "material-symbols-rounded",
-            "data": {},
             "children": [
               {
                 "type": "command",
-                "name": "Steam",
-                "icon": "steam",
-                "iconTheme": "simple-icons",
                 "data": {
                   "command": "steam",
+                  "detached": true,
+                  "isolated": false,
+                  "delayed": false
+                },
+                "name": "Steam",
+                "icon": "steam",
+                "iconTheme": "simple-icons"
+              },
+              {
+                "type": "command",
+                "name": "Minecraft",
+                "icon": "developmentcontainers",
+                "iconTheme": "simple-icons",
+                "data": {
+                  "command": "prismlauncher",
                   "detached": true,
                   "isolated": false,
                   "delayed": false
@@ -243,15 +255,15 @@
               },
               {
                 "type": "command",
-                "name": "Olympus",
-                "icon": "mountain_flag",
-                "iconTheme": "material-symbols-rounded",
                 "data": {
                   "command": "olympus",
                   "detached": true,
                   "isolated": false,
                   "delayed": false
-                }
+                },
+                "name": "Olympus",
+                "icon": "mountain_flag",
+                "iconTheme": "material-symbols-rounded"
               }
             ]
           },

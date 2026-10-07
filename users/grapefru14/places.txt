@@ -4,6 +4,10 @@
 ~/Videos/
 ~/Notes/
 
+~/Study
+
+# Config I don't want backed up with git
+
 ~/.zen/
 ~/.ssh/
 
@@ -12,5 +16,4 @@
 ~/.local/share/GodSVG
 ~/.config/aseprite
 ~/.config/obs-studio
-
-~/Study
+~/.local/share/PrismLauncher
