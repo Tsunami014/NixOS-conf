@@ -4,10 +4,22 @@ WPDIR="/etc/nixos/users/grapefru14/backgrounds"
 CUR="$HOME/Pictures/currentBg.jpg"
 mkdir -p "$HOME/Pictures"
 SIZE="1920x1200"
+RANDOM_LABEL="[ random ]"
+
+pick_random() {
+  find "$WPDIR" -mindepth 1 -printf "%f\n" | shuf -n 1
+}
+
 if ! [[ -v 1 ]]; then
-  NEW="$WPDIR/$(find "$WPDIR" -mindepth 1 -printf "%f\n" | sort | fzf --no-sort)"
+  CHOICE="$({ echo "$RANDOM_LABEL"; find "$WPDIR" -mindepth 1 -printf "%f\n" | sort; } | fzf --no-sort)"
+  if [[ "$CHOICE" == "$RANDOM_LABEL" ]]; then
+    NAME="$(pick_random)"
+  else
+    NAME="$CHOICE"
+  fi
+  NEW="$WPDIR/$NAME"
 elif [[ "$1" == "rand" ]]; then
-  NEW="$WPDIR/$(find "$WPDIR" -mindepth 1 -printf "%f\0" | shuf -z -n 1)"
+  NEW="$WPDIR/$(pick_random)"
 else
   NEW="$WPDIR/$1"
 fi
