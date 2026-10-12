@@ -1,10 +1,10 @@
-{ pkgs, fetchFromGitHub, fetchNpmDeps, ... }:
+{ pkgs, fetchFromGitHub, fetchNpmDeps, lib, ... }:
 let
   kandoSrc = fetchFromGitHub {
     owner = "kando-menu";
     repo = "kando";
-    rev = "v2.3.1";
-    hash = "sha256-vmdDcXpSm2O9MkOGfM3+VUrRSvUot1GB0TkxjNSN4r8=";
+    rev = "v3.0.0";
+    hash = "sha256-UBah/yWcGGyrZpSmahYO4mdYuaP3WQ2PnoZ1gfgWSZk=";
   };
 
 in
@@ -12,6 +12,7 @@ in
     src = kandoSrc;
     npmDeps = fetchNpmDeps {
       src = kandoSrc;
-      hash = "sha256-2J74igNLl5CwXm9WtHzxqTVt7+S113qcioxJja6uUOE=";
+      # hash = lib.fakeHash;
+      hash = "sha256-OUtUYSOjxBi8RPswGUTQKpt86ovW3k+qffcCxW2N9xw=";
     };
   })

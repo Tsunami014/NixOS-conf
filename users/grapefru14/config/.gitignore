@@ -5,8 +5,9 @@ LDtk/*
 PureRef/*
 !PureRef/PureRef.ini
 
-kando/session/*
-kando/Singleton*
-kando/ipc-info.json
-kando/achievements.json
-kando/backups/*
+kando/*
+~kando/menus.json
+~kando/config.json
+~kando/icon-themes/*
+~kando/menu-themes/*
+~kando/sound-themes/*

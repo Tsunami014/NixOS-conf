@@ -1,391 +1,685 @@
 {
-  "version": "2.3.1",
+  "version": "3.0.0",
   "menus": [
     {
       "root": {
-        "type": "submenu",
+        "type": "root",
         "name": "Keybinds",
         "icon": "award_star",
         "iconTheme": "material-symbols-rounded",
+        "activateWorkflow": {
+          "quickSelectKey": "Backspace",
+          "actions": [
+            {
+              "type": "close-menu"
+            }
+          ]
+        },
         "children": [
           {
-            "type": "hotkey",
-            "data": {
-              "hotkey": "ControlLeft+KeyZ",
-              "delayed": true,
-              "inhibitShortcuts": false
-            },
+            "type": "button",
             "name": "Undo",
             "icon": "undo",
             "iconTheme": "material-symbols-rounded",
-            "angle": 270
+            "angle": 270,
+            "selectWorkflow": {
+              "actions": [
+                {
+                  "type": "close-menu"
+                },
+                {
+                  "type": "simulate-hotkey",
+                  "hotkey": "ControlLeft+KeyZ"
+                }
+              ]
+            }
           },
           {
-            "type": "hotkey",
-            "data": {
-              "hotkey": "ControlLeft+ShiftLeft+KeyZ",
-              "delayed": true,
-              "inhibitShortcuts": false
-            },
+            "type": "button",
             "name": "Redo",
             "icon": "redo",
-            "iconTheme": "material-symbols-rounded"
+            "iconTheme": "material-symbols-rounded",
+            "selectWorkflow": {
+              "actions": [
+                {
+                  "type": "close-menu"
+                },
+                {
+                  "type": "simulate-hotkey",
+                  "hotkey": "ControlLeft+ShiftLeft+KeyZ"
+                }
+              ]
+            }
           }
         ]
       },
       "shortcut": "Control+Space",
       "shortcutID": "keys",
-      "centered": false,
+      "useFixedPosition": false,
+      "fixedMenuPosition": {
+        "x": 0.5,
+        "y": 0.5
+      },
       "anchored": false,
       "hoverMode": false,
       "tags": []
     },
     {
       "root": {
-        "type": "submenu",
+        "type": "root",
         "name": "Apps menu",
         "icon": "apps",
         "iconTheme": "material-symbols-rounded",
+        "activateWorkflow": {
+          "quickSelectKey": "Backspace",
+          "actions": [
+            {
+              "type": "close-menu"
+            }
+          ]
+        },
         "children": [
           {
             "type": "submenu",
-            "data": {},
             "name": "Creation apps",
             "icon": "new_window",
             "iconTheme": "material-symbols-rounded",
             "children": [
               {
-                "type": "command",
-                "data": {
-                  "command": "ldtk",
-                  "detached": true,
-                  "isolated": false,
-                  "delayed": false
-                },
+                "type": "button",
                 "name": "LdTK",
                 "icon": "construction",
-                "iconTheme": "material-symbols-rounded"
+                "iconTheme": "material-symbols-rounded",
+                "selectWorkflow": {
+                  "quickSelectKey": "L",
+                  "actions": [
+                    {
+                      "type": "execute-command",
+                      "command": "ldtk",
+                      "detached": true,
+                      "isolated": false
+                    },
+                    {
+                      "type": "close-menu"
+                    }
+                  ]
+                }
               },
               {
-                "type": "command",
-                "data": {
-                  "command": "arduino-ide",
-                  "detached": true,
-                  "isolated": false,
-                  "delayed": false
-                },
+                "type": "button",
                 "name": "Arduino IDE",
                 "icon": "arduino",
-                "iconTheme": "simple-icons"
+                "iconTheme": "simple-icons",
+                "selectWorkflow": {
+                  "quickSelectKey": "A",
+                  "actions": [
+                    {
+                      "type": "execute-command",
+                      "command": "arduino-ide",
+                      "detached": true,
+                      "isolated": false
+                    },
+                    {
+                      "type": "close-menu"
+                    }
+                  ]
+                }
               },
               {
                 "type": "submenu",
-                "data": {},
                 "name": "Drawing",
                 "icon": "ink_pen",
                 "iconTheme": "material-symbols-rounded",
                 "children": [
                   {
-                    "type": "command",
-                    "data": {
-                      "command": "godsvg",
-                      "detached": true,
-                      "isolated": false,
-                      "delayed": false
-                    },
+                    "type": "button",
                     "name": "God SVG",
                     "icon": "draw_collage",
-                    "iconTheme": "material-symbols-rounded"
+                    "iconTheme": "material-symbols-rounded",
+                    "selectWorkflow": {
+                      "quickSelectKey": "S",
+                      "actions": [
+                        {
+                          "type": "execute-command",
+                          "command": "godsvg",
+                          "detached": true,
+                          "isolated": false
+                        },
+                        {
+                          "type": "close-menu"
+                        }
+                      ]
+                    }
                   },
                   {
-                    "type": "command",
-                    "data": {
-                      "command": "krita",
-                      "detached": true,
-                      "isolated": false,
-                      "delayed": false
-                    },
+                    "type": "button",
                     "name": "Krita",
                     "icon": "draw",
-                    "iconTheme": "material-symbols-rounded"
+                    "iconTheme": "material-symbols-rounded",
+                    "selectWorkflow": {
+                      "quickSelectKey": "K",
+                      "actions": [
+                        {
+                          "type": "execute-command",
+                          "command": "krita",
+                          "detached": true,
+                          "isolated": false
+                        },
+                        {
+                          "type": "close-menu"
+                        }
+                      ]
+                    }
                   },
                   {
-                    "type": "command",
-                    "data": {
-                      "command": "aseprite",
-                      "detached": true,
-                      "isolated": false,
-                      "delayed": false
-                    },
+                    "type": "button",
                     "name": "Aseprite",
                     "icon": "draw_abstract",
-                    "iconTheme": "material-symbols-rounded"
+                    "iconTheme": "material-symbols-rounded",
+                    "selectWorkflow": {
+                      "quickSelectKey": "A",
+                      "actions": [
+                        {
+                          "type": "execute-command",
+                          "command": "aseprite",
+                          "detached": true,
+                          "isolated": false
+                        },
+                        {
+                          "type": "close-menu"
+                        }
+                      ]
+                    }
                   }
-                ]
+                ],
+                "activateWorkflow": {
+                  "quickSelectKey": "Backspace",
+                  "actions": [
+                    {
+                      "type": "close-submenu"
+                    }
+                  ]
+                },
+                "openWorkflow": {
+                  "quickSelectKey": "D"
+                }
               }
-            ]
+            ],
+            "activateWorkflow": {
+              "quickSelectKey": "Backspace",
+              "actions": [
+                {
+                  "type": "close-submenu"
+                }
+              ]
+            },
+            "openWorkflow": {
+              "quickSelectKey": "C"
+            }
           },
           {
             "type": "submenu",
-            "data": {},
             "name": "Misc apps",
             "icon": "view_apps",
             "iconTheme": "material-symbols-rounded",
             "children": [
               {
-                "type": "command",
-                "data": {
-                  "command": "obs",
-                  "detached": true,
-                  "isolated": false,
-                  "delayed": false
-                },
+                "type": "button",
                 "name": "OBS",
                 "icon": "obsstudio",
-                "iconTheme": "simple-icons"
+                "iconTheme": "simple-icons",
+                "selectWorkflow": {
+                  "quickSelectKey": "O",
+                  "actions": [
+                    {
+                      "type": "execute-command",
+                      "command": "obs",
+                      "detached": true,
+                      "isolated": false
+                    },
+                    {
+                      "type": "close-menu"
+                    }
+                  ]
+                }
               },
               {
-                "type": "command",
-                "data": {
-                  "command": "grayjay",
-                  "detached": true,
-                  "isolated": false,
-                  "delayed": false
-                },
+                "type": "button",
                 "name": "Grayjay",
                 "icon": "music_note_2",
-                "iconTheme": "material-symbols-rounded"
+                "iconTheme": "material-symbols-rounded",
+                "selectWorkflow": {
+                  "quickSelectKey": "G",
+                  "actions": [
+                    {
+                      "type": "execute-command",
+                      "command": "grayjay",
+                      "detached": true,
+                      "isolated": false
+                    },
+                    {
+                      "type": "close-menu"
+                    }
+                  ]
+                }
               },
               {
                 "type": "submenu",
-                "data": {},
-                "name": "Misc Apps",
+                "name": "Misc-er Apps",
                 "icon": "more_horiz",
                 "iconTheme": "material-symbols-rounded",
                 "children": [
                   {
-                    "type": "command",
-                    "data": {
-                      "command": "$TermSpawn opencode",
-                      "detached": true,
-                      "isolated": false,
-                      "delayed": false
-                    },
+                    "type": "button",
                     "name": "Opencode",
                     "icon": "terminal",
-                    "iconTheme": "material-symbols-rounded"
-                  },
-                  {
-                    "type": "command",
-                    "name": "Pear (decisions)",
-                    "icon": "question_mark",
                     "iconTheme": "material-symbols-rounded",
-                    "data": {
-                      "command": "$TermSpawn pear",
-                      "detached": true,
-                      "isolated": false,
-                      "delayed": false
+                    "selectWorkflow": {
+                      "quickSelectKey": "O",
+                      "actions": [
+                        {
+                          "type": "execute-command",
+                          "command": "$TermSpawn opencode",
+                          "detached": true,
+                          "isolated": false
+                        },
+                        {
+                          "type": "close-menu"
+                        }
+                      ]
                     }
                   },
                   {
-                    "type": "command",
-                    "data": {
-                      "command": "$TermSpawn studyrng ~/",
-                      "detached": true,
-                      "isolated": false,
-                      "delayed": false
-                    },
+                    "type": "button",
+                    "name": "Pear (decisions)",
+                    "icon": "question_mark",
+                    "iconTheme": "material-symbols-rounded",
+                    "selectWorkflow": {
+                      "quickSelectKey": "P",
+                      "actions": [
+                        {
+                          "type": "execute-command",
+                          "command": "$TermSpawn pear",
+                          "detached": true,
+                          "isolated": false
+                        },
+                        {
+                          "type": "close-menu"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "type": "button",
                     "name": "Study RNG",
                     "icon": "🎲",
-                    "iconTheme": "emoji"
+                    "iconTheme": "emoji",
+                    "selectWorkflow": {
+                      "quickSelectKey": "S",
+                      "actions": [
+                        {
+                          "type": "execute-command",
+                          "command": "$TermSpawn studyrng ~/",
+                          "detached": true,
+                          "isolated": false
+                        },
+                        {
+                          "type": "close-menu"
+                        }
+                      ]
+                    }
                   }
-                ]
+                ],
+                "activateWorkflow": {
+                  "quickSelectKey": "Backspace",
+                  "actions": [
+                    {
+                      "type": "close-submenu"
+                    }
+                  ]
+                },
+                "openWorkflow": {
+                  "actions": [],
+                  "quickSelectKey": "M"
+                }
               },
               {
-                "type": "command",
-                "data": {
-                  "command": "chromium",
-                  "detached": true,
-                  "isolated": false,
-                  "delayed": false
-                },
+                "type": "button",
                 "name": "Chromium",
                 "icon": "googlechrome",
-                "iconTheme": "simple-icons"
+                "iconTheme": "simple-icons",
+                "selectWorkflow": {
+                  "quickSelectKey": "C",
+                  "actions": [
+                    {
+                      "type": "execute-command",
+                      "command": "chromium",
+                      "detached": true,
+                      "isolated": false
+                    },
+                    {
+                      "type": "close-menu"
+                    }
+                  ]
+                }
               }
-            ]
+            ],
+            "activateWorkflow": {
+              "quickSelectKey": "Backspace",
+              "actions": [
+                {
+                  "type": "close-submenu"
+                }
+              ]
+            },
+            "openWorkflow": {
+              "actions": [],
+              "quickSelectKey": "M"
+            }
           },
           {
             "type": "submenu",
-            "data": {},
             "name": "Settings",
             "icon": "settings-item.svg",
             "iconTheme": "kando",
             "children": [
               {
-                "type": "settings",
-                "data": null,
-                "name": "Open Settings",
+                "type": "button",
+                "name": "Kando Settings",
                 "icon": "settings-item.svg",
-                "iconTheme": "kando"
+                "iconTheme": "kando",
+                "selectWorkflow": {
+                  "quickSelectKey": "K",
+                  "actions": [
+                    {
+                      "type": "open-settings"
+                    },
+                    {
+                      "type": "close-menu"
+                    }
+                  ]
+                }
               },
               {
-                "type": "command",
-                "data": {
-                  "command": "printer-settings",
-                  "detached": true,
-                  "isolated": false,
-                  "delayed": false
-                },
+                "type": "button",
                 "name": "Printer settings",
                 "icon": "print",
-                "iconTheme": "material-symbols-rounded"
+                "iconTheme": "material-symbols-rounded",
+                "selectWorkflow": {
+                  "quickSelectKey": "P",
+                  "actions": [
+                    {
+                      "type": "execute-command",
+                      "command": "printer-settings",
+                      "detached": true,
+                      "isolated": false
+                    },
+                    {
+                      "type": "close-menu"
+                    }
+                  ]
+                }
               },
               {
-                "type": "command",
-                "data": {
-                  "command": "blueman-manager",
-                  "detached": true,
-                  "isolated": false,
-                  "delayed": false
-                },
+                "type": "button",
                 "name": "Bluetooth manager",
                 "icon": "bluetooth",
-                "iconTheme": "material-symbols-rounded"
+                "iconTheme": "material-symbols-rounded",
+                "selectWorkflow": {
+                  "quickSelectKey": "B",
+                  "actions": [
+                    {
+                      "type": "execute-command",
+                      "command": "blueman-manager",
+                      "detached": true,
+                      "isolated": false
+                    },
+                    {
+                      "type": "close-menu"
+                    }
+                  ]
+                }
               },
               {
-                "type": "command",
-                "data": {
-                  "command": "pavucontrol",
-                  "detached": true,
-                  "isolated": false,
-                  "delayed": false
-                },
+                "type": "button",
                 "name": "Audio settings",
                 "icon": "volume_up",
-                "iconTheme": "material-symbols-rounded"
+                "iconTheme": "material-symbols-rounded",
+                "selectWorkflow": {
+                  "quickSelectKey": "A",
+                  "actions": [
+                    {
+                      "type": "execute-command",
+                      "command": "pavucontrol",
+                      "detached": true,
+                      "isolated": false
+                    },
+                    {
+                      "type": "close-menu"
+                    }
+                  ]
+                }
               },
               {
-                "type": "command",
-                "data": {
-                  "command": "$TermSpawn input-remapper-gtk",
-                  "detached": true,
-                  "isolated": false,
-                  "delayed": false
-                },
+                "type": "button",
                 "name": "Input remapper",
                 "icon": "videogame_asset",
-                "iconTheme": "material-symbols-rounded"
+                "iconTheme": "material-symbols-rounded",
+                "selectWorkflow": {
+                  "quickSelectKey": "I",
+                  "actions": [
+                    {
+                      "type": "execute-command",
+                      "command": "$TermSpawn input-remapper-gtk",
+                      "detached": true,
+                      "isolated": false
+                    },
+                    {
+                      "type": "close-menu"
+                    }
+                  ]
+                }
               }
-            ]
+            ],
+            "activateWorkflow": {
+              "quickSelectKey": "Backspace",
+              "actions": [
+                {
+                  "type": "close-submenu"
+                }
+              ]
+            },
+            "openWorkflow": {
+              "quickSelectKey": "S"
+            }
           },
           {
             "type": "submenu",
-            "data": {},
             "name": "Games",
             "icon": "stadia_controller",
             "iconTheme": "material-symbols-rounded",
             "children": [
               {
-                "type": "command",
-                "data": {
-                  "command": "steam",
-                  "detached": true,
-                  "isolated": false,
-                  "delayed": false
-                },
+                "type": "button",
                 "name": "Steam",
                 "icon": "steam",
-                "iconTheme": "simple-icons"
-              },
-              {
-                "type": "command",
-                "name": "Minecraft",
-                "icon": "developmentcontainers",
                 "iconTheme": "simple-icons",
-                "data": {
-                  "command": "prismlauncher",
-                  "detached": true,
-                  "isolated": false,
-                  "delayed": false
+                "selectWorkflow": {
+                  "quickSelectKey": "S",
+                  "actions": [
+                    {
+                      "type": "execute-command",
+                      "command": "steam",
+                      "detached": true,
+                      "isolated": false
+                    },
+                    {
+                      "type": "close-menu"
+                    }
+                  ]
                 }
               },
               {
-                "type": "command",
-                "data": {
-                  "command": "olympus",
-                  "detached": true,
-                  "isolated": false,
-                  "delayed": false
-                },
-                "name": "Olympus",
+                "type": "button",
+                "name": "Minecraft",
+                "icon": "developmentcontainers",
+                "iconTheme": "simple-icons",
+                "selectWorkflow": {
+                  "quickSelectKey": "M",
+                  "actions": [
+                    {
+                      "type": "execute-command",
+                      "command": "prismlauncher",
+                      "detached": true,
+                      "isolated": false
+                    },
+                    {
+                      "type": "close-menu"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "button",
+                "name": "Celeste",
                 "icon": "mountain_flag",
-                "iconTheme": "material-symbols-rounded"
+                "iconTheme": "material-symbols-rounded",
+                "selectWorkflow": {
+                  "quickSelectKey": "C",
+                  "actions": [
+                    {
+                      "type": "execute-command",
+                      "command": "olympus",
+                      "detached": true,
+                      "isolated": false
+                    },
+                    {
+                      "type": "close-menu"
+                    }
+                  ]
+                }
               }
-            ]
+            ],
+            "activateWorkflow": {
+              "quickSelectKey": "Backspace",
+              "actions": [
+                {
+                  "type": "close-submenu"
+                }
+              ]
+            },
+            "openWorkflow": {
+              "quickSelectKey": "G"
+            }
           },
           {
             "type": "submenu",
-            "data": {},
             "name": "Tools",
             "icon": "tools_power_drill",
             "iconTheme": "material-symbols-rounded",
             "children": [
               {
-                "type": "command",
-                "data": {
-                  "command": "pdfarranger",
-                  "detached": true,
-                  "isolated": false,
-                  "delayed": false
-                },
+                "type": "button",
                 "name": "PDF Arranger",
                 "icon": "edit_document",
-                "iconTheme": "material-symbols-rounded"
+                "iconTheme": "material-symbols-rounded",
+                "selectWorkflow": {
+                  "quickSelectKey": "P",
+                  "actions": [
+                    {
+                      "type": "execute-command",
+                      "command": "pdfarranger",
+                      "detached": true,
+                      "isolated": false
+                    },
+                    {
+                      "type": "close-menu"
+                    }
+                  ]
+                }
               },
               {
-                "type": "command",
-                "data": {
-                  "command": "gnome-calculator",
-                  "detached": true,
-                  "isolated": false,
-                  "delayed": false
-                },
+                "type": "button",
                 "name": "Calculator",
                 "icon": "calculate",
-                "iconTheme": "material-symbols-rounded"
+                "iconTheme": "material-symbols-rounded",
+                "selectWorkflow": {
+                  "quickSelectKey": "C",
+                  "actions": [
+                    {
+                      "type": "execute-command",
+                      "command": "gnome-calculator",
+                      "detached": true,
+                      "isolated": false
+                    },
+                    {
+                      "type": "close-menu"
+                    }
+                  ]
+                }
               },
               {
-                "type": "command",
-                "data": {
-                  "command": "saleae-logic-2",
-                  "detached": true,
-                  "isolated": false,
-                  "delayed": false
-                },
+                "type": "button",
                 "name": "Logic analyser",
                 "icon": "bar_chart_4_bars",
-                "iconTheme": "material-symbols-rounded"
+                "iconTheme": "material-symbols-rounded",
+                "selectWorkflow": {
+                  "quickSelectKey": "L",
+                  "actions": [
+                    {
+                      "type": "execute-command",
+                      "command": "saleae-logic-2",
+                      "detached": true,
+                      "isolated": false
+                    },
+                    {
+                      "type": "close-menu"
+                    }
+                  ]
+                }
               },
               {
-                "type": "command",
-                "data": {
-                  "command": "PureRef",
-                  "detached": true,
-                  "isolated": false,
-                  "delayed": false
-                },
+                "type": "button",
                 "name": "Pureref",
                 "icon": "mobile_layout",
-                "iconTheme": "material-symbols-rounded"
+                "iconTheme": "material-symbols-rounded",
+                "selectWorkflow": {
+                  "quickSelectKey": "R",
+                  "actions": [
+                    {
+                      "type": "execute-command",
+                      "command": "PureRef",
+                      "detached": true,
+                      "isolated": false
+                    },
+                    {
+                      "type": "close-menu"
+                    }
+                  ]
+                }
               }
-            ]
+            ],
+            "activateWorkflow": {
+              "quickSelectKey": "Backspace",
+              "actions": [
+                {
+                  "type": "close-submenu"
+                }
+              ]
+            },
+            "openWorkflow": {
+              "quickSelectKey": "T"
+            }
           }
         ]
       },
       "shortcut": "",
       "shortcutID": "apps",
-      "centered": false,
+      "useFixedPosition": false,
+      "fixedMenuPosition": {
+        "x": 0.5,
+        "y": 0.5
+      },
       "anchored": false,
       "hoverMode": false,
       "tags": []
