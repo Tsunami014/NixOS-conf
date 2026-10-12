@@ -25,6 +25,9 @@ binds {
     Mod+L repeat=false hotkey-overlay-title="Open link file" { spawn-sh "$TermSpawn linkfile"; }
     Mod+W repeat=false hotkey-overlay-title="Choose wallpaper" { spawn-sh "$TermSpawn wallppr"; }
 
+    Mod+O { spawn "obs-scene-pick"; }
+    Mod+Shift+O { spawn-sh "cd ~/Notes/; NVIM_PROFILE=Notes $TermSpawn nvim ./streams.md"; }
+
     Mod+B repeat=false hotkey-overlay-title="Web browser" { spawn "zen"; }
     Mod+Shift+B repeat=false hotkey-overlay-title="Private web browser" { spawn-sh "zen --private-window"; }
 
@@ -84,10 +87,6 @@ binds {
     Mod+E hotkey-overlay-title="Cast focused window" { set-dynamic-cast-window; }
     Mod+Shift+E { set-dynamic-cast-monitor; }
     Mod+Ctrl+E { clear-dynamic-cast-target; }
-
-    // Streaming stuff
-    Mod+O { spawn "obs-scene-pick"; }
-
 
     // The do stuff buttons
     XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1+ -l 1.0"; }

@@ -132,6 +132,18 @@
                   },
                   {
                     "type": "command",
+                    "name": "Pear (decisions)",
+                    "icon": "question_mark",
+                    "iconTheme": "material-symbols-rounded",
+                    "data": {
+                      "command": "$TermSpawn pear",
+                      "detached": true,
+                      "isolated": false,
+                      "delayed": false
+                    }
+                  },
+                  {
+                    "type": "command",
                     "data": {
                       "command": "$TermSpawn studyrng ~/",
                       "detached": true,

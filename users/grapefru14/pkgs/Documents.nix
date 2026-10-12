@@ -33,5 +33,12 @@ pkgs.symlinkJoin {
       runtimeInputs = with pkgs; [python3];
       text = (mkscript "studyRng" "main.py");
     })
+    (pkgs.writeShellApplication {
+      name = "pear";
+      runtimeInputs = with pkgs; [
+        (pkgs.python3.withPackages (ps: with ps; [ numpy ]))
+      ];
+      text = (mkscript "Pear" "main.py");
+    })
   ];
 }
