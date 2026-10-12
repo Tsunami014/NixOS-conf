@@ -53,7 +53,9 @@ binds {
     Ctrl+Print { screenshot-screen; }
     Alt+Print { screenshot-window; }
 
-    Mod+Grave { power-off-monitors; }  // To turn back on do anything
+    Mod+Grave allow-inhibiting=false { power-off-monitors; }  // To turn back on do anything
+    Mod+Shift+Grave allow-inhibiting=false { spawn "hyprlock"; }  // Actually lock the screen
+
     Mod+Space repeat=false { toggle-overview; }
     Mod+Q repeat=false { close-window; }
 
