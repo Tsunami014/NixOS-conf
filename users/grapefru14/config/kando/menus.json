@@ -77,6 +77,51 @@
                 "name": "Arduino IDE",
                 "icon": "arduino",
                 "iconTheme": "simple-icons"
+              },
+              {
+                "type": "submenu",
+                "data": {},
+                "name": "Drawing",
+                "icon": "ink_pen",
+                "iconTheme": "material-symbols-rounded",
+                "children": [
+                  {
+                    "type": "command",
+                    "data": {
+                      "command": "godsvg",
+                      "detached": true,
+                      "isolated": false,
+                      "delayed": false
+                    },
+                    "name": "God SVG",
+                    "icon": "draw_collage",
+                    "iconTheme": "material-symbols-rounded"
+                  },
+                  {
+                    "type": "command",
+                    "data": {
+                      "command": "krita",
+                      "detached": true,
+                      "isolated": false,
+                      "delayed": false
+                    },
+                    "name": "Krita",
+                    "icon": "draw",
+                    "iconTheme": "material-symbols-rounded"
+                  },
+                  {
+                    "type": "command",
+                    "data": {
+                      "command": "aseprite",
+                      "detached": true,
+                      "isolated": false,
+                      "delayed": false
+                    },
+                    "name": "Aseprite",
+                    "icon": "draw_abstract",
+                    "iconTheme": "material-symbols-rounded"
+                  }
+                ]
               }
             ]
           },
@@ -114,9 +159,9 @@
               {
                 "type": "submenu",
                 "data": {},
-                "name": "Misc-er Apps",
-                "icon": "submenu-item.svg",
-                "iconTheme": "kando",
+                "name": "Misc Apps",
+                "icon": "more_horiz",
+                "iconTheme": "material-symbols-rounded",
                 "children": [
                   {
                     "type": "command",
@@ -332,51 +377,6 @@
                 },
                 "name": "Pureref",
                 "icon": "mobile_layout",
-                "iconTheme": "material-symbols-rounded"
-              }
-            ]
-          },
-          {
-            "type": "submenu",
-            "data": {},
-            "name": "Drawing",
-            "icon": "ink_pen",
-            "iconTheme": "material-symbols-rounded",
-            "children": [
-              {
-                "type": "command",
-                "data": {
-                  "command": "godsvg",
-                  "detached": true,
-                  "isolated": false,
-                  "delayed": false
-                },
-                "name": "God SVG",
-                "icon": "draw_collage",
-                "iconTheme": "material-symbols-rounded"
-              },
-              {
-                "type": "command",
-                "data": {
-                  "command": "krita",
-                  "detached": true,
-                  "isolated": false,
-                  "delayed": false
-                },
-                "name": "Krita",
-                "icon": "draw",
-                "iconTheme": "material-symbols-rounded"
-              },
-              {
-                "type": "command",
-                "data": {
-                  "command": "aseprite",
-                  "detached": true,
-                  "isolated": false,
-                  "delayed": false
-                },
-                "name": "Aseprite",
-                "icon": "draw_abstract",
                 "iconTheme": "material-symbols-rounded"
               }
             ]
