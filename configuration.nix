@@ -195,6 +195,7 @@ efi /EFI/ubuntu/grubx64.efi
   services.udev.extraRules = ''
     SUBSYSTEM=="usb", ATTR{idVendor}=="0d28", ATTR{idProduct}=="0204", MODE="0666", GROUP="plugdev"
     KERNEL=="hidraw*", ATTRS{idVendor}=="0d28", ATTRS{idProduct}=="0204", MODE="0666", GROUP="plugdev"
+    KERNEL=="hidraw*", SUBSYSTEM=="hidraw", MODE="0660", GROUP="input"
   '';
 
   # Some programs need SUID wrappers, can be configured further or are
