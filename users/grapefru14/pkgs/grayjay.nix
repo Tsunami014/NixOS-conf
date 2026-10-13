@@ -5,7 +5,7 @@ stdenv.mkDerivation {
 
   src = fetchzip {
     url = "https://updater.grayjay.app/Apps/Grayjay.Desktop/Grayjay.Desktop-linux-x64.zip";
-    hash = "sha256-6bnAibjbWBZtBXRSGdmSoGNffaEsYlXDr4vvjqgUSl8=";
+    hash = "sha256-C9Vscjgjfq//z4bOS/rjPAIyFJvFz6WzKp0mycFFbc8=";
   };
 
   dontBuild = true;
