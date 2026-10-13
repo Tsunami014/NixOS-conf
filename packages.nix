@@ -14,6 +14,7 @@
     yazi
     unzip
     iio-sensor-proxy
+    libinput
 
     # Icon themes (otherwise some icons won't exist)
     hicolor-icon-theme

@@ -3,10 +3,10 @@
   "menus": [
     {
       "root": {
-        "type": "root",
         "name": "Keybinds",
         "icon": "award_star",
         "iconTheme": "material-symbols-rounded",
+        "type": "root",
         "activateWorkflow": {
           "quickSelectKey": "Backspace",
           "actions": [
@@ -17,10 +17,10 @@
         },
         "children": [
           {
-            "type": "button",
             "name": "Undo",
             "icon": "undo",
             "iconTheme": "material-symbols-rounded",
+            "type": "button",
             "angle": 270,
             "selectWorkflow": {
               "actions": [
@@ -35,10 +35,10 @@
             }
           },
           {
-            "type": "button",
             "name": "Redo",
             "icon": "redo",
             "iconTheme": "material-symbols-rounded",
+            "type": "button",
             "selectWorkflow": {
               "actions": [
                 {
@@ -66,10 +66,10 @@
     },
     {
       "root": {
-        "type": "root",
         "name": "Apps menu",
         "icon": "apps",
         "iconTheme": "material-symbols-rounded",
+        "type": "root",
         "activateWorkflow": {
           "quickSelectKey": "Backspace",
           "actions": [
@@ -80,16 +80,28 @@
         },
         "children": [
           {
-            "type": "submenu",
             "name": "Creation apps",
             "icon": "new_window",
             "iconTheme": "material-symbols-rounded",
+            "type": "submenu",
+            "openWorkflow": {
+              "quickSelectKey": "C",
+              "actions": []
+            },
+            "activateWorkflow": {
+              "quickSelectKey": "Backspace",
+              "actions": [
+                {
+                  "type": "close-submenu"
+                }
+              ]
+            },
             "children": [
               {
-                "type": "button",
                 "name": "LdTK",
                 "icon": "construction",
                 "iconTheme": "material-symbols-rounded",
+                "type": "button",
                 "selectWorkflow": {
                   "quickSelectKey": "L",
                   "actions": [
@@ -106,10 +118,10 @@
                 }
               },
               {
-                "type": "button",
                 "name": "Arduino IDE",
                 "icon": "arduino",
                 "iconTheme": "simple-icons",
+                "type": "button",
                 "selectWorkflow": {
                   "quickSelectKey": "A",
                   "actions": [
@@ -126,16 +138,28 @@
                 }
               },
               {
-                "type": "submenu",
                 "name": "Drawing",
                 "icon": "ink_pen",
                 "iconTheme": "material-symbols-rounded",
+                "type": "submenu",
+                "openWorkflow": {
+                  "quickSelectKey": "D",
+                  "actions": []
+                },
+                "activateWorkflow": {
+                  "quickSelectKey": "Backspace",
+                  "actions": [
+                    {
+                      "type": "close-submenu"
+                    }
+                  ]
+                },
                 "children": [
                   {
-                    "type": "button",
                     "name": "God SVG",
                     "icon": "draw_collage",
                     "iconTheme": "material-symbols-rounded",
+                    "type": "button",
                     "selectWorkflow": {
                       "quickSelectKey": "S",
                       "actions": [
@@ -152,10 +176,10 @@
                     }
                   },
                   {
-                    "type": "button",
                     "name": "Krita",
                     "icon": "draw",
                     "iconTheme": "material-symbols-rounded",
+                    "type": "button",
                     "selectWorkflow": {
                       "quickSelectKey": "K",
                       "actions": [
@@ -172,10 +196,10 @@
                     }
                   },
                   {
-                    "type": "button",
                     "name": "Aseprite",
                     "icon": "draw_abstract",
                     "iconTheme": "material-symbols-rounded",
+                    "type": "button",
                     "selectWorkflow": {
                       "quickSelectKey": "A",
                       "actions": [
@@ -191,20 +215,19 @@
                       ]
                     }
                   }
-                ],
-                "activateWorkflow": {
-                  "quickSelectKey": "Backspace",
-                  "actions": [
-                    {
-                      "type": "close-submenu"
-                    }
-                  ]
-                },
-                "openWorkflow": {
-                  "quickSelectKey": "D"
-                }
+                ]
               }
-            ],
+            ]
+          },
+          {
+            "name": "Misc apps",
+            "icon": "view_apps",
+            "iconTheme": "material-symbols-rounded",
+            "type": "submenu",
+            "openWorkflow": {
+              "quickSelectKey": "M",
+              "actions": []
+            },
             "activateWorkflow": {
               "quickSelectKey": "Backspace",
               "actions": [
@@ -213,21 +236,12 @@
                 }
               ]
             },
-            "openWorkflow": {
-              "quickSelectKey": "C"
-            }
-          },
-          {
-            "type": "submenu",
-            "name": "Misc apps",
-            "icon": "view_apps",
-            "iconTheme": "material-symbols-rounded",
             "children": [
               {
-                "type": "button",
                 "name": "OBS",
                 "icon": "obsstudio",
                 "iconTheme": "simple-icons",
+                "type": "button",
                 "selectWorkflow": {
                   "quickSelectKey": "O",
                   "actions": [
@@ -244,10 +258,10 @@
                 }
               },
               {
-                "type": "button",
                 "name": "Grayjay",
                 "icon": "music_note_2",
                 "iconTheme": "material-symbols-rounded",
+                "type": "button",
                 "selectWorkflow": {
                   "quickSelectKey": "G",
                   "actions": [
@@ -264,36 +278,28 @@
                 }
               },
               {
-                "type": "submenu",
                 "name": "Misc-er Apps",
                 "icon": "more_horiz",
                 "iconTheme": "material-symbols-rounded",
+                "type": "submenu",
+                "openWorkflow": {
+                  "quickSelectKey": "M",
+                  "actions": []
+                },
+                "activateWorkflow": {
+                  "quickSelectKey": "Backspace",
+                  "actions": [
+                    {
+                      "type": "close-submenu"
+                    }
+                  ]
+                },
                 "children": [
                   {
-                    "type": "button",
-                    "name": "Opencode",
-                    "icon": "terminal",
-                    "iconTheme": "material-symbols-rounded",
-                    "selectWorkflow": {
-                      "quickSelectKey": "O",
-                      "actions": [
-                        {
-                          "type": "execute-command",
-                          "command": "$TermSpawn opencode",
-                          "detached": true,
-                          "isolated": false
-                        },
-                        {
-                          "type": "close-menu"
-                        }
-                      ]
-                    }
-                  },
-                  {
-                    "type": "button",
                     "name": "Pear (decisions)",
                     "icon": "question_mark",
                     "iconTheme": "material-symbols-rounded",
+                    "type": "button",
                     "selectWorkflow": {
                       "quickSelectKey": "P",
                       "actions": [
@@ -310,10 +316,30 @@
                     }
                   },
                   {
+                    "name": "Opencode",
+                    "icon": "terminal",
+                    "iconTheme": "material-symbols-rounded",
                     "type": "button",
+                    "selectWorkflow": {
+                      "quickSelectKey": "O",
+                      "actions": [
+                        {
+                          "type": "execute-command",
+                          "command": "$TermSpawn opencode",
+                          "detached": true,
+                          "isolated": false
+                        },
+                        {
+                          "type": "close-menu"
+                        }
+                      ]
+                    }
+                  },
+                  {
                     "name": "Study RNG",
                     "icon": "🎲",
                     "iconTheme": "emoji",
+                    "type": "button",
                     "selectWorkflow": {
                       "quickSelectKey": "S",
                       "actions": [
@@ -329,25 +355,13 @@
                       ]
                     }
                   }
-                ],
-                "activateWorkflow": {
-                  "quickSelectKey": "Backspace",
-                  "actions": [
-                    {
-                      "type": "close-submenu"
-                    }
-                  ]
-                },
-                "openWorkflow": {
-                  "actions": [],
-                  "quickSelectKey": "M"
-                }
+                ]
               },
               {
-                "type": "button",
                 "name": "Chromium",
                 "icon": "googlechrome",
                 "iconTheme": "simple-icons",
+                "type": "button",
                 "selectWorkflow": {
                   "quickSelectKey": "C",
                   "actions": [
@@ -363,7 +377,17 @@
                   ]
                 }
               }
-            ],
+            ]
+          },
+          {
+            "name": "Settings",
+            "icon": "settings-item.svg",
+            "iconTheme": "kando",
+            "type": "submenu",
+            "openWorkflow": {
+              "quickSelectKey": "S",
+              "actions": []
+            },
             "activateWorkflow": {
               "quickSelectKey": "Backspace",
               "actions": [
@@ -372,22 +396,12 @@
                 }
               ]
             },
-            "openWorkflow": {
-              "actions": [],
-              "quickSelectKey": "M"
-            }
-          },
-          {
-            "type": "submenu",
-            "name": "Settings",
-            "icon": "settings-item.svg",
-            "iconTheme": "kando",
             "children": [
               {
-                "type": "button",
                 "name": "Kando Settings",
                 "icon": "settings-item.svg",
                 "iconTheme": "kando",
+                "type": "button",
                 "selectWorkflow": {
                   "quickSelectKey": "K",
                   "actions": [
@@ -401,10 +415,10 @@
                 }
               },
               {
-                "type": "button",
                 "name": "Printer settings",
                 "icon": "print",
                 "iconTheme": "material-symbols-rounded",
+                "type": "button",
                 "selectWorkflow": {
                   "quickSelectKey": "P",
                   "actions": [
@@ -421,10 +435,10 @@
                 }
               },
               {
-                "type": "button",
                 "name": "Bluetooth manager",
                 "icon": "bluetooth",
                 "iconTheme": "material-symbols-rounded",
+                "type": "button",
                 "selectWorkflow": {
                   "quickSelectKey": "B",
                   "actions": [
@@ -441,10 +455,10 @@
                 }
               },
               {
-                "type": "button",
                 "name": "Audio settings",
                 "icon": "volume_up",
                 "iconTheme": "material-symbols-rounded",
+                "type": "button",
                 "selectWorkflow": {
                   "quickSelectKey": "A",
                   "actions": [
@@ -461,10 +475,10 @@
                 }
               },
               {
-                "type": "button",
                 "name": "Input remapper",
                 "icon": "videogame_asset",
                 "iconTheme": "material-symbols-rounded",
+                "type": "button",
                 "selectWorkflow": {
                   "quickSelectKey": "I",
                   "actions": [
@@ -480,7 +494,17 @@
                   ]
                 }
               }
-            ],
+            ]
+          },
+          {
+            "name": "Games",
+            "icon": "stadia_controller",
+            "iconTheme": "material-symbols-rounded",
+            "type": "submenu",
+            "openWorkflow": {
+              "quickSelectKey": "G",
+              "actions": []
+            },
             "activateWorkflow": {
               "quickSelectKey": "Backspace",
               "actions": [
@@ -489,21 +513,12 @@
                 }
               ]
             },
-            "openWorkflow": {
-              "quickSelectKey": "S"
-            }
-          },
-          {
-            "type": "submenu",
-            "name": "Games",
-            "icon": "stadia_controller",
-            "iconTheme": "material-symbols-rounded",
             "children": [
               {
-                "type": "button",
                 "name": "Steam",
                 "icon": "steam",
                 "iconTheme": "simple-icons",
+                "type": "button",
                 "selectWorkflow": {
                   "quickSelectKey": "S",
                   "actions": [
@@ -520,10 +535,10 @@
                 }
               },
               {
-                "type": "button",
                 "name": "Minecraft",
                 "icon": "developmentcontainers",
                 "iconTheme": "simple-icons",
+                "type": "button",
                 "selectWorkflow": {
                   "quickSelectKey": "M",
                   "actions": [
@@ -540,10 +555,10 @@
                 }
               },
               {
-                "type": "button",
                 "name": "Celeste",
                 "icon": "mountain_flag",
                 "iconTheme": "material-symbols-rounded",
+                "type": "button",
                 "selectWorkflow": {
                   "quickSelectKey": "C",
                   "actions": [
@@ -559,7 +574,17 @@
                   ]
                 }
               }
-            ],
+            ]
+          },
+          {
+            "name": "Tools",
+            "icon": "tools_power_drill",
+            "iconTheme": "material-symbols-rounded",
+            "type": "submenu",
+            "openWorkflow": {
+              "quickSelectKey": "T",
+              "actions": []
+            },
             "activateWorkflow": {
               "quickSelectKey": "Backspace",
               "actions": [
@@ -568,21 +593,12 @@
                 }
               ]
             },
-            "openWorkflow": {
-              "quickSelectKey": "G"
-            }
-          },
-          {
-            "type": "submenu",
-            "name": "Tools",
-            "icon": "tools_power_drill",
-            "iconTheme": "material-symbols-rounded",
             "children": [
               {
-                "type": "button",
                 "name": "PDF Arranger",
                 "icon": "edit_document",
                 "iconTheme": "material-symbols-rounded",
+                "type": "button",
                 "selectWorkflow": {
                   "quickSelectKey": "P",
                   "actions": [
@@ -599,10 +615,10 @@
                 }
               },
               {
-                "type": "button",
                 "name": "Calculator",
                 "icon": "calculate",
                 "iconTheme": "material-symbols-rounded",
+                "type": "button",
                 "selectWorkflow": {
                   "quickSelectKey": "C",
                   "actions": [
@@ -619,10 +635,10 @@
                 }
               },
               {
-                "type": "button",
                 "name": "Logic analyser",
                 "icon": "bar_chart_4_bars",
                 "iconTheme": "material-symbols-rounded",
+                "type": "button",
                 "selectWorkflow": {
                   "quickSelectKey": "L",
                   "actions": [
@@ -639,10 +655,10 @@
                 }
               },
               {
-                "type": "button",
                 "name": "Pureref",
                 "icon": "mobile_layout",
                 "iconTheme": "material-symbols-rounded",
+                "type": "button",
                 "selectWorkflow": {
                   "quickSelectKey": "R",
                   "actions": [
@@ -658,18 +674,7 @@
                   ]
                 }
               }
-            ],
-            "activateWorkflow": {
-              "quickSelectKey": "Backspace",
-              "actions": [
-                {
-                  "type": "close-submenu"
-                }
-              ]
-            },
-            "openWorkflow": {
-              "quickSelectKey": "T"
-            }
+            ]
           }
         ]
       },
