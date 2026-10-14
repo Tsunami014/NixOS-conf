@@ -296,8 +296,8 @@
                 },
                 "children": [
                   {
-                    "name": "Pear (decisions)",
-                    "icon": "question_mark",
+                    "name": "Passionfruit",
+                    "icon": "face",
                     "iconTheme": "material-symbols-rounded",
                     "type": "button",
                     "selectWorkflow": {
@@ -305,7 +305,7 @@
                       "actions": [
                         {
                           "type": "execute-command",
-                          "command": "$TermSpawn pear",
+                          "command": "$TermSpawn passionfruit",
                           "detached": true,
                           "isolated": false
                         },
