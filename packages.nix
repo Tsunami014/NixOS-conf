@@ -99,6 +99,9 @@ nvim "$USER".md -c 'exe "Neotree"|wincmd w'
       name = "close";
       text = builtins.readFile ./programs/close.sh;
     })
+
+    # Lazily loaded
+    (pkgs.writeScriptBin "neofetch" ''nix-shell --log-format bar-with-logs -p hyfetch -p fastfetch --run "hyfetch $@"'')
   ];
 
   programs.bash = {
