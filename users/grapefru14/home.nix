@@ -167,10 +167,12 @@ wallppr rand
     systemdTargets = [ "config.wayland.systemd.target" ];
   };
 
+  programs.bash.initExtra = ''
+export PS1='\[\033[32m\]\[\033[30;42m\] \u \[\033[32;43m\]\[\033[30;43m\]$(git branch --show-current 2>/dev/null | sed "s/^/ /;s/$/ /")\[\033[33;100m\]\[\033[35m\] \w \$\[\033[0;90m\]\[\033[0m\] '
+'';
+
   programs.bash.profileExtra = ''
 if [[ -z $NIRI_LAUNCHED ]]; then
-  launch=false
-
   if [[ $XDG_VTNR == 1 ]]; then
     export NIRI_LAUNCHED=1
     export XDG_SESSION_TYPE=wayland
@@ -184,5 +186,6 @@ if [[ -z $NIRI_LAUNCHED ]]; then
       exec niri --session
     fi
   fi
-fi'';
+fi
+'';
 }

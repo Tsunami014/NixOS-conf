@@ -30,8 +30,8 @@
         echo "Cloning $name config repo..."
         mkdir -p $(dirname "$fold")
         git clone "''${files[$fold]}" "$fold"
-      else
-        git -C "$fold" pull || true
+      # else
+      #   git -C "$fold" pull --ff-only
       fi
     done
   '';
