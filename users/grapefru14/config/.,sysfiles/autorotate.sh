@@ -33,8 +33,7 @@ rotate_output() {
   matrix="1.0 0.0 0.0 0.0 1.0 0.0"
   echo "Rotating to $rot..."
   niri msg output "$OUTPUT" transform "$rot"
-  mkdir -p /tmp/autorotate
-  cat > "/tmp/autorotate/rotate.kdl" <<EOF
+  cat > "~/.niriextra/autorotate.kdl" <<EOF
 input {
   touch {
     map-to-output "$OUTPUT"
@@ -46,8 +45,6 @@ input {
   }
 }
 EOF
-  umount ~/.config/niri/autorotate 2>/dev/null || true
-  bindfs /tmp/autorotate ~/.config/niri/autorotate
 }
 
 rotate_output normal

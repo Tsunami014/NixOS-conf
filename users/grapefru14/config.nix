@@ -16,6 +16,19 @@
   home.activation.makeFolders = config.lib.dag.entryAfter [ "writeBoundary" ]
     ''cd "$HOME"; mkdir -p Downloads Documents Pictures Videos'';
 
+  home.activation.niriStubs = config.lib.dag.entryAfter [ "writeBoundary" ] ''
+    dir="$HOME/.niriextra"
+    mkdir -p "$dir"
+
+    mk_files=(
+      "autorotate.kdl"
+      "animations.kdl"
+    )
+    for f in "''${mk_files[@]}"; do
+      [ -e "$dir/$f" ] || : > "$dir/$f"
+    done
+  '';
+
   home.activation.cloneConfigs = config.lib.dag.entryAfter [ "writeBoundary" ] ''
     PATH=${pkgs.git}/bin:$PATH
     declare -A files
