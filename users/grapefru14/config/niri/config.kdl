@@ -5,8 +5,8 @@ screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
 
 include "keys.kdl"
 include "windowRules.kdl"
-include "~/.niriextra/autorotate.kdl"
-include "~/.niriextra/animations.kdl"
+include optional=true "~/.niriextra/autorotate.kdl"
+include optional=true "~/.niriextra/animations.kdl"
 
 spawn-at-startup "systemctl" "--user" "import-environment" "WAYLAND_DISPLAY" "XDG_RUNTIME_DIR"
 spawn-at-startup "dbus-update-activation-environment" "--systemd" "DISPLAY" "WAYLAND_DISPLAY" "XDG_CURRENT_DESKTOP" "XDG_SESSION_TYPE"
@@ -133,3 +133,6 @@ recent-windows {
 hotkey-overlay {
     skip-at-startup
 }
+
+// Overrides
+include optional=true "~/.local/state/theme/current/niri.kdl"

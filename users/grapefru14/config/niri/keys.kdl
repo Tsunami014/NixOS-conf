@@ -1,6 +1,6 @@
 // run `niri msg action` to see avaliable commands
 environment {
-    TermSpawn "alacritty -e"
+    TermSpawn "kitty -e"
     EXECUTE "hexecute"
 }
 binds {
@@ -12,7 +12,7 @@ binds {
     Mod+KP_Enter repeat=false { spawn "kando" "--trigger" "apps"; }
     Mod+Ctrl+P repeat=false hotkey-overlay-title="Pointer" { spawn-sh "HOME='/tmp';hexecute"; }
 
-    Mod+Return repeat=false hotkey-overlay-title="Terminal" { spawn "alacritty"; }
+    Mod+Return repeat=false hotkey-overlay-title="Terminal" { spawn "kitty"; }
     Mod+D repeat=false hotkey-overlay-title="Downloads" { spawn-sh "$TermSpawn bash -ic 'downloads; yazi'"; }
 
     Mod+N repeat=false hotkey-overlay-title="Neovim" { spawn-sh "$TermSpawn nvim"; }

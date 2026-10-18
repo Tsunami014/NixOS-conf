@@ -23,4 +23,5 @@ fi
 NEW="$ANIMDIR/$NAME"
 [[ -f $NEW ]] || { echo "No such animation: $NEW" >&2; exit 1; }
 
+mkdir -p "$HOME/.niriextra"
 cp "$NEW" "$HOME/.niriextra/animations.kdl"

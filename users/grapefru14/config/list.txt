@@ -2,7 +2,7 @@ perm home .,sysfiles
 perm conf nixpkgs
 perm conf niri
 perm conf hypr
-perm conf alacritty
+perm conf kitty
 perm conf sioyek
 mut conf hexecute
 mut conf LDtk

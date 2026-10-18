@@ -10,6 +10,7 @@
 
   imports = [
     ./config.nix
+    ./theme.nix
     (import ./base.nix { full = true; })
 
     ./pkgs/yazi/yaz.nix
@@ -20,7 +21,7 @@
 
   # Package stuff
   home.packages = with pkgs; [
-    alacritty
+    kitty
     gh
     imagemagick
     exiftool
