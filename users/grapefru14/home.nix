@@ -110,6 +110,14 @@ F12 to toggle on/off, though not recommended for long"
 wlanthy
 '';
     })
+    (pkgs.writeShellApplication {
+      name = "lock";
+      text = ''
+pidof -q hyprlock && exit 0
+hyprlock
+wallppr rand
+'';
+    })
     # Lazily loaded programs
     (pkgs.writeScriptBin "py" ''
       ${pkgs.python313.withPackages (ps: with ps; [ pyperclip numpy requests ])}/bin/python3 "$@"

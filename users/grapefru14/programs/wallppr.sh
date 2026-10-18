@@ -46,7 +46,7 @@ slot=$(( 1 - last ))
 OUT="$CACHE/bg-$slot.jpg"
 
 # ---- render --------------------------------------------------------------
-magick -define jpeg:size="${W}x${H}" "$NEW[0]" \
+magick -define jpeg:size="${W}x${H}" "${NEW[0]}" \
   -background grey -alpha remove -alpha off \
   -write mpr:src +delete \
   \( mpr:src -resize "${SW}x${SH}^" -gravity center -extent "${SW}x${SH}" \

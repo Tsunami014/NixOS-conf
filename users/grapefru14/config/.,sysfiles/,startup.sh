@@ -1,11 +1,12 @@
 #!/bin/sh
 
-hyprlock &
+lock &
 quickshell -c bar -n &
 
 sleep 0.5
 
-~/.,sysfiles/wallppr-daemon.sh &
+swww-daemon &
+
 ~/.,sysfiles/idle.sh &
 ~/.,sysfiles/autorotate.sh &
 ~/.,sysfiles/gestures.sh &
