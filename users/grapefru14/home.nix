@@ -100,6 +100,10 @@ disown
       name = "wallppr";
       text = builtins.readFile ./programs/wallppr.sh;
     })
+    (pkgs.writeShellApplication {
+      name = "anims";
+      text = builtins.readFile ./programs/anims.sh;
+    })
     # Wrappers
     (pkgs.writeShellApplication {
       name = "jap";
@@ -116,6 +120,7 @@ wlanthy
 pidof -q hyprlock && exit 0
 hyprlock
 wallppr rand
+anims rand
 '';
     })
     # Lazily loaded programs

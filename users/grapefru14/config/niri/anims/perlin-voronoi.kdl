@@ -1,0 +1,91 @@
+animations {
+    window-open {
+        duration-ms 500
+        curve "ease-out-cubic"
+        custom-shader r#"
+            // Ported from skwd-wall perlin transition
+
+            float perlin_random(vec2 co) {
+                float a = 12.9898;
+                float b = 78.233;
+                float c = 43758.5453;
+                float dt = dot(co.xy, vec2(a, b));
+                float sn = mod(dt, 3.14);
+                return fract(sin(sn) * c);
+            }
+
+            float perlin_noise(in vec2 st) {
+                vec2 i = floor(st);
+                vec2 f = fract(st);
+                float a = perlin_random(i);
+                float b = perlin_random(i + vec2(1.0, 0.0));
+                float c = perlin_random(i + vec2(0.0, 1.0));
+                float d = perlin_random(i + vec2(1.0, 1.0));
+                vec2 u = f * f * (3.0 - 2.0 * f);
+                return mix(a, b, u.x) +
+                    (c - a) * u.y * (1.0 - u.x) +
+                    (d - b) * u.x * u.y;
+            }
+
+            vec4 open_color(vec3 coords_geo, vec3 size_geo) {
+                float pr = niri_clamped_progress;
+                vec2 uv = coords_geo.xy;
+                vec3 tc = niri_geo_to_tex * vec3(uv, 1.0);
+                vec4 win = texture2D(niri_tex, tc.st);
+
+                float seed = niri_random_seed;
+                float scale = mix(3.0, 6.0, fract(seed * 7.13));
+                vec2 offset = vec2(seed * 57.0, fract(seed * 3.7) * 91.0);
+
+                float smoothness = 0.01;
+                float n = perlin_noise(uv * scale + offset);
+                float p = mix(-smoothness, 1.0 + smoothness, pr);
+                float q = smoothstep(p - smoothness, p + smoothness, n);
+                return win * (1.0 - q);
+            }
+"#
+    }
+    window-close {
+        duration-ms 500
+        curve "ease-out-cubic"
+        custom-shader r#"
+            // Ported from skwd-wall voronoi-shatter transition
+
+            vec2 vs_hash2(vec2 p) {
+                return fract(sin(vec2(dot(p, vec2(127.1, 311.7)),
+                                       dot(p, vec2(269.5, 183.3)))) * 43758.5453);
+            }
+
+            vec4 close_color(vec3 coords_geo, vec3 size_geo) {
+                float p = 1.0 - niri_clamped_progress;
+                vec2 uv = coords_geo.xy;
+                vec3 tc = niri_geo_to_tex * vec3(uv, 1.0);
+                vec4 win = texture2D(niri_tex, tc.st);
+
+                float seed = niri_random_seed;
+                vec2 hseed = vec2(seed * 100.0, fract(seed * 5.3) * 100.0);
+
+                float scale = mix(10.0, 18.0, fract(seed * 7.13));
+                vec2 q = uv * scale + hseed * 0.1;   // shifts the grid
+                vec2 g = floor(q);
+                vec2 f = fract(q);
+                float min_d = 100.0;
+                vec2 cell = g;
+                for (int y = -1; y <= 1; y++) {
+                    for (int x = -1; x <= 1; x++) {
+                        vec2 nb = vec2(float(x), float(y));
+                        vec2 r = nb + vs_hash2(g + nb + hseed) - f;
+                        float d = dot(r, r);
+                        if (d < min_d) { min_d = d; cell = g + nb; }
+                    }
+                }
+                float s = vs_hash2(cell + hseed).x;
+                float shard_p = smoothstep(s * 0.5, s * 0.5 + 0.5, p);
+                float reveal = smoothstep(0.0, 0.5, shard_p);
+
+                float inside = step(0.0, uv.x) * step(uv.x, 1.0) * step(0.0, uv.y) * step(uv.y, 1.0);
+                return win * mix(p, reveal, inside);
+            }
+"#
+    }
+}
