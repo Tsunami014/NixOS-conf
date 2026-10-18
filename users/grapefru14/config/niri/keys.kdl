@@ -14,32 +14,30 @@ binds {
 
     Mod+Return repeat=false hotkey-overlay-title="Terminal" { spawn "alacritty"; }
     Mod+D repeat=false hotkey-overlay-title="Downloads" { spawn-sh "$TermSpawn bash -ic 'downloads; yazi'"; }
+
     Mod+N repeat=false hotkey-overlay-title="Neovim" { spawn-sh "$TermSpawn nvim"; }
     Mod+Shift+N repeat=false { spawn-sh "NVIM_PROFILE=choose $TermSpawn nvim"; }
     Mod+Ctrl+N repeat=false { spawn-sh "NVIM_PROFILE=Notes $TermSpawn nvim"; }
+
     Mod+Apostrophe repeat=false hotkey-overlay-title="File browser" { spawn-sh "$TermSpawn yazi"; }
     Mod+Semicolon repeat=false hotkey-overlay-title="Notes viewer" { spawn-sh "mkdir -p ~/Notes;NVIM_PROFILE=Notes $TermSpawn yazi ~/Notes"; }
     Mod+I repeat=false hotkey-overlay-title="Index file" { spawn-sh "cd ~/Notes/; NVIM_PROFILE=Notes $TermSpawn nvim ./+index.md"; }
+    Mod+L repeat=false hotkey-overlay-title="Open link file" { spawn-sh "$TermSpawn linkfile"; }
+    Mod+T repeat=false hotkey-overlay-title="Temp place" { spawn-sh "$TermSpawn bash -ic mktmpplace"; }
+    Mod+P repeat=false hotkey-overlay-title="Python IDLE" { spawn-sh "$TermSpawn bash -ic 'py'"; }
+
     Mod+H repeat=false hotkey-overlay-title="Htop" { spawn-sh "$TermSpawn htop"; }
     Mod+J repeat=false hotkey-overlay-title="Japanese" { spawn-sh "$TermSpawn jap"; }
-    Mod+T repeat=false hotkey-overlay-title="Temp place" { spawn-sh "$TermSpawn bash -ic mktmpplace"; }
-    Mod+P repeat=false hotkey-overlay-title="Temporary python" { spawn-sh "$TermSpawn bash -ic 'py'"; }
-    Mod+L repeat=false hotkey-overlay-title="Open link file" { spawn-sh "$TermSpawn linkfile"; }
     Mod+W repeat=false hotkey-overlay-title="Choose wallpaper" { spawn-sh "$TermSpawn wallppr"; }
+    Mod+S repeat=false hotkey-overlay-title="SSH" { spawn-sh "$TermSpawn ssh tsunami@192.168.1.129"; }
 
     Mod+O { spawn "obs-scene-pick"; }
-    Mod+Shift+O { spawn-sh "cd ~/Notes/; NVIM_PROFILE=Notes $TermSpawn nvim ./streams.md"; }
 
     Mod+B repeat=false hotkey-overlay-title="Web browser" { spawn "zen"; }
     Mod+Shift+B repeat=false hotkey-overlay-title="Private web browser" { spawn-sh "zen --private-window"; }
 
     Mod+V repeat=false hotkey-overlay-title="Clipboard history" { spawn "cliphist-fuzzel-img"; }
     Mod+Shift+P repeat=false hotkey-overlay-title="Colour picker" { spawn "wl-color-picker"; }
-
-    Mod+S repeat=false hotkey-overlay-title="SSH" { spawn-sh "$TermSpawn ssh tsunami@192.168.1.129"; }
-    Mod+Shift+S repeat=false hotkey-overlay-title="Sapla" { spawn "~/Documents/Sapla/out/Sapla-x86_64.AppImage"; }
-
-    Mod+Alt+B repeat=false hotkey-overlay-title="Change background" { spawn-sh "wallppr rand"; }
 
 
     // Misc stuff
@@ -81,7 +79,7 @@ binds {
     Mod+Equal { set-column-width "+10%"; }
     Mod+Shift+Minus { set-window-height "-10%"; }
     Mod+Shift+Equal { set-window-height "+10%"; }
-    Mod+Backspace { set-window-height "+0%"; }
+    Mod+Backspace { set-window-height "+0%"; } // This can sometimes fix a quirk
 
     Mod+X { switch-focus-between-floating-and-tiling; }
     Mod+Shift+X { toggle-window-floating; }
@@ -113,20 +111,12 @@ binds {
     Mod+Down  { focus-window-or-workspace-down; }
     Mod+Up    { focus-window-or-workspace-up; }
     Mod+Right { focus-column-or-monitor-right; }
-    Mod+Ctrl+H { focus-column-or-monitor-left; }
-    Mod+Ctrl+J { focus-window-or-workspace-down; }
-    Mod+Ctrl+K { focus-window-or-workspace-up; }
-    Mod+Ctrl+L { focus-column-or-monitor-right; }
 
     // Window movement (shift)
     Mod+Shift+Left  { move-column-left-or-to-monitor-left; }
     Mod+Shift+Down  { move-window-down-or-to-workspace-down; }
     Mod+Shift+Up    { move-window-up-or-to-workspace-up; }
     Mod+Shift+Right { move-column-right-or-to-monitor-right; }
-    Mod+Ctrl+Shift+H { move-column-left-or-to-monitor-left; }
-    Mod+Ctrl+Shift+J { move-window-down-or-to-workspace-down; }
-    Mod+Ctrl+Shift+K { move-window-up-or-to-workspace-up; }
-    Mod+Ctrl+Shift+L { move-column-right-or-to-monitor-right; }
 
     // New workspace/monitor focus (ctrl)
     Mod+Ctrl+Left  repeat=false { focus-monitor-left; }
@@ -152,7 +142,7 @@ binds {
     Mod+Shift+Page_Up   repeat=false { move-window-to-workspace-up; }
     Mod+Shift+End       repeat=false { move-column-to-last; }
 
-    // Start/end focus (fn/numbers)
+    // Specific workspace focus
     Mod+1 repeat=false { focus-workspace 1; }
     Mod+2 repeat=false { focus-workspace 2; }
     Mod+3 repeat=false { focus-workspace 3; }
@@ -164,7 +154,7 @@ binds {
     Mod+9 repeat=false { spawn-sh "~/.config/niri/lastwsAction.sh focus-workspace 1"; }
     Mod+0 repeat=false { focus-workspace 255; }
 
-    // Move to start/end (fn+shift)
+    // Specific workspace move (fn+shift)
     Mod+Shift+1 repeat=false { move-column-to-workspace 1; }
     Mod+Shift+2 repeat=false { move-column-to-workspace 2; }
     Mod+Shift+3 repeat=false { move-column-to-workspace 3; }
@@ -190,7 +180,6 @@ binds {
     Mod+Shift+TouchpadScrollLeft  cooldown-ms=150 { move-column-left; }
     Mod+Shift+Ctrl+TouchpadScrollDown cooldown-ms=150 { move-column-right; }
     Mod+Shift+Ctrl+TouchpadScrollUp   cooldown-ms=150 { move-column-left; }
-
 
     // Misc workspace stuff
     Mod+Tab { focus-workspace-previous; }

@@ -112,7 +112,7 @@ wlanthy
     })
     # Lazily loaded programs
     (pkgs.writeScriptBin "py" ''
-      ${pkgs.python313.withPackages (ps: with ps; [ pyperclip numpy requests ])}/bin/python3
+      ${pkgs.python313.withPackages (ps: with ps; [ pyperclip numpy requests ])}/bin/python3 "$@"
     '')
     (pkgs.writeScriptBin "zed" ''nix-shell --log-format bar-with-logs -p zed-editor --run "zeditor $@"'')
     (pkgs.writeScriptBin "baobab" ''nix-shell --log-format bar-with-logs -p baobab --run "baobab $@"'')

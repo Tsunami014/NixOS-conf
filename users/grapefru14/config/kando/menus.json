@@ -258,6 +258,25 @@
                 }
               },
               {
+                "type": "button",
+                "name": "Sapla",
+                "icon": "nature",
+                "iconTheme": "material-symbols-rounded",
+                "selectWorkflow": {
+                  "actions": [
+                    {
+                      "type": "execute-command",
+                      "command": "~/Documents/Sapla/out/Sapla-x86_64.AppImage",
+                      "detached": true,
+                      "isolated": false
+                    },
+                    {
+                      "type": "close-menu"
+                    }
+                  ]
+                }
+              },
+              {
                 "name": "Grayjay",
                 "icon": "music_note_2",
                 "iconTheme": "material-symbols-rounded",
