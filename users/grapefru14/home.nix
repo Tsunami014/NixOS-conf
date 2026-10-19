@@ -21,7 +21,7 @@
 
   # Package stuff
   home.packages = with pkgs; [
-    kitty
+    alacritty
     gh
     imagemagick
     exiftool

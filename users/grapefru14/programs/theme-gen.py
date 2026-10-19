@@ -1,11 +1,9 @@
 #!/usr/bin/env python3
 """theme-gen STATE_DIR TEMPLATE_DIR
 
-Derives a colour scheme from a wallpaper and writes, for each variant (1 = normal,
-2 = lighter), v<N>/palette.json, v<N>/kitty.conf and v<N>/niri.kdl into STATE_DIR.
+Derives a colour scheme from a wallpaper and writes, config for each variant into STATE_DIR.
 
-Lightness and chroma of every role are FIXED (measured from Tokyo Night / Catppuccin
-Frappe); the wallpaper only supplies the hue. So colours can't come out pale or murky.
+Lightness and chroma of every role are FIXED, the wallpaper only supplies the hue so colours can't come out pale or murky.
 """
 import json
 import math
@@ -15,7 +13,7 @@ import sys
 from PIL import Image
 
 # ---------------------------------------------------------------- tuning knobs
-FALLBACK_HUE = 275.0      # used for grey wallpapers (Tokyo Night's blue-violet)
+FALLBACK_HUE = 275.0      # used for grey wallpapers
 MAX_NUDGE = 12.0          # max degrees a role hue (red, green...) may rotate toward the wallpaper
 BRIGHT_L = 0.045          # extra lightness for the "bright" ANSI colours
 BRIGHT_C = 1.05           # chroma multiplier for the bright ANSI colours
@@ -40,7 +38,7 @@ NEUTRALS = {
     "muted1": (0.728, 0.040),
     "fg":     (0.846, 0.028),
 }
-# per-variant adjustments (variant 2 is modelled on your Catppuccin Frappe values)
+# per-variant adjustments
 VARIANTS = {
     1: dict(bg=0.0,   fg=0.0,   muted1=0.0,   muted2=0.0,  acc_l=0.0,   acc_c=1.0),
     2: dict(bg=0.110, fg=0.015, muted1=-0.060, muted2=0.040, acc_l=0.025, acc_c=0.82),
@@ -179,7 +177,7 @@ def main():
         os.makedirs(out, exist_ok=True)
         with open(os.path.join(out, "palette.json"), "w") as f:
             json.dump({"variant": n, **{k: pal[k] for k in PALETTE_KEYS}}, f, indent=2)
-        for name in ("kitty.conf", "niri.kdl"):
+        for name in ("alacritty.toml", "niri.kdl"):
             with open(os.path.join(tdir, name)) as f:
                 text = f.read()
             with open(os.path.join(out, name), "w") as f:

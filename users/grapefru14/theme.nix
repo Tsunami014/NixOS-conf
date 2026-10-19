@@ -13,7 +13,6 @@ let
         cat "$f" > "${state}/current/$(basename "$f")"
       done
       echo "$n" > ${state}/variant
-      pkill -USR1 kitty || true
     '';
   };
 

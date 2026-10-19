@@ -101,7 +101,10 @@ nvim "$USER".md -c 'exe "Neotree"|wincmd w'
     })
 
     # Lazily loaded
-    (pkgs.writeScriptBin "neofetch" ''nix-shell --log-format bar-with-logs -p hyfetch -p fastfetch --run "hyfetch $@"'')
+    (pkgs.writeShellApplication {
+      name = "fetch";
+      text = ''nix-shell --log-format bar-with-logs -p hyfetch -p fastfetch --run hyfetch "$@"'';
+    })
   ];
 
   programs.bash = {

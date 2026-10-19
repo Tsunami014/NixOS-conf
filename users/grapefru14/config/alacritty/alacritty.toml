@@ -1,0 +1,10 @@
+[general]
+live_config_reload = true
+import = ["~/.local/state/theme/current/alacritty.toml"]
+
+[font]
+size = 12
+
+[font.normal]
+family = "AdwaitaMono Nerd Font Mono"
+style = "Regular"

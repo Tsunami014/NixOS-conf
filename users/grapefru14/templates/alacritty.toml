@@ -1,0 +1,30 @@
+[colors.primary]
+foreground = "{{fg}}"
+background = "{{bg}}"
+
+[colors.selection]
+text = "{{fg}}"
+background = "{{bg3}}"
+
+[colors.cursor]
+cursor = "{{accent}}"
+
+[colors.normal]
+black = "{{black}}"
+red = "{{red}}"
+green = "{{green}}"
+yellow = "{{yellow}}"
+blue = "{{blue}}"
+magenta = "{{purple}}"
+cyan = "{{cyan}}"
+white = "{{muted1}}"
+
+[colors.bright]
+black = "{{br_black}}"
+red = "{{br_red}}"
+green = "{{br_green}}"
+yellow = "{{br_yellow}}"
+blue = "{{br_blue}}"
+magenta = "{{br_purple}}"
+cyan = "{{br_cyan}}"
+white = "{{br_fg}}"
