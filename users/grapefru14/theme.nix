@@ -3,8 +3,8 @@ let
   state  = "${config.home.homeDirectory}/.local/state/theme";
   python = pkgs.python3.withPackages (ps: [ ps.pillow ]);
 
-  theme-set-variant = pkgs.writeShellApplication {
-    name = "theme-set-variant";
+  upd-theme-variant = pkgs.writeShellApplication {
+    name = "upd-theme-variant";
     runtimeInputs = [ pkgs.coreutils pkgs.procps ];
     text = ''
       n="''${1:?variant 1|2}"
@@ -16,15 +16,15 @@ let
     '';
   };
 
-  theme-apply = pkgs.writeShellApplication {
-    name = "theme-apply";
-    runtimeInputs = [ pkgs.coreutils theme-set-variant ];
+  upd-theme = pkgs.writeShellApplication {
+    name = "upd-theme";
+    runtimeInputs = [ pkgs.coreutils upd-theme-variant ];
     text = ''
       mkdir -p ${state}
       ${python}/bin/python ${./programs/theme-gen.py} ${state} ${./templates}
-      theme-set-variant "$(cat ${state}/variant 2>/dev/null || echo 1)"
+      upd-theme-variant "$(cat ${state}/variant 2>/dev/null || echo 1)"
     '';
   };
 in {
-  home.packages = [ theme-apply theme-set-variant ];
+  home.packages = [ upd-theme upd-theme-variant ];
 }

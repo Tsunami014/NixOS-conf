@@ -72,4 +72,4 @@ swww img "$OUT" \
   --transition-duration 1.5 \
   --transition-fps 60
 
-theme-apply
+upd-theme

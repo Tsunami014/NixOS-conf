@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """theme-gen STATE_DIR TEMPLATE_DIR
 
-Derives a colour scheme from a wallpaper and writes, config for each variant into STATE_DIR.
+Derives a colour scheme from a wallpaper and writes config for each variant into STATE_DIR.
 
 Lightness and chroma of every role are FIXED, the wallpaper only supplies the hue so colours can't come out pale or murky.
 """
@@ -14,34 +14,42 @@ from PIL import Image
 
 # ---------------------------------------------------------------- tuning knobs
 FALLBACK_HUE = 275.0      # used for grey wallpapers
-MAX_NUDGE = 12.0          # max degrees a role hue (red, green...) may rotate toward the wallpaper
-BRIGHT_L = 0.045          # extra lightness for the "bright" ANSI colours
+MAX_NUDGE = 9.0           # max degrees a role hue (red, green...) may rotate toward the wallpaper
+NUDGE_PULL = 0.30         # fraction of the gap to the wallpaper hue a role closes. Keep well under 0.5,
+                          # otherwise neighbouring roles (orange/yellow, cyan/blue) get dragged together
+BG_CHROMA = 1.0          # overall multiplier on how much wallpaper colour the backgrounds get
+                          # (0.7 = quieter, 1.3 = punchier)
+WARM_DAMP = 0.25          # how much neutral tint is removed at the muddiest hue (yellow-green).
+                          # Dark yellow/green tints can read as olive/brown sludge, blue/purple ones don't.
+BRIGHT_L = 0.035          # extra lightness for the "bright" ANSI colours
 BRIGHT_C = 1.05           # chroma multiplier for the bright ANSI colours
 
-# role: (L, C, hue) -- measured from Tokyo Night
+# role: (L, C, hue) -- based on Catppuccin Mocha
+# Lightness of the palest roles is eased down a little so yellow/green/cyan don't wash out.
 HUES = {
-    "red":    (0.723, 0.159, 10),
-    "orange": (0.787, 0.137, 51),
-    "yellow": (0.784, 0.106, 75),
-    "green":  (0.795, 0.139, 130),
-    "cyan":   (0.820, 0.105, 236),
-    "blue":   (0.719, 0.132, 264),
-    "purple": (0.751, 0.134, 299),
+    "red":    (0.745, 0.140, 8),
+    "orange": (0.815, 0.115, 53),
+    "yellow": (0.860, 0.095, 88),
+    "green":  (0.830, 0.120, 143),
+    "cyan":   (0.840, 0.090, 205),
+    "blue":   (0.766, 0.115, 260),
+    "purple": (0.787, 0.122, 305),
 }
-# role: (L, C); hue comes from the wallpaper
+# role: (L, C); hue comes from the wallpaper. These are variant 1; VARIANTS shifts them for the others.
+# Backgrounds carry a clear tint of the wallpaper but stay well short of "neon navy".
 NEUTRALS = {
-    "bg":     (0.226, 0.021),
-    "bg2":    (0.267, 0.034),
-    "bg3":    (0.329, 0.046),
-    "black":  (0.360, 0.045),
-    "muted2": (0.482, 0.050),
-    "muted1": (0.728, 0.040),
-    "fg":     (0.846, 0.028),
+    "bg":     (0.255, 0.019),
+    "bg2":    (0.295, 0.026),
+    "bg3":    (0.355, 0.034),
+    "black":  (0.385, 0.037),
+    "muted2": (0.500, 0.042),
+    "muted1": (0.735, 0.037),
+    "fg":     (0.855, 0.030),
 }
-# per-variant adjustments
+# per-variant lightness offsets for the neutrals, plus accent lightness / chroma scaling
 VARIANTS = {
-    1: dict(bg=0.0,   fg=0.0,   muted1=0.0,   muted2=0.0,  acc_l=0.0,   acc_c=1.0),
-    2: dict(bg=0.110, fg=0.015, muted1=-0.060, muted2=0.040, acc_l=0.025, acc_c=0.82),
+    1: dict(bg=0.0,   black=0.0,   fg=0.0,   muted1=0.0,    muted2=0.0,   acc_l=0.0,   acc_c=1.0),
+    2: dict(bg=0.080, black=0.070, fg=0.015, muted1=-0.060, muted2=0.060, acc_l=0.025, acc_c=0.82),
 }
 # ----------------------------------------------------------------------------
 
@@ -99,6 +107,15 @@ def arc(a, b):
     return (b - a + 180.0) % 360.0 - 180.0
 
 
+def hue_damp(h):
+    """1.0 for blue/purple (hue 280), falling to 1 - WARM_DAMP for yellow-green (hue 100).
+
+    Low-chroma dark tints look rich in blue/purple but turn into olive/brown mud around
+    yellow-green, so neutrals get less of the wallpaper's tint there.
+    """
+    return 1.0 - WARM_DAMP * (1.0 - math.cos(math.radians(h - 280.0))) / 2.0
+
+
 def analyse(pixels):
     """Dominant vivid hue of a wallpaper, plus how vivid it is."""
     bins = [0.0] * 36
@@ -126,25 +143,24 @@ def analyse(pixels):
 def build(variant, hue, vivid):
     v = VARIANTS[variant]
     k = min(1.0, vivid / 0.12)
-    bg_tint = 0.45 + 0.55 * k  # how strongly backgrounds pick up the wallpaper hue
-    fg_tint = 0.50 + 0.50 * k  # text stays much closer to neutral
+    damp = hue_damp(hue)
+    bg_tint = BG_CHROMA * (0.45 + 0.55 * k) * damp  # how strongly backgrounds pick up the wallpaper hue
+    fg_tint = (0.50 + 0.50 * k) * damp  # text stays much closer to neutral
     p = {}
     for name, (L, C) in NEUTRALS.items():
-        if name in ("bg", "bg2", "bg3", "black"):
-            L += v["bg"]
-        elif name in v:
-            L += v[name]
-        tint = bg_tint if name in ("bg", "bg2", "bg3", "black") else fg_tint
+        key = "bg" if name.startswith("bg") else name
+        L += v[key]
+        tint = bg_tint if key in ("bg", "black") else fg_tint
         p[name] = lch_to_hex(L, C * tint, hue)
     for name, (L, C, h) in HUES.items():
-        h2 = h + max(-MAX_NUDGE, min(MAX_NUDGE, 0.5 * arc(h, hue)))
+        h2 = h + max(-MAX_NUDGE, min(MAX_NUDGE, NUDGE_PULL * arc(h, hue)))
         L, C = L + v["acc_l"], C * v["acc_c"]
         p[name] = lch_to_hex(L, C, h2)
         p["br_" + name] = lch_to_hex(min(L + BRIGHT_L, 0.95), C * BRIGHT_C, h2)
     # Material-style roles: primary = the wallpaper's own colour, secondary = a calmer
     # version of it, tertiary = a contrasting accent 60 degrees round the hue wheel.
     lp = 0.76 + v["acc_l"]
-    cp = min(max(vivid * 1.1, 0.08), 0.15) * v["acc_c"]
+    cp = min(max(vivid, 0.07), 0.13) * v["acc_c"]
     p["primary"] = lch_to_hex(lp, cp, hue)
     p["secondary"] = lch_to_hex(lp - 0.05, max(cp * 0.5, 0.04), hue)
     p["tertiary"] = lch_to_hex(lp, cp * 0.9, (hue + 60.0) % 360.0)
