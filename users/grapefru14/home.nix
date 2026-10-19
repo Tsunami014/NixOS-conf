@@ -36,7 +36,6 @@
 
     inputs.hexecute.packages.${system}.default
     # Various apps
-    chromium # Some things need chrome to work, this is the backup browser for that
     obs-cmd # Actual OBS can be lazily loaded
     gnome-calculator
     krita
@@ -51,6 +50,9 @@
     (pkgs.callPackage ./pkgs/roland.nix {})
     (pkgs.callPackage ./pkgs/wvkbd.nix {})
     (pkgs.callPackage ./pkgs/grayjay.nix {})
+    (pkgs.callPackage ./pkgs/slick.nix {
+      slick = inputs.slick.packages.${pkgs.stdenv.hostPlatform.system}.slick;
+    })
     # Apps I'm version-conscious for
     ldtk
     master-pkgs.aseprite

@@ -28,7 +28,8 @@ binds {
 
     Mod+H repeat=false hotkey-overlay-title="Htop" { spawn-sh "$TermSpawn htop"; }
     Mod+J repeat=false hotkey-overlay-title="Japanese" { spawn-sh "$TermSpawn jap"; }
-    Mod+S repeat=false hotkey-overlay-title="SSH" { spawn-sh "$TermSpawn ssh tsunami@192.168.1.129"; }
+    Mod+S repeat=false hotkey-overlay-title="Slick" { spawn "slick"; }
+    Mod+Shift+S repeat=false hotkey-overlay-title="SSH" { spawn-sh "$TermSpawn ssh tsunami@192.168.1.129"; }
 
     Mod+W repeat=false hotkey-overlay-title="Choose wallpaper" { spawn-sh "$TermSpawn wallppr"; }
     Mod+A repeat=false hotkey-overlay-title="Choose animations" { spawn-sh "$TermSpawn anims"; }

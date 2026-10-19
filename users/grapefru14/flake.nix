@@ -35,6 +35,8 @@
       url = "github:Tsunami014/hyprlock";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    slick.url = "github:3kh0/slick";
   };
 
   outputs = { nixpkgs, nixpkgs-master, nixpkgs-unstable, home-manager, ... } @ inputs:
