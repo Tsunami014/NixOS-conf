@@ -74,6 +74,10 @@
       #!${pkgs.python313.withPackages (ps: with ps; [ tkinter ])}/bin/python3
       ${builtins.readFile ./programs/navihex.py}
     '')
+    (pkgs.writeScriptBin "weather-daemon" ''
+      #!${pkgs.python313}/bin/python3
+      ${builtins.readFile ./programs/weather.py}
+    '')
     (pkgs.writeShellApplication {
       name = "printer-settings";
       text = "zen --private-window http://localhost:631";

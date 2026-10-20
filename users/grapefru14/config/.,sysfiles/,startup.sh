@@ -12,6 +12,8 @@ swww-daemon &
 ~/.,sysfiles/gestures.sh &
 
 wl-paste --watch cliphist store &
+
+weather-daemon &
 ollama serve &
 
 kando >/tmp/kando.log 2>&1 &
