@@ -1,4 +1,4 @@
-{ config, pkgs, unstable-pkgs, ... }:
+{ config, pkgs, master-pkgs, unstable-pkgs, ... }:
 
 let
   mkuser = usrname: {
@@ -24,7 +24,6 @@ in {
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix # Generate this with 'nixos-generate-config'
       ./packages.nix
-      ./userConfig.nix
     ];
 
   # Ensure /tmp works normally
@@ -41,6 +40,16 @@ in {
   environment.sessionVariables = {
     PATH = [ "/bin" ];
   };
+
+  services.pcscd.enable = true; # Enable passkey daemon
+
+  services.udev.packages = [
+    # For physical passkeys
+    pkgs.yubikey-personalization
+    pkgs.libu2f-host
+    # Because necessary
+    master-pkgs.saleae-logic-2
+  ];
 
   # Enable upower
   services.upower.enable = true;
@@ -114,7 +123,7 @@ in {
   };
   services.printing.drivers = [ pkgs.canon-cups-ufr2 ];
 
-  # Bootloader.
+  # Bootloader
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.systemd-boot.extraEntries = {
