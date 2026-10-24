@@ -2,3 +2,5 @@
 .*/*
 !.*/*list.txt
 *.tmp_rename
+
+backgrounds/*
