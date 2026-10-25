@@ -1,6 +1,2 @@
-# Hide all folders starting with . except for their list.txt files
-.*/*
-!.*/*list.txt
 *.tmp_rename
-
 backgrounds/*

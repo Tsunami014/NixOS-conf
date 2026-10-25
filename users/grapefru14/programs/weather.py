@@ -101,7 +101,10 @@ def main():
             write(fetch(*loc))
         except Exception as e:
             print("Weather update failed:", e, flush=True)
-            write({"error": str(e)})
+            write({
+                "error": str(e),
+                "updated": time.strftime("%H:%M"),
+            })
             time.sleep(FAIL_INTERVAL)
             continue
         time.sleep(INTERVAL)

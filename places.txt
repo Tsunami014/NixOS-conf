@@ -1,0 +1,25 @@
+# Everything required to rebuild the whole computer from scratch
+# Includes anything in /etc/nixos (assume that is being git cloned from scratch too)
+
+
+# grapefru14
+/home/grapefru14/Downloads/
+/home/grapefru14/Documents/
+/home/grapefru14/Pictures/
+/home/grapefru14/Videos/
+/home/grapefru14/Notes/
+
+/home/grapefru14/Study
+
+## Config I don't want backed up with git
+/home/grapefru14/.zen/
+/home/grapefru14/.ssh/
+
+/home/grapefru14/.local/share/Steam/steamapps/common/
+/home/grapefru14/.local/share/grayjay/
+/home/grapefru14/.local/share/GodSVG/
+/home/grapefru14/.config/aseprite/
+/home/grapefru14/.config/obs-studio/
+/home/grapefru14/.local/share/PrismLauncher/
+
+/etc/nixos/users/grapefru14/backgrounds/

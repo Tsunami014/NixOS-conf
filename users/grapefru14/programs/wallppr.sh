@@ -19,22 +19,37 @@ SW=$((W / 8)); SH=$((H / 8)) # blur at 1/8 scale (sigma 40 -> 5)
 TRANSITIONS=(fade wipe wave grow center outer left right top bottom)
 
 pick_random() {
-  find "$WPDIR" -type f -printf "%f\n" | shuf -n 1
+  find "$WPDIR" -mindepth 2 -maxdepth 2 -type f | shuf -n 1
 }
 
 # ---- choose wallpaper ----------------------------------------------------
 if [[ $# -eq 0 ]]; then
-  CHOICE="$({ echo "$RANDOM_LABEL"; find "$WPDIR" -type f -printf "%f\n" | sort; } \
-            | fzf --no-sort)" || exit 0
+  CHOICE="$({
+    printf '%s\t%s\n' "$RANDOM_LABEL" "$RANDOM_LABEL"
+    find "$WPDIR" -mindepth 2 -maxdepth 2 -type f -printf '%f\t%P\n' | sort
+  } | fzf --no-sort --delimiter=$'\t' --with-nth=1 | cut -f2)" || exit 0
+
   [[ -z $CHOICE ]] && exit 0
-  if [[ $CHOICE == "$RANDOM_LABEL" ]]; then NAME="$(pick_random)"; else NAME="$CHOICE"; fi
+
+  if [[ $CHOICE == "$RANDOM_LABEL" ]]; then
+    NEW="$(pick_random)"
+  else
+    NEW="$WPDIR/$CHOICE"
+  fi
 elif [[ $1 == "rand" ]]; then
-  NAME="$(pick_random)"
+  NEW="$(pick_random)"
 else
-  NAME="$1"
+  # Allow a relative path, bare filename or absolute path
+  if [[ $1 == /* ]]; then
+    NEW="$1"
+  elif [[ -f $WPDIR/$1 ]]; then
+    NEW="$WPDIR/$1"
+  else
+    # Bare filename: look for it one level down
+    NEW="$(find "$WPDIR" -mindepth 2 -maxdepth 2 -type f -name "$(basename "$1")" | head -n 1)"
+  fi
 fi
 
-NEW="$WPDIR/$NAME"
 [[ -f $NEW ]] || { echo "No such wallpaper: $NEW" >&2; exit 1; }
 
 # ---- alternate between two slots ----------------------------------------
