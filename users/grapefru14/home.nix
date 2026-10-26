@@ -26,6 +26,7 @@
     imagemagick
     exiftool
     sqlite
+    chafa
 
     # Background apps
     wakatime-cli

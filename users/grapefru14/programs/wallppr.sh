@@ -3,15 +3,12 @@ set -euo pipefail
 
 WPDIR="/etc/nixos/users/grapefru14/backgrounds"
 SIZE="1920x1200"
-RANDOM_LABEL="[ random ]"
 
 CACHE="${XDG_CACHE_HOME:-$HOME/.cache}/wallpaper"
 CUR_LINK="$HOME/Pictures/currentBg.jpg" # stable path for other tools
 mkdir -p "$CACHE" "$(dirname "$CUR_LINK")"
 
-# Don't let two invocations overlap (timer + manual change, etc.)
-exec 9>"$CACHE/.lock"
-flock -n 9 || exit 0
+exec 9>"$CACHE/.lock" # Lock here
 
 W=${SIZE%x*}; H=${SIZE#*x}
 SW=$((W / 8)); SH=$((H / 8)) # blur at 1/8 scale (sigma 40 -> 5)
@@ -24,18 +21,24 @@ pick_random() {
 
 # ---- choose wallpaper ----------------------------------------------------
 if [[ $# -eq 0 ]]; then
-  CHOICE="$({
-    printf '%s\t%s\n' "$RANDOM_LABEL" "$RANDOM_LABEL"
-    find "$WPDIR" -mindepth 2 -maxdepth 2 -type f -printf '%f\t%P\n' | sort
-  } | fzf --no-sort --delimiter=$'\t' --with-nth=1 | cut -f2)" || exit 0
-
+  export WPDIR
+  # shellcheck disable=SC2016  # preview is intentionally expanded by fzf's shell
+  CHOICE="$(
+    find "$WPDIR" -mindepth 2 -maxdepth 2 -type f -printf '%f\t%P\n' | sort |
+      fzf --no-sort --delimiter=$'\t' --with-nth=1 \
+        --multi \
+        --prompt='wallpaper> ' \
+        --header=$'Tab: random from multiple options\nCtrl-R: random from all results' \
+        --bind 'ctrl-r:select-all+accept' \
+        --preview='chafa -f symbols --colors full --animate off \
+          -s "${FZF_PREVIEW_COLUMNS}x${FZF_PREVIEW_LINES}" "$WPDIR/"{2}' \
+        --preview-window=right:60% |
+      cut -f2
+  )" || exit 0
   [[ -z $CHOICE ]] && exit 0
 
-  if [[ $CHOICE == "$RANDOM_LABEL" ]]; then
-    NEW="$(pick_random)"
-  else
-    NEW="$WPDIR/$CHOICE"
-  fi
+  # One line = that file; several lines = random among them
+  NEW="$WPDIR/$(shuf -n 1 <<<"$CHOICE")"
 elif [[ $1 == "rand" ]]; then
   NEW="$(pick_random)"
 else
@@ -51,6 +54,8 @@ else
 fi
 
 [[ -f $NEW ]] || { echo "No such wallpaper: $NEW" >&2; exit 1; }
+
+flock -w 10 9 || { echo "Another wallpaper change is in progress" >&2; exit 1; }
 
 # ---- alternate between two slots ----------------------------------------
 # The new image always gets a different path than the one currently shown,
@@ -74,7 +79,7 @@ echo "$slot" > "$STATE"
 ln -sfn "$OUT" "$CUR_LINK"
 
 # ---- apply with a random transition --------------------------------------
-swww query >/dev/null 2>&1 || { swww-daemon >/dev/null 2>&1 & sleep 0.5; }
+swww query >/dev/null 2>&1 || { swww-daemon 9>&- >/dev/null 2>&1 & sleep 0.5; }
 
 T="${TRANSITIONS[RANDOM % ${#TRANSITIONS[@]}]}"
 ANGLE=$(( RANDOM % 360 ))
