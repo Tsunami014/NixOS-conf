@@ -1,5 +1,6 @@
 #!/bin/sh
-cat <<'EOF'
+if [ "$1" = show ]; then
+  cat <<'EOF'
 imv keys
 ========
 
@@ -34,5 +35,10 @@ Animation / slideshow
   q          Quit
 
 EOF
-printf 'Press Enter to close.'
-read -r _ </dev/tty
+  printf 'Press Enter to close.'
+  read -r _ </dev/tty
+  exit
+fi
+
+sleep 0.1 # Required, otherwise it will spawn the process a million times
+exec $TermSpawn "$0" show

@@ -191,7 +191,7 @@ anims rand
       };
       binds = {
         a = "zoom actual; rotate to 0";
-        "<F1>" = "exec $TermSpawn ${./extra/imv_help.sh}";
+        "<F1>" = "exec ${./extra/imv_help.sh} &";
       };
     };
   };
