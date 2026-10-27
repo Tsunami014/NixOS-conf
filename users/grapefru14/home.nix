@@ -105,6 +105,13 @@ disown
     })
     swww
     (pkgs.writeShellApplication {
+      name = "namefiles";
+      text = ''# shellcheck disable=SC2016
+echo \
+'i=0; for f in *.png; do [ -f "$f" ] || continue; printf -v n "file%02d.%s" "$i" "''${f##*.}"; mv -- "$f" "$n"; ((i++)); done'
+'';
+    })
+    (pkgs.writeShellApplication {
       name = "wallppr";
       text = builtins.readFile ./programs/wallppr.sh;
     })
