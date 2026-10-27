@@ -153,13 +153,13 @@ anims rand
     enable = true;
     defaultApplications = {
       "application/pdf" = "sioyek.desktop";
-      "image/png"  = "swayimg.desktop";
-      "image/jpeg" = "swayimg.desktop";
-      "image/jpg"  = "swayimg.desktop";
-      "image/gif"  = "swayimg.desktop";
-      "image/webp" = "swayimg.desktop";
-      "image/bmp"  = "swayimg.desktop";
-      "image/tiff" = "swayimg.desktop";
+      "image/png"  = "imv.desktop";
+      "image/jpeg" = "imv.desktop";
+      "image/jpg"  = "imv.desktop";
+      "image/gif"  = "imv.desktop";
+      "image/webp" = "imv.desktop";
+      "image/bmp"  = "imv.desktop";
+      "image/tiff" = "imv.desktop";
     };
   };
 
@@ -180,8 +180,24 @@ anims rand
     systemdTargets = [ "config.wayland.systemd.target" ];
   };
 
+  programs.imv = {
+    enable = true;
+    settings = {
+      options = {
+        overlay = true;
+        overlay_font = "Monospace:8";
+        overlay_position_bottom = true;
+        overlay_text = "[$imv_current_index/$imv_file_count]  \${imv_width}x\${imv_height}  $imv_current_file";
+      };
+      binds = {
+        a = "zoom actual; rotate to 0";
+        "<F1>" = "exec $TermSpawn ${./extra/imv_help.sh}";
+      };
+    };
+  };
+
   programs.bash.initExtra = ''
-export PS1='\[\033[32m\]\[\033[30;42m\] \u \[\033[32;43m\]\[\033[30;43m\]$(git branch --show-current 2>/dev/null | sed "s/^/ /;s/$/ /")\[\033[33;100m\]\[\033[35m\] \w \$\[\033[0;90m\]\[\033[0m\] '
+export PS1='\[\033[32m\]\[\033[30;42m\] \h@\u \[\033[32;43m\]\[\033[30;43m\]$(git branch --show-current 2>/dev/null | sed "s/^/ /;s/$/ /")\[\033[33;100m\]\[\033[35m\] \w \$\[\033[0;90m\]\[\033[0m\] '
 '';
 
   programs.bash.profileExtra = ''

@@ -9,6 +9,11 @@ run = "shell --block -- lazygit"
 desc = "Launch lazygit"
 
 [[mgr.prepend_keymap]]
+on  = [ "!", "s" ]
+run = 'shell -- imvd "$1"'
+desc = "Slideshow this folder"
+
+[[mgr.prepend_keymap]]
 on = [ "`" ]
 run = "shell --block -- nvim ."
 desc = "Launch neovim here"
@@ -19,24 +24,9 @@ run  = "plugin toggle-pane max-preview"
 desc = "Maximize or restore the preview pane"
 
 [[mgr.prepend_keymap]]
-on  = [ "g", "s", "s" ]
-run = "cd /etc/nixos"
-desc = "Go /etc/nixos"
-
-[[mgr.prepend_keymap]]
-on  = [ "g", "s", "u" ]
-run = "cd /etc/nixos/users/$USER"
-desc = "Go /etc/nixos/users/$USER"
-
-[[mgr.prepend_keymap]]
 on  = [ "g", "d" ]
 run = 'cd /tmp/"Download-$USER"'
 desc = 'Go Temporary Downloads'
-
-[[mgr.prepend_keymap]]
-on  = [ "g", "D" ]
-run = "cd $HOME/Documents"
-desc = "Go ~/Documents"
 
 [[mgr.prepend_keymap]]
 on  = [ "g", "t" ]
@@ -49,9 +39,14 @@ run = 'shell -- ya emit cd "$(git rev-parse --show-toplevel)"'
 desc = "Go to git toplevel"
 
 [[mgr.prepend_keymap]]
-on = "Y"
-run = "plugin copy-quote"
-desc = "Copy hovered path with quotes"
+on = [ "c", "y" ]
+run = 'shell -- bash -i -c "echo \"${1@Q}\" | copy"'
+desc = "Copy the file path with quotes"
+
+[[mgr.prepend_keymap]]
+on = [ "c", "C" ]
+run = 'shell -- bash -i -c "cat \"$1\" | copy"'
+desc = "Copy the file contents"
 
 [[mgr.prepend_keymap]]
 on = [ '"' ]
@@ -64,11 +59,6 @@ run = "plugin bookmarks jump"
 desc = "Jump to a bookmark"
 
 [[mgr.prepend_keymap]]
-on = [ "b", "d" ]
+on = [ '"', "`" ]
 run = "plugin bookmarks delete"
 desc = "Delete a bookmark"
-
-[[mgr.prepend_keymap]]
-on = [ "b", "D" ]
-run = "plugin bookmarks delete_all"
-desc = "Delete all bookmarks"

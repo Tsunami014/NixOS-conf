@@ -5,9 +5,10 @@ import urllib.parse
 import urllib.request
 
 OUT = os.path.expanduser("~/.cache/weather.json")
-INTERVAL = 600
+INTERVAL = 300
 FAIL_INTERVAL = 60
 
+FAIL_ICON = "󰼯"
 SUNNY, NIGHT = "󰖙", "󰖔"
 PARTLY, PARTLY_NIGHT = "󰖕", "󰼱"
 CLOUDY, FOG = "󰖐", "󰖑"
@@ -103,6 +104,7 @@ def main():
             print("Weather update failed:", e, flush=True)
             write({
                 "error": str(e),
+                "icon": FAIL_ICON,
                 "updated": time.strftime("%H:%M"),
             })
             time.sleep(FAIL_INTERVAL)

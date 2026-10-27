@@ -1,9 +1,8 @@
 Header:children_add(function()
-	if ya.target_family() ~= "unix" then
-		return ""
-	end
+	if ya.target_family() ~= "unix" then return "" end
 	return ui.Span(ya.user_name() .. "@" .. ya.host_name() .. ":"):fg("blue")
 end, 500, Header.LEFT)
+
 require("bookmarks"):setup({
 	last_directory = { enable = true, persist = true, mode="dir" },
 	persist = "all",

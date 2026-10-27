@@ -28,7 +28,7 @@
     wl-clipboard
     jq
     htop
-    swayimg
+    imv
     amberol # Music
     sioyek
 
@@ -50,9 +50,31 @@ sudo systemctl restart cups
 '';
     })
 
+    # Wrappers with slightly more complex functionality
     (pkgs.writeShellApplication {
       name = "suyazi";
       text = ''sudo yazi "$@"'';
+    })
+    (pkgs.writeShellApplication {
+      name = "imvd"; # imvd a directory but sorted properly
+      text = ''
+target=$(realpath -- "''${1:-.}") || exit
+if [[ -d $target ]]; then
+  dir=$target
+else
+  dir=$(dirname -- "$target")
+fi
+
+mapfile -d "" files < <(
+  find "$dir" -maxdepth 1 -type f ! -name '.*' -print0 | LC_ALL=C sort -z -f
+)
+
+if [[ -d $target ]]; then
+  exec imv "''${files[@]}"
+else
+  exec imv -n "$target" "''${files[@]}"
+fi
+'';
     })
 
     (pkgs.writeShellApplication {

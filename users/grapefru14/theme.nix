@@ -21,7 +21,7 @@ let
     runtimeInputs = [ pkgs.coreutils upd-theme-variant ];
     text = ''
       mkdir -p ${state}
-      ${python}/bin/python ${./programs/theme-gen.py} ${state} ${./templates}
+      ${python}/bin/python ${./programs/theme-gen.py} ${state} ${./extra}
       upd-theme-variant "$(cat ${state}/variant 2>/dev/null || echo 1)"
     '';
   };
