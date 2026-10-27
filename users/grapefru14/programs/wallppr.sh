@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+SELF="$(readlink -f "$0")"
+
 WPDIR="/etc/nixos/users/grapefru14/backgrounds"
 SIZE="1920x1200"
 
@@ -11,25 +13,65 @@ mkdir -p "$CACHE" "$(dirname "$CUR_LINK")"
 exec 9>"$CACHE/.lock" # Lock here
 
 W=${SIZE%x*}; H=${SIZE#*x}
-SW=$((W / 8)); SH=$((H / 8)) # blur at 1/8 scale (sigma 40 -> 5)
+SW=$((W / 8)); SH=$((H / 8)) # blur at 1/8 scale
 
 TRANSITIONS=(fade wipe wave grow center outer left right top bottom)
 
-pick_random() {
-  find "$WPDIR" -mindepth 2 -maxdepth 2 -type f | shuf -n 1
+HEADER=$(cat <<EOF
+Tab: random from multiple options
+Ctrl-R: random from all results
+Alt-H: toggle hidden
+EOF
+)
+
+list_wallpapers() { # Excluding hidden
+  find "$WPDIR" -mindepth 2 -maxdepth 2 -type f ! -path "$WPDIR/.*" "$@"
+}
+list_all_wallpapers() { # Including hidden
+  find "$WPDIR" -mindepth 2 -maxdepth 2 -type f "$@"
 }
 
-# ---- choose wallpaper ----------------------------------------------------
+pick_random() {
+  list_wallpapers | shuf -n 1
+}
+
+
+# Fzf internal commands
+if [[ ${1:-} == __list ]]; then
+  if [[ ${2:-} == all ]]; then
+    list_all_wallpapers -printf '%f\t%P\n'
+  else
+    list_wallpapers -printf '%f\t%P\n'
+  fi | sort
+  exit 0
+fi
+
+if [[ ${1:-} == __toggle ]]; then
+  if [[ "$(cat "$2" 2>/dev/null)" == all ]]; then
+    echo vis >"$2"
+    echo "reload('$SELF' __list vis)+change-prompt(wallpaper> )"
+  else
+    echo all >"$2"
+    echo "reload('$SELF' __list all)+change-prompt(wallpaper [hidden]> )"
+  fi
+  exit 0
+fi
+
+# Choose wallpaper
 if [[ $# -eq 0 ]]; then
   export WPDIR
-  # shellcheck disable=SC2016  # preview is intentionally expanded by fzf's shell
+  MODE="$CACHE/fzf-mode"
+  echo vis >"$MODE"
+
+  # shellcheck disable=SC2016
   CHOICE="$(
-    find "$WPDIR" -mindepth 2 -maxdepth 2 -type f -printf '%f\t%P\n' | sort |
+    "$SELF" __list vis |
       fzf --no-sort --delimiter=$'\t' --with-nth=1 \
         --multi \
         --prompt='wallpaper> ' \
-        --header=$'Tab: random from multiple options\nCtrl-R: random from all results' \
+        --header="$HEADER" \
         --bind 'ctrl-r:select-all+accept' \
+        --bind "alt-h:transform:'$SELF' __toggle '$MODE'" \
         --preview='chafa -f symbols --colors full --animate off \
           -s "${FZF_PREVIEW_COLUMNS}x${FZF_PREVIEW_LINES}" "$WPDIR/"{2}' \
         --preview-window=right:60% |
@@ -37,7 +79,6 @@ if [[ $# -eq 0 ]]; then
   )" || exit 0
   [[ -z $CHOICE ]] && exit 0
 
-  # One line = that file; several lines = random among them
   NEW="$WPDIR/$(shuf -n 1 <<<"$CHOICE")"
 elif [[ $1 == "rand" ]]; then
   NEW="$(pick_random)"
@@ -49,7 +90,7 @@ else
     NEW="$WPDIR/$1"
   else
     # Bare filename: look for it one level down
-    NEW="$(find "$WPDIR" -mindepth 2 -maxdepth 2 -type f -name "$(basename "$1")" | head -n 1)"
+    NEW="$(list_all_wallpapers -name "$(basename "$1")" | head -n 1)"
   fi
 fi
 
@@ -57,7 +98,7 @@ fi
 
 flock -w 10 9 || { echo "Another wallpaper change is in progress" >&2; exit 1; }
 
-# ---- alternate between two slots ----------------------------------------
+# Alternate between two slots
 # The new image always gets a different path than the one currently shown,
 # so swww never sees "the same file changed" (the cause of the ghosting).
 STATE="$CACHE/slot"
@@ -65,8 +106,8 @@ last=$(cat "$STATE" 2>/dev/null || echo 1)
 slot=$(( 1 - last ))
 OUT="$CACHE/bg-$slot.jpg"
 
-# ---- render --------------------------------------------------------------
-magick -define jpeg:size="${W}x${H}" "${NEW[0]}" \
+# Render
+magick -define jpeg:size="${W}x${H}" "$NEW" \
   -background grey -alpha remove -alpha off \
   -write mpr:src +delete \
   \( mpr:src -resize "${SW}x${SH}^" -gravity center -extent "${SW}x${SH}" \
@@ -78,7 +119,7 @@ magick -define jpeg:size="${W}x${H}" "${NEW[0]}" \
 echo "$slot" > "$STATE"
 ln -sfn "$OUT" "$CUR_LINK"
 
-# ---- apply with a random transition --------------------------------------
+# Apply with a random transition
 swww query >/dev/null 2>&1 || { swww-daemon 9>&- >/dev/null 2>&1 & sleep 0.5; }
 
 T="${TRANSITIONS[RANDOM % ${#TRANSITIONS[@]}]}"
