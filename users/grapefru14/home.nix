@@ -27,6 +27,7 @@
     exiftool
     sqlite
     chafa
+    ripdrag
 
     # Background apps
     wakatime-cli

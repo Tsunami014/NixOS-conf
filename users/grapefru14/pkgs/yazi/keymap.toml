@@ -14,6 +14,11 @@ run = 'shell -- imvd "$1"'
 desc = "Slideshow this folder"
 
 [[mgr.prepend_keymap]]
+on = [ "!", "d" ]
+run = "shell -- ripdrag"
+desc = "Open file dragging window"
+
+[[mgr.prepend_keymap]]
 on = [ "`" ]
 run = "shell --block -- nvim ."
 desc = "Launch neovim here"
@@ -47,6 +52,11 @@ desc = "Copy the file path with quotes"
 on = [ "c", "C" ]
 run = 'shell -- bash -i -c "cat \"$1\" | copy"'
 desc = "Copy the file contents"
+
+[[mgr.prepend_keymap]]
+on = [ "c", "D" ]
+run = 'shell -- ripdrag "$@"'
+desc = "Open a window to drag the file"
 
 [[mgr.prepend_keymap]]
 on = [ '"' ]
