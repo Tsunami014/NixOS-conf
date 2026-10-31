@@ -8,11 +8,11 @@
       },
       "locked": {
         "dir": "pkgs/firefox-addons",
-        "lastModified": 1792468971,
-        "narHash": "sha256-jGMXYZz5D8ihBGTbHOvCF2zsQViDpY3+dy2u/BwQCE8=",
+        "lastModified": 1793073767,
+        "narHash": "sha256-zL/9I57Uk9YZ3cRK7wqesMQ5DqzGAg+Flqc32XrSh4A=",
         "owner": "rycee",
         "repo": "nur-expressions",
-        "rev": "abb43a6f155c24abd663c2cc86e5ca43e070080c",
+        "rev": "4e23b00003acb1e90bec84998185cd73e4d7487b",
         "type": "gitlab"
       },
       "original": {
@@ -268,11 +268,11 @@
     },
     "nixpkgs-master": {
       "locked": {
-        "lastModified": 1792475847,
-        "narHash": "sha256-OGGTAphrGAR8vFiGqA4MjSkl/WaWYY/ab6ERcVPSkSk=",
+        "lastModified": 1793094685,
+        "narHash": "sha256-eCguSTcoBDD6L0djjq4/QfmhDhSuKP5yen+07Fm6+9I=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "70379be42e654d18c2ab29a70af66fd3f2496716",
+        "rev": "96c7c82ade771bd1efc43a84c18c0747755140a7",
         "type": "github"
       },
       "original": {
@@ -284,11 +284,11 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1792210252,
-        "narHash": "sha256-Mh0PUaIv4nFY+8wAGonaEh8iBzwsmdNlwjVHmFg1Biw=",
+        "lastModified": 1792773339,
+        "narHash": "sha256-rZLrzrC6i+jnTAlvPZHogKDulY7WWDEv9hJeHieO7Zw=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "09063bd1f2b36fd9fd793c36dfade7bd40a93dfc",
+        "rev": "3ec636362e1816bc2f0888fa0fa2c69f1bc9e504",
         "type": "github"
       },
       "original": {
@@ -363,11 +363,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1792214446,
-        "narHash": "sha256-tq6x6CRG8Qikrjri59tzu9+b2gri8TjnShkGeh8kUgQ=",
+        "lastModified": 1792651682,
+        "narHash": "sha256-TiCGqLMpNIy7FERewgfKVluPsLVF96uc6x6xwZnMjdQ=",
         "ref": "refs/heads/master",
-        "rev": "2b4501a282689792b62e94f3fb30d8f512324fe6",
-        "revCount": 875,
+        "rev": "9b0f339b19057f4731bf3b48293307d7ef241671",
+        "revCount": 879,
         "type": "git",
         "url": "https://git.outfoxxed.me/outfoxxed/quickshell"
       },
@@ -396,11 +396,11 @@
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1792461955,
-        "narHash": "sha256-HAoUp5VgqLJppfqHMsSdmKi4m1Q1q+hKky83Dw9aIKU=",
+        "lastModified": 1792994346,
+        "narHash": "sha256-pFk6qTwAViuz1tzqtbfNDwO6ycVCKQZEWlk5HiDfsds=",
         "owner": "3kh0",
         "repo": "slick",
-        "rev": "40de4cfa34d9cc722940b4ea6b1a4ebe0e06961b",
+        "rev": "22f132927ae5dcde4a52164234aa50210780ed26",
         "type": "github"
       },
       "original": {
