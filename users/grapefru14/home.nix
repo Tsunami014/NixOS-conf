@@ -204,8 +204,22 @@ anims rand
     };
   };
 
-  programs.bash.initExtra = ''
-export PS1='\[\033[32m\]\[\033[30;42m\] \h@\u \[\033[32;43m\]\[\033[30;43m\]$(git branch --show-current 2>/dev/null | sed "s/^/ /;s/$/ /")\[\033[33;100m\]\[\033[35m\] \w \$\[\033[0;90m\]\[\033[0m\] '
+  programs.bash.initExtra  = ''
+__c() { printf '\001\e[%sm\002' "$1"; } # Colour
+__g() { printf ' \001\e[1D%s\002' "$1"; } # Glyph
+
+PS1="\
+$(__c '32')$(__g '')\
+$(__c '30;42') \h@\u \
+$(__c '32;43')$(__g '')\
+$(__c '30;43')\$(git branch --show-current 2>/dev/null | sed 's/^/ $(__g '')/;s/$/ /')\
+$(__c '33;100')$(__g '')\
+$(__c '35') \w \$\
+$(__c '0;90')$(__g '')\
+$(__c '0') "
+
+unset -f __c __g
+export NIX_SHELL_PRESERVE_PROMPT=1
 '';
 
   programs.bash.profileExtra = ''
