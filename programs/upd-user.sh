@@ -93,5 +93,5 @@ if ! $fromAll; then
 fi
 
 if ! $fromAll; then
-   printf "\e[1;92mUpdated user!\e[0m"
+   printf "\e[1;92mUpdated user!\e[0m\n"
 fi

@@ -62,7 +62,7 @@ fprint() {
 }
 
 if ! $usersOnly; then
-    sudo upd-system "${updargs[@]}" 
+    sudo upd-system "${updargs[@]}"
 fi
 
 echo

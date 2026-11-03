@@ -61,4 +61,4 @@ if $offline; then
 fi
 sudo nixos-rebuild switch "${args[@]}"
 
-printf "\e[1;92mUpdated system!\e[0m"
+printf "\e[1;92mUpdated system!\e[0m\n"
