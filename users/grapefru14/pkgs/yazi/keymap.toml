@@ -10,7 +10,7 @@ desc = "Launch lazygit"
 
 [[mgr.prepend_keymap]]
 on  = [ "!", "s" ]
-run = 'shell -- imvd "$1"'
+run = 'shell -- imvd %h'
 desc = "Slideshow this folder"
 
 [[mgr.prepend_keymap]]
@@ -35,23 +35,33 @@ desc = "Go to git toplevel"
 
 [[mgr.prepend_keymap]]
 on = [ "c", "y" ]
-run = 'shell -- bash -i -c "echo \"${1@Q}\" | copy"'
+run = '''shell -- bash -i -c 'echo "${1@Q}" | copy' _ %h'''
 desc = "Copy the file path with quotes"
 
 [[mgr.prepend_keymap]]
 on = [ "c", "C" ]
-run = 'shell -- bash -i -c "cat \"$1\" | copy"'
+run = '''shell -- bash -i -c 'cat "$1" | copy' _ %h'''
 desc = "Copy the file contents"
 
 [[mgr.prepend_keymap]]
 on = [ "c", "D" ]
-run = 'shell -- ripdrag "$@"'
+run = 'shell -- ripdrag %s'
 desc = "Open a window to drag the file"
 
 [[mgr.prepend_keymap]]
 on   = [ "c", "z" ]
 run  = "plugin omniconvert"
 desc = "Convert to..."
+
+[[mgr.prepend_keymap]]
+on   = [ "c", "Z", "z" ]
+run  = 'shell --block -- zip -r "$(basename %h).zip" "$(basename %h)"'
+desc = "Zip hovered item"
+
+[[mgr.prepend_keymap]]
+on   = [ "c", "Z", "t" ]
+run  = 'shell --block -- tar -czf "$(basename %h).tar.gz" "$(basename %h)"'
+desc = "Tar hovered item"
 
 [[mgr.prepend_keymap]]
 on = [ "b", "d" ]

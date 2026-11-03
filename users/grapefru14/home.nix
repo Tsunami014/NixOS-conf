@@ -28,6 +28,7 @@
     sqlite
     chafa
     ripdrag
+    zip
 
     # Background apps
     wakatime-cli

@@ -6,6 +6,7 @@ end, 500, Header.LEFT)
 require("bookmarks"):setup({
 	last_directory = { enable = true, persist = true, mode="dir" },
 	persist = "all",
+	contract_home = true,
 	desc_format = "full",
 	file_pick_mode = "hover",
 	show_keys = true,
@@ -13,8 +14,8 @@ require("bookmarks"):setup({
 		enable = true,
 		timeout = 1,
 		message = {
-			new = "New bookmark!",
-			delete = "Deleted bookmark!",
+			new = "New bookmark <key>!",
+			delete = "Deleted bookmark <key>!",
 			delete_all = "Deleted all bookmarks!",
 		},
 	},

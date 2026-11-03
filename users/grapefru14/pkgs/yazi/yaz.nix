@@ -39,10 +39,11 @@ in {
     ];
 
     plugins = {
-      inherit (pkgs.yaziPlugins) full-border bookmarks toggle-pane;
+      inherit (master-pkgs.yaziPlugins) full-border toggle-pane;
       omniconvert = omniconvert-src;
       omni-trash  = omni-trash-src;
-      # "copy-quote" = ./copy-quote.yazi; # ./copy-quote.yazi/main.lua
+      # Uses ./folder/main.lua
+      bookmarks = ./bookmarks.yazi;
     };
 
     settings = lib.importTOML ./settings.toml;
