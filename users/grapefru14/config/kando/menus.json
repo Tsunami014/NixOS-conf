@@ -258,10 +258,10 @@
                 }
               },
               {
-                "type": "button",
                 "name": "Sapla",
                 "icon": "nature",
                 "iconTheme": "material-symbols-rounded",
+                "type": "button",
                 "selectWorkflow": {
                   "actions": [
                     {
@@ -651,6 +651,26 @@
                       "type": "close-menu"
                     }
                   ]
+                }
+              },
+              {
+                "type": "button",
+                "name": "Baobab",
+                "icon": "hard_drive_2",
+                "iconTheme": "material-symbols-rounded",
+                "selectWorkflow": {
+                  "actions": [
+                    {
+                      "type": "execute-command",
+                      "command": "baobab",
+                      "detached": true,
+                      "isolated": false
+                    },
+                    {
+                      "type": "close-menu"
+                    }
+                  ],
+                  "quickSelectKey": "B"
                 }
               },
               {
