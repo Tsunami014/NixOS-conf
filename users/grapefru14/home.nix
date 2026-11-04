@@ -53,6 +53,7 @@
     (pkgs.callPackage ./pkgs/roland.nix {})
     (pkgs.callPackage ./pkgs/wvkbd.nix {})
     (pkgs.callPackage ./pkgs/grayjay.nix {})
+    (pkgs.callPackage ./pkgs/flameshot.nix {})
     (pkgs.callPackage ./pkgs/slick.nix {
       slick = inputs.slick.packages.${pkgs.stdenv.hostPlatform.system}.slick;
     })
@@ -208,10 +209,12 @@ anims rand
   programs.bash.initExtra  = ''
 __c() { printf '\001\e[%sm\002' "$1"; } # Colour
 __g() { printf ' \001\e[1D%s\002' "$1"; } # Glyph
+__host='\h'
+[ -n "$IN_NIX_SHELL" ] && __host='nix-shell'
 
 PS1="\
 $(__c '32')$(__g '')\
-$(__c '30;42') \h@\u \
+$(__c '30;42') \u@''${__host} \
 $(__c '32;43')$(__g '')\
 $(__c '30;43')\$(git branch --show-current 2>/dev/null | sed 's/^/ $(__g '')/;s/$/ /')\
 $(__c '33;100')$(__g '')\
@@ -219,7 +222,7 @@ $(__c '35') \w \$\
 $(__c '0;90')$(__g '')\
 $(__c '0') "
 
-unset -f __c __g
+unset __host -f __c __g
 export NIX_SHELL_PRESERVE_PROMPT=1
 '';
 

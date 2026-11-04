@@ -11,7 +11,7 @@ window-rule {
     open-floating true
 }
 
-// Make the Kando menu float
+// Make some important windows float
 window-rule {
     match title="Kando Menu"
     open-floating true

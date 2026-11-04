@@ -1,7 +1,7 @@
 // "/-" comments out the following node (no need for ending)
 // https://yalter.github.io/niri/Configuration:-Introduction
 
-screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
+screenshot-path "~/Pictures/Screenshots/%Y-%m-%d_%H-%M-%S.png"
 
 include "keys.kdl"
 include "windowRules.kdl"
