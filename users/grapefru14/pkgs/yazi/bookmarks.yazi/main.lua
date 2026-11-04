@@ -50,9 +50,44 @@ end
 
 local function generate_description(state, file)
 	if not file.is_parent and state.desc_format == "parent" then
-		return tostring(file.url.parent)
+		return tostring(file.url.parent or file.url)
 	end
 	return tostring(file.url)
+end
+
+local function contract_home(state, path)
+	if not state.contract_home then
+		return path
+	end
+
+	local home = os.getenv("HOME") or os.getenv("USERPROFILE")
+	if not home or home == "" then
+		return path
+	end
+	home = home:gsub("[/\\]+$", "")
+	if home == "" then -- HOME was "/" ; avoid contracting everything
+		return path
+	end
+
+	if path == home then
+		return "~"
+	end
+
+	local sep = path:sub(#home + 1, #home + 1)
+	if path:sub(1, #home) == home and (sep == "/" or sep == "\\") then
+		return "~" .. path:sub(#home + 1)
+	end
+
+	return path
+end
+
+local function display_copy(state, bookmark)
+	local copy = {}
+	for k, v in pairs(bookmark) do
+		copy[k] = v
+	end
+	copy.desc = contract_home(state, bookmark.desc)
+	return copy
 end
 
 local function load_state(state)
@@ -184,38 +219,6 @@ local save_bookmark = ya.sync(function(state, idx, custom_desc)
 		save_last(state, true)
 	end
 end)
-
-local function contract_home(state, path)
-	if not state.contract_home then
-		return path
-	end
-
-	local home = os.getenv("HOME") or os.getenv("USERPROFILE")
-	if not home or home == "" then
-		return path
-	end
-	home = home:gsub("[/\\]+$", "")
-
-	if path == home then
-		return "~"
-	end
-
-	local sep = path:sub(#home + 1, #home + 1)
-	if path:sub(1, #home) == home and (sep == "/" or sep == "\\") then
-		return "~" .. path:sub(#home + 1)
-	end
-
-	return path
-end
-
-local function display_copy(state, bookmark)
-	local copy = {}
-	for k, v in pairs(bookmark) do
-		copy[k] = v
-	end
-	copy.desc = contract_home(state, bookmark.desc)
-	return copy
-end
 
 local all_bookmarks = ya.sync(function(state, append_last_dir)
 	local bookmarks = {}
