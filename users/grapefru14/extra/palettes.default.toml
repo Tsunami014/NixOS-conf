@@ -1,0 +1,19 @@
+# Example palettes file, and the fallback if palettes.toml is missing or broken.
+# Copy it to palettes.toml and edit. Palettes cycle in file order, the first is what right-click resets to.
+#
+# name / button / lighten are per palette. button is "grey" or red, orange, yellow, green, cyan, blue, purple.
+# Every other key is a group of roles, any of: surface, text, muted, accent, primary, secondary, tertiary
+# Each takes any of these, left out ones do nothing:
+#   chroma  multiplier on colourfulness                     (1)
+#   hue     degrees added to the hue                        (0)
+#   tone    contrast around mid-grey, >1 more, <1 less      (1)
+#   light   added to lightness, about -0.1 to 0.1           (0)
+#   pull    accent only, how far they lean to the wallpaper (1)
+
+[[palette]]
+name    = "Example"
+button  = "grey"
+lighten = 1.2
+surface = { chroma = 1.5, light = 0.02 }
+muted   = { chroma = 2, hue = 40 }
+accent  = { chroma = 1.2, tone = 1.05, pull = 1.5 }

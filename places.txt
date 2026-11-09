@@ -23,3 +23,4 @@
 /home/grapefru14/.local/share/PrismLauncher/
 
 /etc/nixos/users/grapefru14/backgrounds/
+/etc/nixos/users/grapefru14/extra/palettes.toml

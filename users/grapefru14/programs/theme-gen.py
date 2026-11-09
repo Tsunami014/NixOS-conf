@@ -1,16 +1,29 @@
 #!/usr/bin/env python3
-"""theme-gen STATE_DIR TEMPLATE_DIR
-
-Derives a colour scheme from a wallpaper and writes config for each variant into STATE_DIR.
+"""theme-gen: derive a colour scheme from ~/Pictures/currentBg.jpg and write config for each palette.
 
 Lightness and chroma of every role are FIXED, the wallpaper only supplies the hue so colours can't come out pale or murky.
+Each palette then restyles groups of roles: how much chroma they get, how far their hue is
+turned away from the wallpaper's, how much tonal contrast they have, and how light they are.
+
+Palettes come from palettes.toml next to this script if it exists, otherwise palettes.default.toml.
+Templates are read from ../extra, output goes to ~/.local/state/theme/v<N>/.
 """
 import json
 import math
 import os
 import sys
+import tomllib
+from typing import NamedTuple
 
 from PIL import Image
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+STATE_DIR = os.path.expanduser("~/.local/state/theme")
+EXTRA_DIR = os.path.join(HERE, "..", "extra")
+TEMPLATES = ("alacritty.toml", "niri.kdl")
+WALLPAPER = os.path.expanduser("~/Pictures/currentBg.jpg")
+PERSONAL_PALETTES = os.path.join(EXTRA_DIR, "palettes.toml")
+DEFAULT_PALETTES = os.path.join(EXTRA_DIR, "palettes.default.toml")
 
 # ---------------------------------------------------------------- tuning knobs
 FALLBACK_HUE = 275.0      # used for grey wallpapers
@@ -35,7 +48,7 @@ HUES = {
     "blue":   (0.766, 0.115, 260),
     "purple": (0.787, 0.122, 305),
 }
-# role: (L, C); hue comes from the wallpaper. These are variant 1; VARIANTS shifts them for the others.
+# role: (L, C); hue comes from the wallpaper. These are the base, PALETTES restyle them for the others.
 # Backgrounds carry a clear tint of the wallpaper but stay well short of "neon navy".
 NEUTRALS = {
     "bg":     (0.255, 0.019),
@@ -46,11 +59,34 @@ NEUTRALS = {
     "muted1": (0.735, 0.037),
     "fg":     (0.855, 0.030),
 }
-# per-variant lightness offsets for the neutrals, plus accent lightness / chroma scaling
-VARIANTS = {
-    1: dict(bg=0.0,   black=0.0,   fg=0.0,   muted1=0.0,    muted2=0.0,   acc_l=0.0,   acc_c=1.0),
-    2: dict(bg=0.080, black=0.070, fg=0.015, muted1=-0.060, muted2=0.060, acc_l=0.025, acc_c=0.82),
-}
+
+
+class Style(NamedTuple):
+    """How a palette treats one group of roles. The defaults leave the group untouched."""
+    chroma: float = 1.0  # Multiplier on the role's chroma
+    hue: float = 0.0  # Degrees added to the role's hue
+    tone: float = 1.0  # >1 - dark becomes darker, light becomes lighter. <1 - everything becomes more grey
+    light: float = 0.0  # Added to the lightness, after tone
+    pull: float = 1.0  # Accents only: multiplier on NUDGE_PULL and MAX_NUDGE, i.e. how far red, green... lean towards the wallpaper hue
+
+
+# Role groups a Style can be given to (names as used in the palettes file)
+SURFACE, TEXT, MUTED, ACCENT, PRIMARY, SECONDARY, TERTIARY = (
+    "surface", "text", "muted", "accent", "primary", "secondary", "tertiary")
+# surface = bg, bg2, bg3, black     text = fg, br_fg     muted = muted1, muted2 (also the bar border)
+# accent  = red .. purple and their br_ versions
+GROUPS = (SURFACE, TEXT, MUTED, ACCENT, PRIMARY, SECONDARY, TERTIARY)
+GROUP_OF = {"bg": SURFACE, "bg2": SURFACE, "bg3": SURFACE, "black": SURFACE,
+            "fg": TEXT, "muted1": MUTED, "muted2": MUTED}
+
+
+class Palette(NamedTuple):
+    name: str
+    button: str  # Role the theme button is coloured with: "grey" or one of HUES
+    lighten: float  # Theme.lighten
+    styles: dict  # group -> Style, missing groups use Style()
+
+
 # ----------------------------------------------------------------------------
 
 
@@ -140,33 +176,77 @@ def analyse(pixels):
     return math.degrees(math.atan2(sy, sx)) % 360, sum(C * w for _, C, w in near) / tw
 
 
-def build(variant, hue, vivid):
-    v = VARIANTS[variant]
+def parse_palettes(path):
+    with open(path, "rb") as f:
+        data = tomllib.load(f).get("palette", [])
+    if not data:
+        raise ValueError("no [[palette]] entries")
+    pals = []
+    for d in data:
+        name = d.get("name", "?")
+        extra = set(d) - {"name", "button", "lighten", *GROUPS}
+        if extra:
+            raise ValueError(f"{name}: unknown key(s) {', '.join(sorted(extra))}")
+        if d.get("button", "grey") != "grey" and d["button"] not in HUES:
+            raise ValueError(f"{name}: unknown button role {d['button']!r}")
+        pals.append(Palette(d["name"], d.get("button", "grey"), d.get("lighten", 1.2),
+                            {g: Style(**d[g]) for g in GROUPS if g in d}))
+    return {i: p for i, p in enumerate(pals, 1)}
+
+
+def load_palettes():
+    """Personal palettes.toml if present and valid, otherwise the committed default."""
+    if os.path.isfile(PERSONAL_PALETTES):
+        try:
+            return parse_palettes(PERSONAL_PALETTES)
+        except Exception as e:
+            print(f"theme-gen: ignoring {PERSONAL_PALETTES}: {type(e).__name__}: {e}", file=sys.stderr)
+    return parse_palettes(DEFAULT_PALETTES)
+
+
+def build(pal, hue, vivid):
+
+    def style(group):
+        return pal.styles.get(group, Style())
+
+    def tone(L, s):
+        return 0.5 + (L - 0.5) * s.tone + s.light
+
     k = min(1.0, vivid / 0.12)
-    damp = hue_damp(hue)
-    bg_tint = BG_CHROMA * (0.45 + 0.55 * k) * damp  # how strongly backgrounds pick up the wallpaper hue
-    fg_tint = (0.50 + 0.50 * k) * damp  # text stays much closer to neutral
+    bg_tint = BG_CHROMA * (0.45 + 0.55 * k)  # How strongly backgrounds pick up the wallpaper hue
+    fg_tint = 0.50 + 0.50 * k  # Text stays much closer to neutral
     p = {}
+
+    def neutral(name, L, C, group, tint):
+        s = style(group)
+        h = hue + s.hue
+        # Damp on the hue the colour really ends up with, a palette may have turned it into mud territory
+        p[name] = lch_to_hex(tone(L, s), C * tint * hue_damp(h) * s.chroma, h)
+
     for name, (L, C) in NEUTRALS.items():
-        key = "bg" if name.startswith("bg") else name
-        L += v[key]
-        tint = bg_tint if key in ("bg", "black") else fg_tint
-        p[name] = lch_to_hex(L, C * tint, hue)
+        group = GROUP_OF[name]
+        neutral(name, L, C, group, bg_tint if group == SURFACE else fg_tint)
+    neutral("br_fg", min(NEUTRALS["fg"][0] + 0.05, 0.97), NEUTRALS["fg"][1], TEXT, fg_tint)
+
+    s = style(ACCENT)
     for name, (L, C, h) in HUES.items():
-        h2 = h + max(-MAX_NUDGE, min(MAX_NUDGE, NUDGE_PULL * arc(h, hue)))
-        L, C = L + v["acc_l"], C * v["acc_c"]
+        reach = MAX_NUDGE * s.pull
+        h2 = h + max(-reach, min(reach, NUDGE_PULL * s.pull * arc(h, hue))) + s.hue
+        L, C = tone(L, s), C * s.chroma
         p[name] = lch_to_hex(L, C, h2)
         p["br_" + name] = lch_to_hex(min(L + BRIGHT_L, 0.95), C * BRIGHT_C, h2)
+
     # Material-style roles: primary = the wallpaper's own colour, secondary = a calmer
-    # version of it, tertiary = a contrasting accent 60 degrees round the hue wheel.
-    lp = 0.76 + v["acc_l"]
-    cp = min(max(vivid, 0.07), 0.13) * v["acc_c"]
-    p["primary"] = lch_to_hex(lp, cp, hue)
-    p["secondary"] = lch_to_hex(lp - 0.05, max(cp * 0.5, 0.04), hue)
-    p["tertiary"] = lch_to_hex(lp, cp * 0.9, (hue + 60.0) % 360.0)
-    p["accent"] = p["primary"]                     # kept so existing templates keep working
-    p["br_fg"] = lch_to_hex(min(NEUTRALS["fg"][0] + v["fg"] + 0.05, 0.97), NEUTRALS["fg"][1] * fg_tint, hue)
+    # version of it, tertiary = a contrasting accent round the hue wheel (its Style.hue).
+    cp = min(max(vivid, 0.07), 0.13)
+    for name, group, dl, c in (("primary", PRIMARY, 0.0, cp),
+                               ("secondary", SECONDARY, -0.05, max(cp * 0.5, 0.04)),
+                               ("tertiary", TERTIARY, 0.0, cp)):
+        s = style(group)
+        p[name] = lch_to_hex(tone(0.76 + dl, s), c * s.chroma, (hue + s.hue) % 360.0)
+    p["accent"] = p["primary"]  # Kept so existing templates keep working
     p["br_black"] = p["muted2"]
+    p["grey"] = lch_to_hex(0.76, 0.012, hue)  # Near-neutral, only used for the theme button
     return p
 
 
@@ -182,19 +262,21 @@ def render(template, pal):
 
 
 def main():
-    state, tdir = sys.argv[1:3]
-    img = Image.open(os.path.expanduser("~/Pictures/currentBg.jpg")).convert("RGB")
+    palettes = load_palettes()
+    img = Image.open(WALLPAPER).convert("RGB")
     img.thumbnail((96, 96))
     getpx = getattr(img, "get_flattened_data", None) or img.getdata
     hue, vivid = analyse(list(getpx()))
-    for n in VARIANTS:
-        pal = build(n, hue, vivid)
-        out = os.path.join(state, f"v{n}")
+    for n, meta in palettes.items():
+        pal = build(meta, hue, vivid)
+        out = os.path.join(STATE_DIR, f"v{n}")
         os.makedirs(out, exist_ok=True)
         with open(os.path.join(out, "palette.json"), "w") as f:
-            json.dump({"variant": n, **{k: pal[k] for k in PALETTE_KEYS}}, f, indent=2)
-        for name in ("alacritty.toml", "niri.kdl"):
-            with open(os.path.join(tdir, name)) as f:
+            json.dump({"variant": n, "count": len(palettes), "name": meta.name,
+                       "button": pal[meta.button], "lighten": meta.lighten,
+                       **{k: pal[k] for k in PALETTE_KEYS}}, f, indent=2)
+        for name in TEMPLATES:
+            with open(os.path.join(EXTRA_DIR, name)) as f:
                 text = f.read()
             with open(os.path.join(out, name), "w") as f:
                 f.write(render(text, pal))
