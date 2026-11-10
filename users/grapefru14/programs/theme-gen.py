@@ -20,7 +20,8 @@ from PIL import Image
 HERE = os.path.dirname(os.path.abspath(__file__))
 STATE_DIR = os.path.expanduser("~/.local/state/theme")
 EXTRA_DIR = os.path.join(HERE, "..", "extra")
-TEMPLATES = ("alacritty.toml", "niri.kdl")
+TEMPLATES_DIR = os.path.join(HERE, "..", "extra", "templates")
+TEMPLATES = ("alacritty.toml", "niri.kdl", "yazi.toml")
 WALLPAPER = os.path.expanduser("~/Pictures/currentBg.jpg")
 PERSONAL_PALETTES = os.path.join(EXTRA_DIR, "palettes.toml")
 DEFAULT_PALETTES = os.path.join(EXTRA_DIR, "palettes.default.toml")
@@ -276,7 +277,7 @@ def main():
                        "button": pal[meta.button], "lighten": meta.lighten,
                        **{k: pal[k] for k in PALETTE_KEYS}}, f, indent=2)
         for name in TEMPLATES:
-            with open(os.path.join(EXTRA_DIR, name)) as f:
+            with open(os.path.join(TEMPLATES_DIR, name)) as f:
                 text = f.read()
             with open(os.path.join(out, name), "w") as f:
                 f.write(render(text, pal))
