@@ -1,6 +1,5 @@
-if ! [ -d $(dirname "$HOME") ]; then
-  echo "Home directory does not exist!"
-fi
+#!/usr/bin/env bash
+[ -d "$HOME" ] || { echo "Home directory does not exist!"; exit 1; }
 
 # So it doesn't potentially cause issues
 umount ~/.config/niri/autorotate 2>/dev/null || true
@@ -54,7 +53,7 @@ for fold in "$mainFold"/*/ "$mainFold"/.*/; do
     else
       if [ -d "$link/$name" ] && [ ! -L "$link/$name" ]; then
         echo "Config already exists!"
-        printf "Old: $link/$name  \tNew: $orig\n"
+        printf "Old: %s  \tNew: %s\n" "$link/$name" "$orig"
         printf "Opts: \tq: quit\n\tb: backup old & combine \tB: backup old & delete\n\tc: combine \td: delete old\n"
         while true; do
           read -sn1 -p "What do you want to do? " OPT < /dev/tty
@@ -70,7 +69,7 @@ for fold in "$mainFold"/*/ "$mainFold"/.*/; do
               exit 1
               ;;
             *)
-              printf "Unknown option '$OPT'!\e[999D\e[1A\e[K"
+              printf "Unknown option '%s'!\e[999D\e[1A\e[K" "$OPT"
               ;;
           esac
           case "$OPT" in

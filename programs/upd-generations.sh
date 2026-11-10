@@ -44,14 +44,14 @@ for arg in "$@"; do
     *)
         if [[ ${flag_map["$arg"]+_} ]]; then
             updargs+=("${flag_map["$arg"]}")
-        elif [[ $1 =~ ^\+([1-9][0-9]*)+$ ]]; then
+        elif [[ $arg =~ ^\+([1-9][0-9]*)$ ]]; then
             num="${BASH_REMATCH[1]}"
             type="+"
-        elif [[ $1 =~ ^([1-9][0-9]*)d$ ]]; then
+        elif [[ $arg =~ ^([1-9][0-9]*)d$ ]]; then
             num="${BASH_REMATCH[1]}"
             type="d"
         else
-            echo "Unknown option '$1'!"
+            echo "Unknown option '$arg'!"
             echo "$HELP"
             exit 1
         fi
@@ -61,11 +61,6 @@ done
 if [ ! -v num ] || [ ! -v type ]; then
     echo "Clean option not specified!"
     echo "$HELP"
-    exit 1
-fi
-
-if [ "$upd" = "none" ] && ! sys; then
-    echo "Not cleaning anything..?"
     exit 1
 fi
 
@@ -125,6 +120,7 @@ if [ "$upd" != "root" ]; then
         for folder in "$mainFold"/users/*; do
             {
               declare -f cleanUsr
+              declare -p type num updargs
               echo cleanUsr
             } | sudo -iu "$(basename "$folder")" bash
         done

@@ -83,7 +83,9 @@ printf "\e[1;93m%s\e[0m\n" "Collecting garbage..."
 case "$upd" in
     a)
         printf "\e[1;94m%s\e[0m\n" "Cleaning root..."
-        sudo nix-collect-garbage -d
+        if ! $onlytrash; then
+            sudo nix-collect-garbage -d
+        fi
         for folder in "$mainFold"/users/*; do
             name="$(basename "$folder")"
             printf "\e[1;94m%s\e[0m\n" "Cleaning $name..."

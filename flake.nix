@@ -1,15 +1,11 @@
 {
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
     nixpkgs-master.url = "github:NixOS/nixpkgs/master";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-    home-manager = {
-      url = "github:nix-community/home-manager/release-25.11";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
-  outputs = { self, nixpkgs, nixpkgs-master, nixpkgs-unstable, home-manager, ... }: let
+  outputs = { nixpkgs, nixpkgs-master, nixpkgs-unstable, ... }: let
     system = "x86_64-linux";
     master-pkgs = import nixpkgs-master {
       inherit system;
@@ -22,15 +18,7 @@
   in {
     nixosConfigurations.grapey = nixpkgs.lib.nixosSystem {
       inherit system;
-      modules = [
-        ./configuration.nix
-        home-manager.nixosModules.home-manager
-        {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.backupFileExtension = "bak";
-        }
-      ];
+      modules = [ ./configuration.nix ];
       specialArgs = { inherit master-pkgs unstable-pkgs; };
     };
   };

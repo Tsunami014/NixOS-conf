@@ -32,6 +32,7 @@ in {
   programs.yazi = {
     enable = true;
     package = master-pkgs.yazi;
+    shellWrapperName = "y";
 
     extraPackages = [
       omniconvert-bin

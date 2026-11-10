@@ -33,7 +33,7 @@ fi
 
 tty=$(awk '{print $2}' <<< "$choose")
 echo "Terminating $tty..."
-sudo pkill -KILL -t "$tty"
+sudo pkill -TERM -t "$tty"
 
 # Give systemd a moment
 sleep 0.1

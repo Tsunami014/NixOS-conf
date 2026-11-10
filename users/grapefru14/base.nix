@@ -2,6 +2,9 @@
 { config, pkgs, lib, ... }: {
   programs.neovim = {
     enable = true;
+    sideloadInitLua = true;
+    withRuby = false;
+    withPython3 = true;
     extraPackages = with pkgs; [
       tree-sitter
       unzip
@@ -11,9 +14,6 @@
     ] ++ lib.optionals full [
       # For compiling/running things
       texlivePackages.texfot # Better outputs
-      (texlive.combine {
-        inherit (texlive) scheme-full;
-      })
       pandoc
       (python313.withPackages (ps: with ps; [ debugpy ]))
 

@@ -100,7 +100,7 @@ flock -w 10 9 || { echo "Another wallpaper change is in progress" >&2; exit 1; }
 
 # Alternate between two slots
 # The new image always gets a different path than the one currently shown,
-# so swww never sees "the same file changed" (the cause of the ghosting).
+# so awww never sees "the same file changed" (the cause of the ghosting).
 STATE="$CACHE/slot"
 last=$(cat "$STATE" 2>/dev/null || echo 1)
 slot=$(( 1 - last ))
@@ -120,13 +120,13 @@ echo "$slot" > "$STATE"
 ln -sfn "$OUT" "$CUR_LINK"
 
 # Apply with a random transition
-swww query >/dev/null 2>&1 || { swww-daemon 9>&- >/dev/null 2>&1 & sleep 0.5; }
+awww query >/dev/null 2>&1 || { awww-daemon 9>&- >/dev/null 2>&1 & sleep 0.5; }
 
 T="${TRANSITIONS[RANDOM % ${#TRANSITIONS[@]}]}"
 ANGLE=$(( RANDOM % 360 ))
 POS="0.$(( RANDOM % 10 )),0.$(( RANDOM % 10 ))"
 
-swww img "$OUT" \
+awww img "$OUT" \
   --transition-type "$T" \
   --transition-angle "$ANGLE" \
   --transition-pos "$POS" \

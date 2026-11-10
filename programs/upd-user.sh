@@ -48,9 +48,8 @@ if [ ! -d "$HOME" ]; then
 fi
 
 fprint "Updating git..."
-tmp=$(mktemp)
-if ! git -C "$mainFold" rev-parse --git-dir >/dev/null 2>"$tmp"; then
-    if grep -q "dubious ownership" "$tmp"; then
+if ! err=$(git -C "$mainFold" rev-parse --git-dir 2>&1 >/dev/null); then
+    if grep -q "dubious ownership" <<< "$err"; then
         fprint "Setting $mainFold as safe..."
         git config --global --add safe.directory "$mainFold"
     else
@@ -74,7 +73,7 @@ fprint "Running user rebuild..."
 if $offline; then
     fprint "Using offline mode! The wifi will be temporarily disabled."
     wifi_on() { nmcli radio wifi on; }
-    trap wifi_on ERR
+    trap wifi_on EXIT
     nmcli radio wifi off
     home-manager switch --flake "$userFold"
     wifi_on

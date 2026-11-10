@@ -14,12 +14,10 @@ pkgs.writeShellApplication {
         exit 1
     fi
 
-    python -m cProfile -o /tmp/temp.dat "$@"
-    ret=$?
-
+    python -m cProfile -o /tmp/temp.dat "$@" || ret=$?
     trap - INT
 
-    if [ $ret -eq 130 ]; then
+    if [ "$ret" -eq 130 ]; then
         echo "Python Process terminated!"
     fi
 

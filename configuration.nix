@@ -5,7 +5,6 @@ let
     isNormalUser = true;
     description = usrname;
     extraGroups = [ "networkmanager" "wheel" "config" "dialout" "input" "uinput" "plugdev" "video" "render" ];
-    packages = with pkgs; [];
   };
   autologin = user: {
     overrideStrategy = "asDropin";
@@ -27,7 +26,6 @@ in {
     ];
 
   # Ensure /tmp works normally
-  boot.tmp.cleanOnBoot = true;
   boot.tmp.useTmpfs = true;
 
   programs.appimage = { # Execute appimages normally
@@ -126,12 +124,7 @@ in {
   # Bootloader
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.systemd-boot.extraEntries = {
-    "ubuntu.conf" = ''
-title Ubuntu
-efi /EFI/ubuntu/grubx64.efi
-    '';
-  };
+  boot.loader.systemd-boot.configurationLimit = 20;
 
   # Enable networking
   networking.networkmanager.enable = true;
@@ -194,6 +187,7 @@ efi /EFI/ubuntu/grubx64.efi
   # Misc nix stuff
   nixpkgs.config.allowUnfree = true;
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.optimise.automatic = true; # Dedupe nix stores
 
   # Misc other stuff
   programs.fuse.userAllowOther = true;
@@ -215,10 +209,8 @@ efi /EFI/ubuntu/grubx64.efi
   #   enableSSHSupport = true;
   # };
 
-  # This value determines the NixOS release from which the default
-  # settings for stateful data, like file locations and database versions
-  # on your system were taken. It‘s perfectly fine and recommended to leave
-  # this value at the release version of the first install of this system.
+  # The release this system was first built from (allows backwards compatability for databases and such)
+  # You do not need to change this value, and it's recommended to leave it alone.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "25.11";

@@ -6,8 +6,8 @@ PureRef/*
 !PureRef/PureRef.ini
 
 kando/*
-~kando/menus.json
-~kando/config.json
-~kando/icon-themes/*
-~kando/menu-themes/*
-~kando/sound-themes/*
+!kando/menus.json
+!kando/config.json
+!kando/icon-themes/*
+!kando/menu-themes/*
+!kando/sound-themes/*

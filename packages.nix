@@ -33,12 +33,21 @@
     sioyek
 
     # Various custom commands
+    nix-output-monitor
     (pkgs.writeShellApplication {
       name = "+";
+      text = ''nom-shell -p "$@"'';
+    })
+    (pkgs.writeShellApplication {
+      name = "++";
       text = ''nix-shell --log-format bar-with-logs -p "$@"'';
     })
     (pkgs.writeShellApplication {
       name = "=";
+      text = ''nom-shell -p "$1" --run "$*"'';
+    })
+    (pkgs.writeShellApplication {
+      name = "==";
       text = ''nix-shell --log-format bar-with-logs -p "$1" --run "$*"'';
     })
 
@@ -81,7 +90,7 @@ fi
       name = "linkfile";
       text = ''
 mkdir -p /tmp/Link
-chmod 0775 /tmp/Link 2&>/dev/null || true
+chmod 0775 /tmp/Link 2>/dev/null || true
 cd /tmp/Link
 nvim "$USER".md -c 'exe "Neotree"|wincmd w'
 '';
@@ -125,7 +134,7 @@ nvim "$USER".md -c 'exe "Neotree"|wincmd w'
     # Lazily loaded
     (pkgs.writeShellApplication {
       name = "fetch";
-      text = ''nix-shell --log-format bar-with-logs -p hyfetch -p fastfetch --run hyfetch "$@"'';
+      text = ''nom-shell -p hyfetch -p fastfetch --run "hyfetch ''${*@Q}"'';
     })
   ];
 
@@ -153,7 +162,7 @@ nvim "$USER".md -c 'exe "Neotree"|wincmd w'
       umnt() {
         if ! mountpoint /mnt -q; then
           echo "No mount in /mnt!"
-          exit 0
+          return 0
         fi
         if [[ $PWD == /mnt* ]]; then
           cd ~
@@ -161,7 +170,7 @@ nvim "$USER".md -c 'exe "Neotree"|wincmd w'
         sudo umount -R /mnt
       }
       _mnt_complete() {
-        local cur
+        local cur disks
         cur="''${COMP_WORDS[COMP_CWORD]}"
         disks=$(
           lsblk -ln -o NAME,TYPE |
@@ -178,9 +187,7 @@ nvim "$USER".md -c 'exe "Neotree"|wincmd w'
   programs.direnv.enable = true;
 
   # Extra scripts that need to go in /bin
-  system.activationScripts.text = ''
-ln -sf ${pkgs.bash}/bin/bash /bin/bash
-'';
+  systemd.tmpfiles.rules = [ "L+ /bin/bash - - - - ${pkgs.bash}/bin/bash" ];
 
   fonts.packages = with pkgs; [
     dejavu_fonts

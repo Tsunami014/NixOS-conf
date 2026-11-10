@@ -1,6 +1,7 @@
 { config, pkgs, master-pkgs, unstable-pkgs, lib, inputs, ... }: {
   home.username = "grapefru14";
   home.homeDirectory = "/home/${config.home.username}";
+  # See `system.stateVersion` - basically, don't change this unless you know what you're doing
   home.stateVersion = "25.11";
 
   nixpkgs.config.allowUnfree = true;
@@ -37,7 +38,7 @@
     prismlauncher # Minecraft
     (olympus.override { celesteWrapper = "steam-run"; })
 
-    inputs.hexecute.packages.${system}.default
+    inputs.hexecute.packages.${stdenv.hostPlatform.system}.default
     # Various apps
     obs-cmd # Actual OBS can be lazily loaded
     gnome-calculator
@@ -55,7 +56,7 @@
     (pkgs.callPackage ./pkgs/grayjay.nix {})
     (pkgs.callPackage ./pkgs/flameshot.nix {})
     (pkgs.callPackage ./pkgs/slick.nix {
-      slick = inputs.slick.packages.${pkgs.stdenv.hostPlatform.system}.slick;
+      slick = inputs.slick.packages.${stdenv.hostPlatform.system}.slick;
     })
     # Apps I'm version-conscious for
     ldtk
@@ -64,11 +65,11 @@
     master-pkgs.pureref
 
     # Quickshell & quickshell projects
-    inputs.qml-niri.packages.${system}.quickshell
-    inputs.qml-niri.packages.${system}.default
+    inputs.qml-niri.packages.${stdenv.hostPlatform.system}.quickshell
+    inputs.qml-niri.packages.${stdenv.hostPlatform.system}.default
     acpi
     brightnessctl
-    inputs.hyprlock.packages.${system}.default
+    inputs.hyprlock.packages.${stdenv.hostPlatform.system}.default
     wtype
 
     # Extra executable stuff
@@ -101,12 +102,10 @@ scene=$(jq -r '.scene_order[].name' "$CFG"/basic/scenes/*.json \
       name = "fixbar";
       text = ''
 pkill quickshell || true
-quickshell -c bar &
-bg
-disown
+setsid -f quickshell -c bar
 '';
     })
-    swww
+    awww
     (pkgs.writeShellApplication {
       name = "namefiles";
       text = ''# shellcheck disable=SC2016
@@ -142,12 +141,12 @@ anims rand
 '';
     })
     # Lazily loaded programs
-    (pkgs.writeScriptBin "py" ''
+    (pkgs.writeShellScriptBin "py" ''
       ${pkgs.python313.withPackages (ps: with ps; [ pyperclip numpy requests ])}/bin/python3 "$@"
     '')
-    (pkgs.writeScriptBin "zed" ''nix-shell --log-format bar-with-logs -p zed-editor --run "zeditor $@"'')
-    (pkgs.writeScriptBin "baobab" ''nix-shell --log-format bar-with-logs -p baobab --run "baobab $@"'')
-    (pkgs.writeScriptBin "protonvpn" ''nix-shell -p protonvpn-gui --run "protonvpn-app $@"'')
+    (pkgs.writeShellScriptBin "chromium" ''nom-shell -p chromium --run "chromium ''${*@Q}"'')
+    (pkgs.writeShellScriptBin "baobab" ''nom-shell -p baobab --run "baobab ''${*@Q}"'')
+    (pkgs.writeShellScriptBin "protonvpn" ''nom-shell -p protonvpn-gui --run "protonvpn-app ''${*@Q}"'')
   ];
 
   home.sessionVariables = {

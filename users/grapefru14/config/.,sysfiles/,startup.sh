@@ -5,7 +5,7 @@ quickshell -c bar -n &
 
 sleep 0.5
 
-swww-daemon &
+awww-daemon &
 
 ~/.,sysfiles/idle.sh &
 ~/.,sysfiles/autorotate.sh &
