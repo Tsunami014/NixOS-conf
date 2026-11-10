@@ -5,6 +5,7 @@ mainFold=/etc/nixos
 FLAGS=$(cat << EOF
   -ol or --offline - run the operation completely offline (even if have wifi, don't use it)
   -up or --upgrade - upgrade the packages from source
+  -pl or --plain   - use regular update functions instead of the fancy ones
   -usr or --users  - Only update all users, not the system
 EOF
 );if [ "${1-}" = "--flags" ]; then
@@ -25,6 +26,7 @@ map() {
 }
 map "-ol" "--offline"
 map "-up" "--upgrade"
+map "-pl" "--plain"
 map "-usr" "--users"
 if [ "${1-}" = "--map" ]; then
   printf "%s" "${outmap%?}"

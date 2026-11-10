@@ -6,6 +6,7 @@ userFold="$mainFold/users/$USER"
 FLAGS=$(cat << EOF
   -ol or --offline - run the operation completely offline (even if have wifi, don't use it)
   -up or --upgrade - upgrade the packages from source
+  -pl or --plain   - use regular update functions instead of the fancy ones
 EOF
 );if [ "${1-}" = "--flags" ]; then
     echo "$FLAGS"; exit 0
@@ -17,25 +18,26 @@ if [ "${1-}" = "--map" ]; then
   }
   map "-ol" "--offline"
   map "-up" "--upgrade"
+  map "-pl" "--plain"
   exit 0
 fi
 
 HELP="Update this user
 
 Optional flags:
-$FLAGS
-
-Set UPD_PLAIN=1 to skip nix-output-monitor and use plain home-manager output."
+$FLAGS"
 
 fromAll=false
 offline=false
 upgrade=false
+plain=false
 for arg in "$@"; do
   case "$arg" in
     --help | -help | -h) echo "$HELP"; exit 0 ;;
     --from-all) fromAll=true ;;
     -ol|--offline) offline=true ;;
     -up|--upgrade) upgrade=true ;;
+    -pl|--plain) plain=true ;;
     *) echo "Unknown option '$arg'!"; echo "$HELP"; exit 1 ;;
   esac
 done
@@ -48,7 +50,7 @@ fi
 hm_switch() {
   local out offline_args=()
   if $offline; then offline_args=(--offline); fi
-  if [ -n "${UPD_PLAIN-}" ] || ! command -v nom > /dev/null 2>&1; then
+  if $plain || ! command -v nom > /dev/null 2>&1; then
     home-manager switch --flake "$userFold"
     return
   fi

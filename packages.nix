@@ -136,52 +136,90 @@ nvim "$USER".md -c 'exe "Neotree"|wincmd w'
     enable = true;
 
     interactiveShellInit = ''
-      alias q=exit
+alias q=exit
+alias :q=exit
 
-      mnt() {
-        [[ $PWD == /mnt* ]] && cd ~
+mnt() {
+  [[ $PWD == /mnt* ]] && cd ~
 
-        mountpoint /mnt -q && sudo umount -R /mnt
+  mountpoint /mnt -q && sudo umount -R /mnt
 
-        if [[ -z "$1" ]]; then
-          echo "usage: mnt <device>"
-          return 1
-        fi
+  if [[ -z "$1" ]]; then
+    echo "usage: mnt <device>"
+    return 1
+  fi
 
-        sudo mount "/dev/$1" /mnt \
-          -o uid="$(id -u)",gid="$(id -g)"
+  sudo mount "/dev/$1" /mnt \
+    -o uid="$(id -u)",gid="$(id -g)"
 
-        cd /mnt
-      }
-      umnt() {
-        if ! mountpoint /mnt -q; then
-          echo "No mount in /mnt!"
-          return 0
-        fi
-        if [[ $PWD == /mnt* ]]; then
-          cd ~
-        fi
-        sudo umount -R /mnt
-      }
-      _mnt_complete() {
-        local cur disks
-        cur="''${COMP_WORDS[COMP_CWORD]}"
-        disks=$(
-          lsblk -ln -o NAME,TYPE |
-          awk '$2 == "part" || $2 == "disk" { print $1 }'
-        )
+  cd /mnt
+}
+umnt() {
+  if ! mountpoint /mnt -q; then
+    echo "No mount in /mnt!"
+    return 0
+  fi
+  if [[ $PWD == /mnt* ]]; then
+    cd ~
+  fi
+  sudo umount -R /mnt
+}
+_mnt_complete() {
+  local cur disks
+  cur="''${COMP_WORDS[COMP_CWORD]}"
+  disks=$(
+    lsblk -ln -o NAME,TYPE |
+    awk '$2 == "part" || $2 == "disk" { print $1 }'
+  )
 
-        COMPREPLY=( $(compgen -W "$disks" -- "$cur") )
-      }
+  COMPREPLY=( $(compgen -W "$disks" -- "$cur") )
+}
 
-      complete -F _mnt_complete mnt
+complete -F _mnt_complete mnt
+
+_upd_complete() {
+    local cmd=''${COMP_WORDS[0]} cur=''${COMP_WORDS[COMP_CWORD]} prev=''${COMP_WORDS[COMP_CWORD-1]}
+    local opts
+
+    case "$cmd" in
+        dirinit)
+            # Template first, then a flag (the script only reads flags from $2)
+            if (( COMP_CWORD == 1 )); then
+                opts="blank nix rust py pyadv pyvenv cmake cmakeQt help -h --help"
+            elif (( COMP_CWORD == 2 )); then
+                opts="--force --show"
+            else
+                return
+            fi
+            ;;
+        upd-garbage)
+            # -k / --keep takes a value
+            if [[ $prev == -k || $prev == --keep ]]; then
+                mapfile -t COMPREPLY < <(compgen -W "7d 14d 30d all" -- "$cur")
+                return
+            fi
+            opts="-h --help -k --keep $("$cmd" --map | cut -d= -f1)"
+            ;;
+        upd-generations)
+            # No --map of its own; it accepts upd-system's flags
+            opts="-h --help old -usr -root $(upd-system --map | cut -d= -f1)"
+            ;;
+        *)
+            opts="-h --help $("$cmd" --map | cut -d= -f1)"
+            ;;
+    esac
+
+    mapfile -t COMPREPLY < <(compgen -W "$opts" -- "$cur")
+}
+
+complete -F _upd_complete dirinit upd-all upd-system upd-user upd-garbage upd-generations
   '';
   };
 
-  programs.direnv.enable = true;
-
-  # Extra scripts that need to go in /bin
+  # Link bash to /bin
   systemd.tmpfiles.rules = [ "L+ /bin/bash - - - - ${pkgs.bash}/bin/bash" ];
+
+  programs.direnv.enable = true;
 
   fonts.packages = with pkgs; [
     dejavu_fonts

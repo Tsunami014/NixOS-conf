@@ -5,6 +5,7 @@ mainFold=/etc/nixos
 FLAGS=$(cat << EOF
   -ol or --offline - run the operation completely offline (even if have wifi, don't use it)
   -up or --upgrade - upgrade the packages from source
+  -pl or --plain   - use regular update functions instead of the fancy ones
 EOF
 );if [ "${1-}" = "--flags" ]; then
   echo "$FLAGS"; exit 0
@@ -16,19 +17,19 @@ if [ "${1-}" = "--map" ]; then
   }
   map "-ol" "--offline"
   map "-up" "--upgrade"
+  map "-pl" "--plain"
   exit 0
 fi
 
 HELP="Update system
 
 Optional flags:
-$FLAGS
-
-Set UPD_PLAIN=1 to skip nix-output-monitor and use the plain nixos-rebuild output."
+$FLAGS"
 
 args=()
 upgrade=false
 offline=false
+plain=false
 fromAll=false
 for arg in "$@"; do
   case "$arg" in
@@ -36,6 +37,7 @@ for arg in "$@"; do
     --from-all) fromAll=true ;; # Internal: called by upd-all (quieter output)
     -ol|--offline) offline=true; args+=("--offline") ;;
     -up|--upgrade) upgrade=true; args+=("--upgrade") ;;
+    -pl|--plain) plain=true ;;
     *) echo "Unknown option '$arg'!"; echo "$HELP"; exit 1 ;;
   esac
 done
@@ -44,7 +46,7 @@ sudo -v
 build_system() {
   local offline_args=()
   if $offline; then offline_args=(--offline); fi
-  if [ -n "${UPD_PLAIN-}" ] || ! command -v nom > /dev/null 2>&1; then
+  if $plain || ! command -v nom > /dev/null 2>&1; then
     return 0 # nixos-rebuild will build it itself
   fi
   nom build --no-link "${offline_args[@]}" \
