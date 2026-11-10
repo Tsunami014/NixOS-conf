@@ -40,14 +40,22 @@ in {
     ];
 
     plugins = {
-      inherit (master-pkgs.yaziPlugins) full-border toggle-pane;
+      inherit (master-pkgs.yaziPlugins) full-border toggle-pane piper;
       omniconvert = omniconvert-src;
       omni-trash  = omni-trash-src;
       # Uses ./folder/main.lua
       bookmarks = ./bookmarks.yazi;
     };
 
-    settings = lib.importTOML ./settings.toml;
+    settings = {
+      # mgr.show_hidden = true;
+      plugin.prepend_previewers = [
+        {
+          mime = "image/*";
+          run = ''piper -- chafa --format=symbols --colors=full --animate=off --polite=on --size "$w"x"$h" "$1"'';
+        }
+      ];
+    };
     keymap = lib.importTOML ./keymap.toml;
     theme = lib.importTOML ./theme.toml;
     initLua = builtins.readFile ./init.lua;
