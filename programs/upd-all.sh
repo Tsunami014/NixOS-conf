@@ -53,37 +53,27 @@ for arg in "$@"; do
 done
 sudo -v
 
-fprint() {
-    if [ $# -gt 1 ]; then
-        printf "\e[1;%sm%s\e[0m\n" "$2" "$1"
-    else
-        printf "\e[1;93m%s\e[0m\n" "$1"
-    fi
-}
+banner "Update everything"
 
 if ! $usersOnly; then
-    sudo upd-system "${updargs[@]}"
+    must "System" sudo upd-system --from-all "${updargs[@]}"
 fi
 
-echo
-fprint "Updating all users..."
 for folder in "$mainFold"/users/*; do
     name=$(basename "$folder")
-    fprint "Updating $name..." "94"
-    sudo -iu "$name" upd-user --from-all "${updargs[@]}"
-    echo
+    must "User: $name" sudo -iu "$name" upd-user --from-all "${updargs[@]}"
 done
-fprint "Updated users!" "92"
 
-fprint "Syncing all..."
 for folder in "$mainFold"/users/*; do
     name=$(basename "$folder")
     if [ -f "$folder/sync.sh" ]; then
-        fprint "Syncing $name..." "94"
-        sudo -u "$name" sh "$folder/sync.sh" "${updargs[@]}" || fprint "Sync script failed!" "94"
+        if ! run "Sync: $name" sudo -u "$name" sh "$folder/sync.sh" "${updargs[@]}"; then
+            warn "Sync script failed for $name!"
+        fi
     else
-        fprint "No sync script for $name" "94"
+        info "No sync script for $name"
     fi
 done
 
-fprint "Finished updating system and users!" "95"
+summary
+printf '\n'; good 'Finished updating system and users!'

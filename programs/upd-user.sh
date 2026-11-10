@@ -23,7 +23,9 @@ fi
 HELP="Update this user
 
 Optional flags:
-$FLAGS"
+$FLAGS
+
+Set UPD_PLAIN=1 to skip nix-output-monitor and use plain home-manager output."
 
 fromAll=false
 offline=false
@@ -38,59 +40,71 @@ for arg in "$@"; do
   esac
 done
 
-fprint() {
-    printf "\e[1;93m%s\e[0m\n" "$1";
-}
-
 if [ ! -d "$HOME" ]; then
     echo "Need a home directory! Try instead running upd-all"
     exit 1
 fi
 
-fprint "Updating git..."
-if ! err=$(git -C "$mainFold" rev-parse --git-dir 2>&1 >/dev/null); then
-    if grep -q "dubious ownership" <<< "$err"; then
-        fprint "Setting $mainFold as safe..."
-        git config --global --add safe.directory "$mainFold"
+hm_switch() {
+  local out offline_args=()
+  if $offline; then offline_args=(--offline); fi
+  if [ -n "${UPD_PLAIN-}" ] || ! command -v nom > /dev/null 2>&1; then
+    home-manager switch --flake "$userFold"
+    return
+  fi
+  out=$(nom build --no-link --print-out-paths "${offline_args[@]}" \
+    "$userFold#homeConfigurations.$USER.activationPackage") || return $?
+  "$out/activate"
+}
+
+check_git() {
+  local gitout
+  if ! gitout=$(git -C "$mainFold" rev-parse --git-dir 2>&1 > /dev/null); then
+    if grep -q "dubious ownership" <<< "$gitout"; then
+      info "Setting $mainFold as safe..."
+      git config --global --add safe.directory "$mainFold"
     else
-        fprint "Detected git problems in $mainFold!"
-        exit 1
+      err "Detected git problems in $mainFold!"
+      return 1
     fi
-fi
-if ! $fromAll; then
+  fi
+  if ! $fromAll; then
     git -C "$mainFold" add .
-fi
+  fi
+}
+
+$fromAll || banner "Update user: $USER"
+
+must "Checking git" check_git
 
 if $upgrade; then
-    if $offline; then
-        fprint "Cannot upgrade packages offline!"
-        exit 1
-    fi
-    fprint "Upgrading packages..."
-    nix flake update --flake "$userFold"
+  if $offline; then
+    die "Cannot upgrade packages offline!"
+  fi
+  must "Upgrading flake inputs" nix flake update --flake "$userFold"
 fi
-fprint "Running user rebuild..."
+
 if $offline; then
-    fprint "Using offline mode! The wifi will be temporarily disabled."
-    wifi_on() { nmcli radio wifi on; }
-    trap wifi_on EXIT
-    nmcli radio wifi off
-    home-manager switch --flake "$userFold"
-    wifi_on
-else
-    home-manager switch --flake "$userFold"
+  warn "Offline mode! The wifi will be temporarily disabled."
+  trap 'nmcli radio wifi on' EXIT
+  nmcli radio wifi off
+fi
+must "Rebuilding home" hm_switch
+if $offline; then
+  nmcli radio wifi on
 fi
 
 if ! $fromAll; then
-    syncf="$userFold/sync.sh"
-    if [ -f "$syncf" ]; then
-        fprint "Syncing..."
-        sh "$syncf" "$@" || fprint "Sync script failed!"
-    else
-        fprint "No sync script!"
+  syncf="$userFold/sync.sh"
+  if [ -f "$syncf" ]; then
+    if ! run "Syncing config links" sh "$syncf" "$@"; then
+      warn "Sync script failed!"
     fi
-fi
-
-if ! $fromAll; then
-   printf "\e[1;92mUpdated user!\e[0m\n"
+  else
+    info "No sync script for $USER"
+  fi
+  summary
+  printf '\n'; good "Updated user!"
+else
+  printf '\n'; good "Updated $USER!"
 fi

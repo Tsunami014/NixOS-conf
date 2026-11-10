@@ -185,8 +185,13 @@ in {
   };
 
   # Misc nix stuff
+  nix.settings = {
+    experimental-features = [ "nix-command" "flakes" ];
+    connect-timeout = 5;
+    fallback = true;
+    download-buffer-size = 268435456;
+  };
   nixpkgs.config.allowUnfree = true;
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
   nix.optimise.automatic = true; # Dedupe nix stores
 
   # Misc other stuff

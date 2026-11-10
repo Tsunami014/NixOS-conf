@@ -76,17 +76,15 @@ case "$upd" in
     root) txt2="the system" ;;
     usr) txt2="this user" ;;
 esac
-echo "Are you sure you want to delete the previous$txt generations for $txt2?"
-echo "(Only do this if you are confident your system is not broken)"
-read -r -n 1 -p "[y/n] " RESP
-echo
-if [ "$RESP" != "y" ]; then
-    echo "Not deleting."
+banner "Delete generations"
+info "(Only do this if you are confident your system is not broken)"
+if ! confirm "Are you sure you want to delete the previous$txt generations for $txt2?"; then
+    warn "Not deleting."
     exit 0
 fi
 
 if [ "$upd" != "usr" ]; then
-    printf "\e[1;93m%s\e[0m\n" "Deleting system generations..."
+    step "Deleting system generations"
     case "$type" in
         +) cleansys="+$num" ;;
         d) cleansys="${num}d" ;;
@@ -95,6 +93,7 @@ if [ "$upd" != "usr" ]; then
         cleansys="old"
     fi
     sudo nix-env --profile /nix/var/nix/profiles/system --delete-generations "$cleansys"
+    step_done
 fi
 
 cleanUsr() {
@@ -113,7 +112,7 @@ cleanUsr() {
     upd-user --from-all "${updargs[@]}"
 }
 if [ "$upd" != "root" ]; then
-    printf "\e[1;93m%s\e[0m\n" "Deleting user generations..."
+    step "Deleting user generations"
     if [ "$upd" = "usr" ]; then
         cleanUsr
     else
@@ -125,9 +124,10 @@ if [ "$upd" != "root" ]; then
             } | sudo -iu "$(basename "$folder")" bash
         done
     fi
+    step_done
 fi
 
-printf "\e[1;92m%s\e[0m\n" "Deleted generations!"
+good 'Deleted generations!'
 case "$upd" in
     all|root) updscript="system" ;;
     usr) updscript="user" ;;

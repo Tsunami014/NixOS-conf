@@ -1,4 +1,13 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+let
+  updLib = builtins.readFile ./programs/lib.sh;
+  mkUpd = name: pkgs.writeShellApplication {
+    inherit name;
+    text = updLib + "\n" + builtins.readFile ./programs/${name}.sh;
+    # lib.sh defines helpers that not every script uses
+    excludeShellChecks = [ "SC2329" "SC2034" ];
+  };
+in {
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
@@ -96,27 +105,12 @@ nvim "$USER".md -c 'exe "Neotree"|wincmd w'
 '';
     })
 
-    # The upd scripts
-    (pkgs.writeShellApplication {
-      name = "upd-user";
-      text = builtins.readFile ./programs/upd-user.sh;
-    })
-    (pkgs.writeShellApplication {
-      name = "upd-system";
-      text = builtins.readFile ./programs/upd-system.sh;
-    })
-    (pkgs.writeShellApplication {
-      name = "upd-all";
-      text = builtins.readFile ./programs/upd-all.sh;
-    })
-    (pkgs.writeShellApplication {
-      name = "upd-generations";
-      text = builtins.readFile ./programs/upd-generations.sh;
-    })
-    (pkgs.writeShellApplication {
-      name = "upd-garbage";
-      text = builtins.readFile ./programs/upd-garbage.sh;
-    })
+    # The upd scripts (all share ./programs/lib.sh for the pretty output)
+    (mkUpd "upd-user")
+    (mkUpd "upd-system")
+    (mkUpd "upd-all")
+    (mkUpd "upd-generations")
+    (mkUpd "upd-garbage")
     (pkgs.writeShellApplication {
       name = "upd-sync";
       text = ''bash /etc/nixos/users/"$USER"/sync.sh'';
