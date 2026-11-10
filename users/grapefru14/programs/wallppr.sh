@@ -20,7 +20,7 @@ TRANSITIONS=(fade wipe wave grow center outer left right top bottom)
 HEADER=$(cat <<EOF
 Tab: random from multiple options
 Ctrl-R: random from all results
-Alt-H: toggle hidden
+Ctrl-H: toggle hidden
 EOF
 )
 
@@ -71,7 +71,7 @@ if [[ $# -eq 0 ]]; then
         --prompt='wallpaper> ' \
         --header="$HEADER" \
         --bind 'ctrl-r:select-all+accept' \
-        --bind "alt-h:transform:'$SELF' __toggle '$MODE'" \
+        --bind "ctrl-h:transform:'$SELF' __toggle '$MODE'" \
         --preview='chafa -f symbols --colors full --animate off \
           -s "${FZF_PREVIEW_COLUMNS}x${FZF_PREVIEW_LINES}" "$WPDIR/"{2}' \
         --preview-window=right:60% |
