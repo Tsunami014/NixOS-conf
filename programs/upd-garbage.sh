@@ -20,7 +20,7 @@ Old generations are expired first, then the store is collected once at the end.
 Optional flags for cleaning:
 $FLAGS
 
-This script runs the appropriate upd command for the requirement (upd-user if -usr, upd-system if -root, else upd-all) to fix generations and redownload some important things so you can update offline again
+This script runs the appropriate upd command afterwards
 Optional flags for update scripts:
 $(upd-all --flags)"
 

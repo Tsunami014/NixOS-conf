@@ -19,6 +19,7 @@ in {
     gcc
     git
     wget
+    jq
     fzf
     yazi
     unzip
@@ -35,7 +36,6 @@ in {
     pavucontrol
     cliphist
     wl-clipboard
-    jq
     htop
     imv
     amberol # Music
@@ -116,6 +116,10 @@ nvim "$USER".md -c 'exe "Neotree"|wincmd w'
       text = ''bash /etc/nixos/users/"$USER"/sync.sh'';
     })
 
+    (pkgs.writeShellApplication {
+      name = "upd-apps";
+      text = builtins.readFile ./programs/upd-apps.sh;
+    })
     (pkgs.writeShellApplication {
       name = "dirinit";
       text = builtins.readFile ./programs/dirinit.sh;
