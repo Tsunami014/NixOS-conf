@@ -268,8 +268,10 @@ def main():
     img.thumbnail((96, 96))
     getpx = getattr(img, "get_flattened_data", None) or img.getdata
     hue, vivid = analyse(list(getpx()))
+    index = []
     for n, meta in palettes.items():
         pal = build(meta, hue, vivid)
+        index.append({"name": meta.name, "button": pal[meta.button]})
         out = os.path.join(STATE_DIR, f"v{n}")
         os.makedirs(out, exist_ok=True)
         with open(os.path.join(out, "palette.json"), "w") as f:
@@ -281,6 +283,8 @@ def main():
                 text = f.read()
             with open(os.path.join(out, name), "w") as f:
                 f.write(render(text, pal))
+    with open(os.path.join(STATE_DIR, "palettes.json"), "w") as f:
+        json.dump({"palettes": index}, f, indent=2)
     print(f"wallpaper hue {hue:.0f} deg, vividness {vivid:.3f}")
 
 
