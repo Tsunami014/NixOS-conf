@@ -28,6 +28,9 @@ in {
   # Ensure /tmp works normally
   boot.tmp.useTmpfs = true;
 
+  # Just in case
+  zramSwap.enable = true;
+
   programs.appimage = { # Execute appimages normally
     enable = true;
     binfmt = true;

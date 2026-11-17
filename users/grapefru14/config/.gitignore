@@ -11,3 +11,7 @@ kando/*
 !kando/icon-themes/*
 !kando/menu-themes/*
 !kando/sound-themes/*
+
+opencode/*
+!opencode/cli.json
+!opencode/plugins

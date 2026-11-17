@@ -9,6 +9,11 @@ run = "shell --block -- lazygit"
 desc = "Launch lazygit"
 
 [[mgr.prepend_keymap]]
+on  = [ "!", "o" ]
+run = "shell --block -- opencode"
+desc = "Launch opencode"
+
+[[mgr.prepend_keymap]]
 on  = [ "!", "s" ]
 run = 'shell -- imvd %h'
 desc = "Slideshow this folder"

@@ -6,6 +6,7 @@ quickshell -c bar -n &
 sleep 0.5
 
 awww-daemon &
+mako &
 
 ~/.,sysfiles/idle.sh &
 ~/.,sysfiles/autorotate.sh &

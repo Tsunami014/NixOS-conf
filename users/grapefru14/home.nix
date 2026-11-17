@@ -30,6 +30,7 @@
     chafa
     ripdrag
     zip
+    libnotify
 
     # Background apps
     wakatime-cli
@@ -46,7 +47,6 @@
     arduino-ide
     pdfarranger
     wl-color-picker
-    opencode
     # Apps I needed to make myself for one reason or another
     (pkgs.callPackage ./pkgs/kando.nix {})
     (pkgs.callPackage ./pkgs/godsvg.nix {})
@@ -149,6 +149,14 @@ anims rand
     (pkgs.writeShellScriptBin "protonvpn" ''nom-shell -p protonvpn-gui --run "protonvpn-app ''${*@Q}"'')
   ];
 
+  # Notification daemon
+  services.mako = {
+    enable = true;
+    settings = {
+      default-timeout = 8000;  # ms; set 0 to keep notifications until dismissed
+    };
+  };
+
   home.sessionVariables = {
     QS_ICON_THEME = "Papirus"; # Use the correct icon theme
     NIXOS_OZONE_WL = "1"; # Force wayland for some apps
@@ -176,9 +184,12 @@ anims rand
     enable = true;
     package = unstable-pkgs.ollama;
     environmentVariables = {
-      OLLAMA_NUM_THREADS = "6";
-      OLLAMA_NUM_THREAD = "6";
-      OLLAMA_CONTEXT_LENGTH = "4096";
+      OLLAMA_CONTEXT_LENGTH = "32768";
+      OLLAMA_FLASH_ATTENTION = "1";
+      OLLAMA_NUM_PARALLEL = "1";
+      OLLAMA_KEEP_ALIVE = "-1";
+      LLAMA_ARG_THREADS = "10";
+      LLAMA_ARG_THREADS_BATCH = "10";
     };
   };
 

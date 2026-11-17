@@ -1,40 +1,27 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, master-pkgs, ... }:
 let
-  allTools = [
-    "bash" "edit" "write" "read" "grep" "glob" "list" "patch"
-    "todowrite" "todoread" "webfetch" "websearch" "lsp" "skill" "task"
-  ];
-  mkTools = allowed: builtins.listToAttrs (map (name: {
-    inherit name;
-    value = builtins.elem name allowed;
-  }) allTools);
+  rule = effect: action: { inherit action effect; resource = "*"; };
 
   baseConfig = {
     "$schema" = "https://opencode.ai/config.json";
     small_model = "ollama/qwen2.5:0.5b";
     agent = {
       chat = {
-        description = "Even smaller agent for just chatting";
+        description = "Just have a chat, nothing too complex";
         mode = "primary";
-        prompt = "You are an assistant. Be concise."
-            + " You can use tools to view files or folder structures as you need.";
-        tools = mkTools [ "read" "list" ];
-      };
-      lean = {
-        description = "Minimal agent";
-        mode = "primary";
-        prompt = "You are a coding assistant. Be concise."
-            + " Read files before editing them."
-            + " You can use tools to view and edit files or folder structures as you need."
-            + " If the user asks you to complete a task, do not stop to ask the user if you are doing it the correct way; instead, keep trying different approaches until you solve the issue.";
-        tools = mkTools [ "read" "write" "edit" "list" "grep" "glob" "bash" ];
+        prompt = "You are a concise assistant.";
+        permissions =
+          [ (rule "deny" "*") ]
+          ++ map (rule "allow") [ "read" "edit" "glob" "grep" ]
+          ++ [ (rule "ask" "shell") ];
       };
     };
-    default_agent = "lean";
+    default_agent = "chat";
     provider.ollama = {
       npm = "@ai-sdk/openai-compatible";
       name = "Ollama";
       options.baseURL = "http://localhost:11434/v1";
+      timeout = false; # Large contexts can take a very long time
     };
   };
 
@@ -70,5 +57,6 @@ in
 
   home.packages = [
     (pkgs.writeShellScriptBin "opencode-refresh-models" "exec ${syncScript}")
+    master-pkgs.opencode
   ];
 }

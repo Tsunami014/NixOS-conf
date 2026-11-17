@@ -3,69 +3,6 @@
   "menus": [
     {
       "root": {
-        "name": "Keybinds",
-        "icon": "award_star",
-        "iconTheme": "material-symbols-rounded",
-        "type": "root",
-        "activateWorkflow": {
-          "quickSelectKey": "Backspace",
-          "actions": [
-            {
-              "type": "close-menu"
-            }
-          ]
-        },
-        "children": [
-          {
-            "name": "Undo",
-            "icon": "undo",
-            "iconTheme": "material-symbols-rounded",
-            "type": "button",
-            "angle": 270,
-            "selectWorkflow": {
-              "actions": [
-                {
-                  "type": "close-menu"
-                },
-                {
-                  "type": "simulate-hotkey",
-                  "hotkey": "ControlLeft+KeyZ"
-                }
-              ]
-            }
-          },
-          {
-            "name": "Redo",
-            "icon": "redo",
-            "iconTheme": "material-symbols-rounded",
-            "type": "button",
-            "selectWorkflow": {
-              "actions": [
-                {
-                  "type": "close-menu"
-                },
-                {
-                  "type": "simulate-hotkey",
-                  "hotkey": "ControlLeft+ShiftLeft+KeyZ"
-                }
-              ]
-            }
-          }
-        ]
-      },
-      "shortcut": "Control+Space",
-      "shortcutID": "keys",
-      "useFixedPosition": false,
-      "fixedMenuPosition": {
-        "x": 0.5,
-        "y": 0.5
-      },
-      "anchored": false,
-      "hoverMode": false,
-      "tags": []
-    },
-    {
-      "root": {
         "name": "Apps menu",
         "icon": "apps",
         "iconTheme": "material-symbols-rounded",
@@ -325,26 +262,6 @@
                         {
                           "type": "execute-command",
                           "command": "$TermSpawn passionfruit",
-                          "detached": true,
-                          "isolated": false
-                        },
-                        {
-                          "type": "close-menu"
-                        }
-                      ]
-                    }
-                  },
-                  {
-                    "name": "Opencode",
-                    "icon": "terminal",
-                    "iconTheme": "material-symbols-rounded",
-                    "type": "button",
-                    "selectWorkflow": {
-                      "quickSelectKey": "O",
-                      "actions": [
-                        {
-                          "type": "execute-command",
-                          "command": "$TermSpawn opencode",
                           "detached": true,
                           "isolated": false
                         },
@@ -654,11 +571,12 @@
                 }
               },
               {
-                "type": "button",
                 "name": "Baobab",
                 "icon": "hard_drive_2",
                 "iconTheme": "material-symbols-rounded",
+                "type": "button",
                 "selectWorkflow": {
+                  "quickSelectKey": "B",
                   "actions": [
                     {
                       "type": "execute-command",
@@ -669,8 +587,7 @@
                     {
                       "type": "close-menu"
                     }
-                  ],
-                  "quickSelectKey": "B"
+                  ]
                 }
               },
               {
