@@ -99,11 +99,31 @@ scene=$(jq -r '.scene_order[].name' "$CFG"/basic/scenes/*.json \
 '';
     })
     (pkgs.writeShellApplication {
-      name = "fixbar";
+      name = "upd-bar";
       text = ''
-pkill quickshell || true
-setsid -f quickshell -c bar
-'';
+case "''${1:-}" in
+  --help|-h)
+    echo "Usage: upd-bar [--start | --stop | --help]"
+    echo "  --start  start the bar if not running"
+    echo "  --stop   stop the bar"
+    echo "  (none)   restart the bar"
+    ;;
+  --stop)
+    pkill quickshell || true
+    ;;
+  --start)
+    pgrep quickshell >/dev/null || setsid -f quickshell -c bar
+    ;;
+  "")
+    pkill quickshell || true
+    setsid -f quickshell -c bar
+    ;;
+  *)
+    echo "Unknown option: $1" >&2
+    exit 1
+    ;;
+esac
+      '';
     })
     awww
     (pkgs.writeShellApplication {
