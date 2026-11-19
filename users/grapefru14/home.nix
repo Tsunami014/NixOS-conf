@@ -99,6 +99,10 @@ scene=$(jq -r '.scene_order[].name' "$CFG"/basic/scenes/*.json \
 '';
     })
     (pkgs.writeShellApplication {
+      name = "ollama-fix";
+      text = "systemctl --user restart ollama";
+    })
+    (pkgs.writeShellApplication {
       name = "upd-bar";
       text = ''
 case "''${1:-}" in
@@ -204,12 +208,12 @@ anims rand
     enable = true;
     package = unstable-pkgs.ollama;
     environmentVariables = {
-      OLLAMA_CONTEXT_LENGTH = "32768";
+      OLLAMA_CONTEXT_LENGTH = "16384";
       OLLAMA_FLASH_ATTENTION = "1";
       OLLAMA_NUM_PARALLEL = "1";
       OLLAMA_KEEP_ALIVE = "-1";
-      LLAMA_ARG_THREADS = "10";
-      LLAMA_ARG_THREADS_BATCH = "10";
+      LLAMA_ARG_THREADS = "8";
+      LLAMA_ARG_THREADS_BATCH = "8";
     };
   };
 
