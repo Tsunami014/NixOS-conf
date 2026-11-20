@@ -79,31 +79,31 @@ run = "plugin bookmarks delete_all"
 desc = "Delete all bookmarks"
 
 [[mgr.prepend_keymap]]
-on = '"'
+on = [ '"' ]
 run = "plugin bookmarks save"
 desc = "Save current position as a bookmark"
 
 [[mgr.prepend_keymap]]
-on = "'"
+on = [ "'" ]
 run = "plugin bookmarks jump"
 desc = "Jump to a bookmark"
 
 [[mgr.prepend_keymap]]
-on = "T"
+on = [ "T" ]
 run = "plugin omni-trash"
 desc = "Open Omni Trash"
 
 [[mgr.prepend_keymap]]
-on = "R"
+on = [ "R" ]
 run = "plugin toggle-pane max-preview"
 desc = "Maximize or restore the preview pane"
 
 [[mgr.prepend_keymap]]
-on = "I"
+on = [ "I" ]
 run = "shell --block -- NVIM_NO_SESSION=1 nvim ./+index.md"
 desc = "Open ./+index.md"
 
 [[mgr.prepend_keymap]]
-on = "`"
+on = [ "`" ]
 run = "shell --block -- nvim ."
 desc = "Launch neovim here"

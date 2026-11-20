@@ -23,5 +23,7 @@
 /home/grapefru14/.config/obs-studio/
 /home/grapefru14/.local/share/PrismLauncher/
 
+~/.local/state/yazi/.dds
+
 /etc/nixos/users/grapefru14/backgrounds/
 /etc/nixos/users/grapefru14/extra/palettes.toml

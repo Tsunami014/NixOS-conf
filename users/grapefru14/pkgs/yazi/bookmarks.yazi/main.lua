@@ -300,6 +300,15 @@ return {
 		end
 
 		local bookmarks = all_bookmarks(action == "jump")
+		if #bookmarks == 0 then
+			ya.notify {
+				title = "Bookmarks",
+				content = "No bookmarks!",
+				timeout = 3,
+				level = "info",
+			}
+			return
+		end
 		local selected = #bookmarks > 0 and ya.which { cands = bookmarks }
 		if not selected then
 			return
