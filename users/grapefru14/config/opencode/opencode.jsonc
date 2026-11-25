@@ -1,0 +1,22 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "default_agent": "chat",
+  "experimental": { "todo": true },
+  "providers": {
+    "ollama": { "settings": { "headerTimeout": false, "chunkTimeout": false } }
+  },
+  "policies": [
+    { "action": "provider.use", "resource": "opencode", "effect": "deny" },
+    { "action": "provider.use", "resource": "opencode-go", "effect": "deny" },
+    { "action": "skill.use", "resource": "*", "effect": "deny" }
+  ],
+  "agents": {
+    "build":   { "disabled": true },
+    "plan":    { "disabled": true },
+    "general": { "disabled": true },
+    "explore": { "disabled": true },
+    "title": {
+      "system": "Write a title of at most 6 words for this conversation. Output only the title."
+    }
+  }
+}

@@ -17,7 +17,6 @@
     ./pkgs/yazi/yaz.nix
     ./pkgs/browser.nix
     ./pkgs/wlogout.nix
-    ./pkgs/opencode.nix
   ];
 
   # Package stuff
@@ -63,6 +62,7 @@
     master-pkgs.aseprite
     master-pkgs.saleae-logic-2
     master-pkgs.pureref
+    master-pkgs.opencode
 
     # Quickshell & quickshell projects
     inputs.qml-niri.packages.${stdenv.hostPlatform.system}.quickshell
@@ -208,7 +208,7 @@ anims rand
     enable = true;
     package = unstable-pkgs.ollama;
     environmentVariables = {
-      OLLAMA_CONTEXT_LENGTH = "16384";
+      OLLAMA_CONTEXT_LENGTH = "32768";
       OLLAMA_FLASH_ATTENTION = "1";
       OLLAMA_NUM_PARALLEL = "1";
       OLLAMA_KEEP_ALIVE = "-1";

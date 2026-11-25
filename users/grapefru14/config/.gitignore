@@ -13,5 +13,8 @@ kando/*
 !kando/sound-themes/*
 
 opencode/*
+!opencode/opencode.jsonc
 !opencode/cli.json
+!opencode/AGENTS.md
 !opencode/plugins
+!opencode/agents
